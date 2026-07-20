@@ -1,0 +1,65 @@
+{
+  "case_id": "picabench_0164_global",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 164,
+  "physics_category": "State",
+  "physics_law": "Global",
+  "edit_operation": "season",
+  "instruction": "Transform this overlook of an autumn forested valley into mid‑winter after a snowfall has finished and settled. Replace all warm fall foliage with a winter canopy: deciduous trees across the valley, especially in the center background, are leafless and their dark branches are covered by settled white snow; conifer patches remain dark green but carry snow on their upper needles. Ensure the center background valley shows continuous snow covering the treetops from ridge to ridge. Shift the lighting to cold, overcast daylight with a blue‑gray cloud deck, low contrast, cool color temperature, and soft, short shadows. Coat the rocky ledge with a thin, compacted layer of snow and rime that collects in hollows and on horizontal surfaces while wind‑exposed edges remain partly bare rock. Add a light dusting of snow on the seated person’s hat and denim shoulders and on the surface where she sits, without introducing new objects or footprints. Slight bluish winter haze softens distant ridges. Remove remaining autumn colors, keeping the palette desaturated and cool. No falling flakes or motion; the scene depicts a stable, settled winter landscape.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Change the season to winter.",
+    "intermediate": "Change the entire scene to winter using global, physically consistent rules: apply cold-season atmospheric and lighting conditions to the whole valley; enforce vegetation’s winter phenology (deciduous vs. evergreen behavior) without contradicting species traits; distribute snow according to gravity and surface orientation, with wind exposure affecting accumulation; adjust materials to freezing temperatures (ice/rime possible) and maintain soft, diffuse shadows under an overcast sky; keep color temperature cooler and introduce appropriate winter haze uniformly.",
+    "explicit": "Transform this overlook of an autumn forested valley into mid‑winter after a snowfall has finished and settled. Replace all warm fall foliage with a winter canopy: deciduous trees across the valley, especially in the center background, are leafless and their dark branches are covered by settled white snow; conifer patches remain dark green but carry snow on their upper needles. Ensure the center background valley shows continuous snow covering the treetops from ridge to ridge. Shift the lighting to cold, overcast daylight with a blue‑gray cloud deck, low contrast, cool color temperature, and soft, short shadows. Coat the rocky ledge with a thin, compacted layer of snow and rime that collects in hollows and on horizontal surfaces while wind‑exposed edges remain partly bare rock. Add a light dusting of snow on the seated person’s hat and denim shoulders and on the surface where she sits, without introducing new objects or footprints. Slight bluish winter haze softens distant ridges. Remove remaining autumn colors, keeping the palette desaturated and cool. No falling flakes or motion; the scene depicts a stable, settled winter landscape."
+  },
+  "image_path": "imgs/State/Global/brendan-church-yT9vpiJNtRo-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0164_global\\input.png",
+  "input_image_size": {
+    "width": 705,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 1024.8431876606683,
+      "id": "IifcCGqx",
+      "order": 1,
+      "width": 699.8560411311054,
+      "x": 4.839331619537335,
+      "y": 0.0
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 599.3982300884957,
+        "width": 700.8185840707965,
+        "x": 4.181415929203532,
+        "y": 251.07964601769905
+      },
+      "question": "Is snow present within the annotated region?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 780.0455120101137,
+        "width": 379.594816687737,
+        "x": 325.4051833122629,
+        "y": 243.85335018963337
+      },
+      "question": "Is the right hillside covered in snow?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 1024.8431876606683,
+        "width": 699.8560411311054,
+        "x": 4.839331619537335,
+        "y": 0.0
+      },
+      "question": "Are there settled patches of snow on the seated person's hat?"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "case_id": "picabench_0658_global",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 658,
+  "physics_category": "State",
+  "physics_law": "Global",
+  "edit_operation": "weather",
+  "instruction": "Transform this wet alley at dusk into a clear, sunny morning. Replace the pink-orange clouded sky in the upper half with a clear, light-blue morning sky. Illuminate the scene with low-angle direct sunlight entering from the right (east), producing crisp, long shadows of the poles, wires, and building edges that fall leftward and along the alley. Remove any atmospheric haze. Convert the pavement from wet to dry: remove the central puddle and its mirror reflections, restoring continuous asphalt texture and matching perspective and roughness; suppress all specular water gleam. Brighten exposure and adjust color to warm morning sunlight—right-side facades and the metal garage door show bright sunlit highlights while the left side remains in cooler skylight shade. Keep all existing objects and layout unchanged; apply these changes consistently across the entire scene to depict the stable, settled result of a sunny morning.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Change the scene to show a sunny morning.",
+    "intermediate": "Change the entire alley scene to a sunny morning by applying a global environment update: set a single, consistent direction for direct sunlight; adjust the sky to clear daylight conditions; modify exposure and color balance to morning sun; and ensure that all shadows, reflections, and surface appearances obey energy-conserving lighting and are consistent with dry, sunny weather across the whole image.",
+    "explicit": "Transform this wet alley at dusk into a clear, sunny morning. Replace the pink-orange clouded sky in the upper half with a clear, light-blue morning sky. Illuminate the scene with low-angle direct sunlight entering from the right (east), producing crisp, long shadows of the poles, wires, and building edges that fall leftward and along the alley. Remove any atmospheric haze. Convert the pavement from wet to dry: remove the central puddle and its mirror reflections, restoring continuous asphalt texture and matching perspective and roughness; suppress all specular water gleam. Brighten exposure and adjust color to warm morning sunlight—right-side facades and the metal garage door show bright sunlit highlights while the left side remains in cooler skylight shade. Keep all existing objects and layout unchanged; apply these changes consistently across the entire scene to depict the stable, settled result of a sunny morning."
+  },
+  "image_path": "imgs/State/Global/pexels-josh-hild-1270765-2704927.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0658_global\\input.png",
+  "input_image_size": {
+    "width": 746,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 1024.954128440367,
+      "id": "sZYEdXRL",
+      "order": 1,
+      "width": 745.2201834862385,
+      "x": 0.7798165137615096,
+      "y": 0.0
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 1024.954128440367,
+        "width": 745.2201834862385,
+        "x": 0.7798165137615096,
+        "y": 0.0
+      },
+      "question": "Does the region show a cloud-free light-blue morning sky?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 1024.954128440367,
+        "width": 745.2201834862385,
+        "x": 0.7798165137615096,
+        "y": 0.0
+      },
+      "question": "Is there a puddle on the central pavement?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 505.6286788750817,
+        "width": 505.6286788750816,
+        "x": 154.88165553728697,
+        "y": 535.6344621275034
+      },
+      "question": "Do overhead cables cast shadows?"
+    }
+  ]
+}

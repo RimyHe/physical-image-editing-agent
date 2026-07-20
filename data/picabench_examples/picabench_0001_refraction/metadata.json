@@ -1,0 +1,85 @@
+{
+  "case_id": "picabench_0001_refraction",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 1,
+  "physics_category": "Optics",
+  "physics_law": "Refraction",
+  "edit_operation": "remove",
+  "instruction": "In the photo of a clear glass tumbler on a cyan background containing a floating neon-yellow tennis ball, remove all liquid from inside the glass and show the settled, final state. The interior becomes dry air. The tennis ball, no longer buoyant, has dropped under gravity and now rests on the flat bottom of the glass, centered with a small contact shadow beneath it. Delete every cue of water: no horizontal waterline or meniscus at the rim, no rippled surface highlight, no internal bright band or caustic near the base, and no bubbles or droplets on the inner wall. Replace the water’s refraction with that of empty glass: the background cyan seen through the walls is only slightly compressed by glass thickness; the ball’s lower half is no longer split or magnified—its outline is continuous and undistorted through air and glass. Preserve realistic glass reflections, and simplify the tabletop shadow to match a dry, empty glass with a ball at the bottom.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Remove the water from the glass cup.",
+    "intermediate": "Empty the glass so there is no visible liquid. Because water is a refractive medium, remove its refraction and surface-tension cues (waterline/meniscus, caustics, magnification) and update how the background and the tennis ball appear through the glass accordingly. After removing buoyancy, allow any floating object to settle under gravity and container constraints, and adjust shadows/highlights to match a dry interior.",
+    "explicit": "In the photo of a clear glass tumbler on a cyan background containing a floating neon-yellow tennis ball, remove all liquid from inside the glass and show the settled, final state. The interior becomes dry air. The tennis ball, no longer buoyant, has dropped under gravity and now rests on the flat bottom of the glass, centered with a small contact shadow beneath it. Delete every cue of water: no horizontal waterline or meniscus at the rim, no rippled surface highlight, no internal bright band or caustic near the base, and no bubbles or droplets on the inner wall. Replace the water’s refraction with that of empty glass: the background cyan seen through the walls is only slightly compressed by glass thickness; the ball’s lower half is no longer split or magnified—its outline is continuous and undistorted through air and glass. Preserve realistic glass reflections, and simplify the tabletop shadow to match a dry, empty glass with a ball at the bottom."
+  },
+  "image_path": "imgs/Optics/Refraction/0a3797ae05224b11c2d22eda227d376e.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0001_refraction\\input.png",
+  "input_image_size": {
+    "width": 683,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 731.0270270270271,
+      "id": "iJJ61gsD",
+      "order": 1,
+      "width": 593.2972972972973,
+      "x": 1.7162162162161916,
+      "y": 172.54054054054055
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "No",
+      "box": {
+        "height": 705.8482866160331,
+        "width": 525.204276946535,
+        "x": 85.603448275862,
+        "y": 156.93103448275863
+      },
+      "question": "Is the lower half of the tennis ball geometrically distorted when viewed through the glass?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 731.0270270270271,
+        "width": 593.2972972972973,
+        "x": 1.7162162162161916,
+        "y": 172.54054054054055
+      },
+      "question": "Are the inner walls of the glass dry?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 731.0270270270271,
+        "width": 593.2972972972973,
+        "x": 1.7162162162161916,
+        "y": 172.54054054054055
+      },
+      "question": "Is the tennis ball resting on the flat bottom of the glass?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 731.0270270270271,
+        "width": 593.2972972972973,
+        "x": 1.7162162162161916,
+        "y": 172.54054054054055
+      },
+      "question": "Is the cyan background visible through the glass walls undistorted?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 235.39035597238362,
+        "width": 180.6764455574513,
+        "x": 0.0,
+        "y": 651.0579198896858
+      },
+      "question": "Does the shadow contain caustic streaks?"
+    }
+  ]
+}

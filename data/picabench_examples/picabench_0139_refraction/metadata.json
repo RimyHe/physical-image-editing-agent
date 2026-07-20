@@ -1,0 +1,65 @@
+{
+  "case_id": "picabench_0139_refraction",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 139,
+  "physics_category": "Optics",
+  "physics_law": "Refraction",
+  "edit_operation": "remove",
+  "instruction": "Make the tumbler completely empty and dry. Remove all liquid water: delete the water surface, the meniscus ring and ripples, and the bright oval highlight at the rim as well as any water-caused caustics on the table. Replace the interior with clear air and recompute optics so everything is seen only through glass and air. Keep the spoon inside the glass, leaning as before and resting on the bottom; render its form continuous with no bend or lateral offset at the former waterline and remove any duplicated/warped image of the spoon produced by the water. Through the side walls and the base, show the background gradient and spoon with refraction appropriate to glass plus air, not magnified by water. The inner surface should look dry, with only glass reflections—no droplets or condensation. Preserve the glass geometry, camera angle, and overall lighting, changing only effects that were caused by the water.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Remove the water from the glass.",
+    "intermediate": "Remove all liquid water from the clear glass and account for the change from water to air in the optics. Update refraction, reflection, and transmission through the glass so the spoon and background seen through the vessel are consistent with an air-filled interior, and eliminate any highlights or caustic patterns that were caused by the water.",
+    "explicit": "Make the tumbler completely empty and dry. Remove all liquid water: delete the water surface, the meniscus ring and ripples, and the bright oval highlight at the rim as well as any water-caused caustics on the table. Replace the interior with clear air and recompute optics so everything is seen only through glass and air. Keep the spoon inside the glass, leaning as before and resting on the bottom; render its form continuous with no bend or lateral offset at the former waterline and remove any duplicated/warped image of the spoon produced by the water. Through the side walls and the base, show the background gradient and spoon with refraction appropriate to glass plus air, not magnified by water. The inner surface should look dry, with only glass reflections—no droplets or condensation. Preserve the glass geometry, camera angle, and overall lighting, changing only effects that were caused by the water."
+  },
+  "image_path": "imgs/Optics/Refraction/bc0a1f884e17b853de8084d993ced218.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0139_refraction\\input.png",
+  "input_image_size": {
+    "width": 780,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 523.0025706940874,
+      "id": "fah4vYsi",
+      "order": 1,
+      "width": 332.54498714652954,
+      "x": 229.77377892030847,
+      "y": 433.82005141388174
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "No",
+      "box": {
+        "height": 827.7718631178708,
+        "width": 366.70722433460077,
+        "x": 223.80228136882127,
+        "y": 117.94675169970147
+      },
+      "question": "Is there a refracted kink in the spoon?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 408.1292775665399,
+        "width": 364.47908745247145,
+        "x": 209.94296577946764,
+        "y": 545.6273597746293
+      },
+      "question": "Is any part of the dark spoon submerged in liquid?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 523.0025706940874,
+        "width": 332.54498714652954,
+        "x": 229.77377892030847,
+        "y": 433.82005141388174
+      },
+      "question": "Refraction through the glass base matches refraction of glass with an air-filled interior."
+    }
+  ]
+}

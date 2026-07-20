@@ -1,0 +1,75 @@
+{
+  "case_id": "picabench_0766_light_source_effects",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 766,
+  "physics_category": "Optics",
+  "physics_law": "Light_Source_Effects",
+  "edit_operation": "add",
+  "instruction": "Turn on the pleated white‑shade floor lamp beside the armchair to the left of the open balcony door. Make the shade emit a warm tungsten glow (~2700 K). Brighten that corner with a localized pool of light: the shade glows softly, brightest just below the rim, with intensity falling off over distance. Light the nearby wall paneling, the armchair, and the closest folds of the bed with warm highlights, while the lamp’s metal stem remains comparatively dim. From the lamp’s position, add soft‑edged shadows of the chair and adjacent objects that project toward the balcony door. Keep the existing strong daylight from the open door: its long, cooler shadows still fall toward the left. Where illumination from both sources overlaps, show two-source behavior—sunlit areas remain dominant and cooler; darker areas near the lamp are lifted and warmed; objects exhibit a sharp, cool sun shadow and a broader, softer warm shadow in the opposite direction. Update brightness distribution, color temperature, and shadow geometry throughout to match these two distinct sources, reflecting the final steady state after the lamp is on.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Turn on the lamp in the scene.",
+    "intermediate": "Switch on the floor lamp next to the armchair (left of the open balcony door) and treat it as an additional warm light source. Recompute global illumination so the scene reflects two distinct sources (daylight from the door and the lamp), with physically correct falloff, shading, and shadow casting consistent with the lamp’s position and shade geometry, as well as updated color temperature across surfaces.",
+    "explicit": "Turn on the pleated white‑shade floor lamp beside the armchair to the left of the open balcony door. Make the shade emit a warm tungsten glow (~2700 K). Brighten that corner with a localized pool of light: the shade glows softly, brightest just below the rim, with intensity falling off over distance. Light the nearby wall paneling, the armchair, and the closest folds of the bed with warm highlights, while the lamp’s metal stem remains comparatively dim. From the lamp’s position, add soft‑edged shadows of the chair and adjacent objects that project toward the balcony door. Keep the existing strong daylight from the open door: its long, cooler shadows still fall toward the left. Where illumination from both sources overlaps, show two-source behavior—sunlit areas remain dominant and cooler; darker areas near the lamp are lifted and warmed; objects exhibit a sharp, cool sun shadow and a broader, softer warm shadow in the opposite direction. Update brightness distribution, color temperature, and shadow geometry throughout to match these two distinct sources, reflecting the final steady state after the lamp is on."
+  },
+  "image_path": "imgs/Optics/Light_Source_Effects/add/real_-jansen-HhdeMD5ZcAc-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0766_light_source_effects\\input.png",
+  "input_image_size": {
+    "width": 683,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 447.3525557011796,
+      "id": "4JyDZHqT",
+      "order": 1,
+      "width": 319.31716906946264,
+      "x": 129.39318479685446,
+      "y": 342.45609436435126
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 192.96467722289893,
+        "width": 110.4652862362972,
+        "x": 240.8227771010963,
+        "y": 471.2253349573691
+      },
+      "question": "Does the pleated-shade floor lamp cast a downward cone of light onto the armchair beneath it?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 447.3525557011796,
+        "width": 319.31716906946264,
+        "x": 129.39318479685446,
+        "y": 342.45609436435126
+      },
+      "question": "Do shadows cast by objects near the lamp point toward the open balcony door?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 447.3525557011796,
+        "width": 319.31716906946264,
+        "x": 129.39318479685446,
+        "y": 342.45609436435126
+      },
+      "question": "Are shadows cast by daylight directed toward the left?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 139.5290162168692,
+        "width": 192.55790056472154,
+        "x": 196.0773447015835,
+        "y": 535.5468940316688
+      },
+      "question": "Is the left side of the armchair brighter than the right side?"
+    }
+  ]
+}

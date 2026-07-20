@@ -1,0 +1,103 @@
+{
+  "case_id": "picabench_0816_light_propagation",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 816,
+  "physics_category": "Optics",
+  "physics_law": "Light_Propagation",
+  "edit_operation": "move",
+  "instruction": "Translate the entire tulip plant (flower, stem, leaves, and green vase) vertically upward until the blossom sits just below the top edge in the left third of the frame. Keep the plant upright with no rotation or scaling. Preserve the warm, single directional sunlight coming from the left. Update illumination accordingly: left-facing petals and leaves stay highlighted, right sides remain in shade. Reproject the tulip’s cast shadow onto the flat wall so it is sharp and complete and its shape matches the tulip (bloom, stem, leaves). Place this shadow to the right of the plant and higher than before, landing within the upper sunlit window rectangle on the wall. Keep the wall and the bright rectangular light patches otherwise unchanged. Present the final, stable result with no motion blur or transitional positions.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Move the tulip to the top of the image",
+    "intermediate": "Move the red-and-yellow tulip upward so it occupies the top region of the image. Respect the single left-to-right light source by relocating its cast shadow on the wall and adjusting highlights/occlusion accordingly. Ensure the shadow remains sharp and shape-consistent with the tulip, while preserving perspective and material appearance.",
+    "explicit": "Translate the entire tulip plant (flower, stem, leaves, and green vase) vertically upward until the blossom sits just below the top edge in the left third of the frame. Keep the plant upright with no rotation or scaling. Preserve the warm, single directional sunlight coming from the left. Update illumination accordingly: left-facing petals and leaves stay highlighted, right sides remain in shade. Reproject the tulip’s cast shadow onto the flat wall so it is sharp and complete and its shape matches the tulip (bloom, stem, leaves). Place this shadow to the right of the plant and higher than before, landing within the upper sunlit window rectangle on the wall. Keep the wall and the bright rectangular light patches otherwise unchanged. Present the final, stable result with no motion blur or transitional positions."
+  },
+  "image_path": "imgs/Optics/Light_Propagation/move/single_tulip_in_clear_glass_vase_on_windowsill_midday_sun_shadow_pattern_4_unsplash_diFZ8vXPHF0.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0816_light_propagation\\input.png",
+  "input_image_size": {
+    "width": 780,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 1024.0826771653542,
+      "id": "fVfmyuJQ",
+      "order": 1,
+      "width": 346.8173556430447,
+      "x": 3.845144356955385,
+      "y": 8.780144881780976e-14
+    },
+    {
+      "height": 884.0875,
+      "id": "t7bjs922",
+      "order": 2,
+      "width": 250.1125,
+      "x": 494.99375,
+      "y": 145.80142889022827
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 1024.0826771653542,
+        "width": 346.8173556430447,
+        "x": 3.845144356955385,
+        "y": 8.780144881780976e-14
+      },
+      "question": "Is the tulip plant vertical?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 1024.0826771653542,
+        "width": 346.8173556430447,
+        "x": 3.845144356955385,
+        "y": 8.780144881780976e-14
+      },
+      "question": "Do the bright rectangular light patches on the wall contain the tulip's cast shadow?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 884.0875,
+        "width": 250.1125,
+        "x": 494.99375,
+        "y": 145.80142889022827
+      },
+      "question": "Do the tulip's cast shadow edges have distinct boundaries?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 884.0875,
+        "width": 250.1125,
+        "x": 494.99375,
+        "y": 145.80142889022827
+      },
+      "question": "Is the tulip's cast shadow located in the upper third of the wall?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 884.0875,
+        "width": 250.1125,
+        "x": 494.99375,
+        "y": 145.80142889022827
+      },
+      "question": "Is the tulip's cast shadow identical in shape to the tulip's silhouette?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 1024.0826771653542,
+        "width": 346.8173556430447,
+        "x": 3.845144356955385,
+        "y": 8.780144881780976e-14
+      },
+      "question": "Is the tulip in the lower-left corner?"
+    }
+  ]
+}

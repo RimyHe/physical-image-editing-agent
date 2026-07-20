@@ -1,0 +1,95 @@
+{
+  "case_id": "picabench_0402_local",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 402,
+  "physics_category": "State",
+  "physics_law": "Local",
+  "edit_operation": "wet",
+  "instruction": "Edit the image so the large white terry-cloth towel hanging from the rack beneath the pale wood shelf appears freshly soaked and at rest. Render a uniform wet state across the towel: the fabric is noticeably darker and less fluffy, with matted loops that carry a soft glossy sheen from the room lighting. The added water weight produces a gentle V-shaped sag so the center hangs a bit lower and the corners hang straighter. Along the bottom hem, place a fine line of small water beads clinging to the fibers and a few droplets attached to loop tips; none are falling. Show slightly darker, compressed fabric and a faint wet sheen where the towel contacts the bar. Keep the wall, the wooden shelf, the amber pump bottle, the rolled orange towel and small white cloth on the shelf, the glass jar, and the stone countertop completely dry and unchanged. Do not add splashes or puddles. Lighting and shadows remain consistent except for those caused by the towel’s wetter, heavier shape and reflectance.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Wet the white towel.",
+    "intermediate": "Wet only the large white towel hanging from the rack under the wooden shelf, applying moisture in a way that respects terry-cloth water absorption and retention, gravity-driven redistribution of water, capillarity at seams and hems, and surface tension on fibers, while keeping the surrounding wall, shelf, countertop, and other items dry and unchanged.",
+    "explicit": "Edit the image so the large white terry-cloth towel hanging from the rack beneath the pale wood shelf appears freshly soaked and at rest. Render a uniform wet state across the towel: the fabric is noticeably darker and less fluffy, with matted loops that carry a soft glossy sheen from the room lighting. The added water weight produces a gentle V-shaped sag so the center hangs a bit lower and the corners hang straighter. Along the bottom hem, place a fine line of small water beads clinging to the fibers and a few droplets attached to loop tips; none are falling. Show slightly darker, compressed fabric and a faint wet sheen where the towel contacts the bar. Keep the wall, the wooden shelf, the amber pump bottle, the rolled orange towel and small white cloth on the shelf, the glass jar, and the stone countertop completely dry and unchanged. Do not add splashes or puddles. Lighting and shadows remain consistent except for those caused by the towel’s wetter, heavier shape and reflectance."
+  },
+  "image_path": "imgs/State/Local/joyful-XMoXo0vYOeg-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0402_local\\input.png",
+  "input_image_size": {
+    "width": 646,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 454.16452442159385,
+      "id": "NPSniPaL",
+      "order": 1,
+      "width": 512.8149100257069,
+      "x": 58.321336760925455,
+      "y": 529.3573264781492
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 463.43048576214403,
+        "width": 528.8107202680067,
+        "x": 44.172529313232786,
+        "y": 521.1189279731993
+      },
+      "question": "Is the large white towel wet?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 454.16452442159385,
+        "width": 512.8149100257069,
+        "x": 58.321336760925455,
+        "y": 529.3573264781492
+      },
+      "question": "Is the large white towel sagging in a V shape?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 454.16452442159385,
+        "width": 512.8149100257069,
+        "x": 58.321336760925455,
+        "y": 529.3573264781492
+      },
+      "question": "Are water beads present along the bottom hem of the towel?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 454.16452442159385,
+        "width": 512.8149100257069,
+        "x": 58.321336760925455,
+        "y": 529.3573264781492
+      },
+      "question": "Is there a wet sheen on the towel where it contacts the rack bar?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 454.16452442159385,
+        "width": 512.8149100257069,
+        "x": 58.321336760925455,
+        "y": 529.3573264781492
+      },
+      "question": "Is there a puddle on the countertop beneath the towel?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 490.35175879396985,
+        "width": 74.99497487437186,
+        "x": 567.2144053601339,
+        "y": 448.0469011725293
+      },
+      "question": "Is the wall surface dry?"
+    }
+  ]
+}

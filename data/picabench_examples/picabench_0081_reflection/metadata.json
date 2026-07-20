@@ -1,0 +1,85 @@
+{
+  "case_id": "picabench_0081_reflection",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 81,
+  "physics_category": "Optics",
+  "physics_law": "Reflection",
+  "edit_operation": "replace",
+  "instruction": "Replace every camel in the mid‑ground caravan (exactly five animals) with realistic saddle horses while keeping all humans, background, and composition unchanged. For each camel, position a horse of comparable scale and location, oriented left‑to‑right and in a natural walking stride. Keep each rider seated on the corresponding horse with horse‑appropriate tack: saddle, bridle, and reins that connect cleanly to the riders’ hands; remove camel humps and long camel neck silhouettes, using correct horse proportions (withers, mane, tail, hooves). Ensure each hoof makes firm contact with the dry ground strip above the waterline; add consistent contact shadows and faint footprints on the sand/grass and no splashes or water disturbance. Lighting comes from the upper left: add highlights on left‑facing planes and soft shadows on right‑facing sides of the horses and riders, matching scene color and contrast. Replace the camels’ reflections in the calm mirror‑like water with accurate mirror images of the new horses, riders, and the walking guides: reflections begin exactly at the shoreline, are vertically inverted, perspective‑correct, and aligned with each subject; keep them ultra‑clear, slightly dimmer than the originals, and consistent with the clean, still water. Preserve correct occlusions and spacing within the caravan, the handlers at both ends, and the layered mountain/sky reflections in the water. Do not add or remove animals—there are five horses in the line and the same five appear in the water reflection.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Replace the camels with horses.",
+    "intermediate": "Replace the five camels in the middle‑ground caravan with horses, and also replace their counterparts in the calm water so the reflections obey the law of reflection. Keep the people unchanged. Maintain correct perspective, scale, ground contact under gravity, occlusions, cast shadows, and lighting direction; ensure the shoreline acts as the reflection boundary and the water remains clean and evenly lit.",
+    "explicit": "Replace every camel in the mid‑ground caravan (exactly five animals) with realistic saddle horses while keeping all humans, background, and composition unchanged. For each camel, position a horse of comparable scale and location, oriented left‑to‑right and in a natural walking stride. Keep each rider seated on the corresponding horse with horse‑appropriate tack: saddle, bridle, and reins that connect cleanly to the riders’ hands; remove camel humps and long camel neck silhouettes, using correct horse proportions (withers, mane, tail, hooves). Ensure each hoof makes firm contact with the dry ground strip above the waterline; add consistent contact shadows and faint footprints on the sand/grass and no splashes or water disturbance. Lighting comes from the upper left: add highlights on left‑facing planes and soft shadows on right‑facing sides of the horses and riders, matching scene color and contrast. Replace the camels’ reflections in the calm mirror‑like water with accurate mirror images of the new horses, riders, and the walking guides: reflections begin exactly at the shoreline, are vertically inverted, perspective‑correct, and aligned with each subject; keep them ultra‑clear, slightly dimmer than the originals, and consistent with the clean, still water. Preserve correct occlusions and spacing within the caravan, the handlers at both ends, and the layered mountain/sky reflections in the water. Do not add or remove animals—there are five horses in the line and the same five appear in the water reflection."
+  },
+  "image_path": "imgs/Optics/Reflection/replace/akshay-gill-rXzj-eSPVVc-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0081_reflection\\input.png",
+  "input_image_size": {
+    "width": 1024,
+    "height": 683
+  },
+  "edit_area": [
+    {
+      "height": 316.61311053984576,
+      "id": "tu1YY0gg",
+      "order": 1,
+      "width": 511.94730077120823,
+      "x": 345.6439588688946,
+      "y": 208.2133676092545
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 143.3849315068493,
+        "width": 505.6205479452055,
+        "x": 352.9828767123288,
+        "y": 209.14794520547943
+      },
+      "question": "Are there exactly five horse instances?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 316.61311053984576,
+        "width": 511.94730077120823,
+        "x": 345.6439588688946,
+        "y": 208.2133676092545
+      },
+      "question": "Do all horses' hooves contact the dry ground above the waterline?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 316.61311053984576,
+        "width": 511.94730077120823,
+        "x": 345.6439588688946,
+        "y": 208.2133676092545
+      },
+      "question": "Are exactly five contiguous horses in the same left-to-right order as their reflections in the water?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 162.7904109589041,
+        "width": 570.3054794520548,
+        "x": 329.2650684931507,
+        "y": 391.34383561643835
+      },
+      "question": "Do the water reflections depict horses?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 184.35205479452054,
+        "width": 549.8219178082192,
+        "x": 330.3431506849315,
+        "y": 393.5
+      },
+      "question": "Are there exactly five contiguous reflected horse instances visible in the water?"
+    }
+  ]
+}

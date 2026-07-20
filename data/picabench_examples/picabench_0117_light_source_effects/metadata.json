@@ -1,0 +1,75 @@
+{
+  "case_id": "picabench_0117_light_source_effects",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 117,
+  "physics_category": "Optics",
+  "physics_law": "Light_Source_Effects",
+  "edit_operation": "replace",
+  "instruction": "Replace the emission color of the vertical ‘BAR’ letters on the right‑side hanging neon sign with a saturated electric blue while keeping their tube geometry, thickness, and brightness consistent. Treat the letters as a dominant light source in this night scene. Convert every red spill and reflection produced by those letters to blue: the halo around each letter, the glow on the rectangular sign face and its trim, the light cast onto the adjacent building wall at the left, and any specular streaks on that wall. The overall local color temperature shifts from warm to cool near the sign, with the surrounding night remaining dark. Keep the green neon arrow beneath the letters unchanged in its own green color, but allow a mild blue tint where its surfaces pick up nearby blue light. Preserve the silhouette of the person and background darkness. No residual red from the letters should remain; the final stable image shows a cool‑blue ‘BAR’ sign and matching blue reflections and casts.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Change the color of the neon sign of the ‘BAR’ sign to blue.",
+    "intermediate": "Change the neon light color of the vertical ‘BAR’ sign to blue and treat those letters as an active light source. Update the scene’s lighting interactions accordingly—glow, reflections, and color cast on nearby surfaces—and shift the local color temperature to a cooler tone consistent with blue illumination. Maintain the green arrow’s own emission and the existing lighting direction and contrast of the night scene.",
+    "explicit": "Replace the emission color of the vertical ‘BAR’ letters on the right‑side hanging neon sign with a saturated electric blue while keeping their tube geometry, thickness, and brightness consistent. Treat the letters as a dominant light source in this night scene. Convert every red spill and reflection produced by those letters to blue: the halo around each letter, the glow on the rectangular sign face and its trim, the light cast onto the adjacent building wall at the left, and any specular streaks on that wall. The overall local color temperature shifts from warm to cool near the sign, with the surrounding night remaining dark. Keep the green neon arrow beneath the letters unchanged in its own green color, but allow a mild blue tint where its surfaces pick up nearby blue light. Preserve the silhouette of the person and background darkness. No residual red from the letters should remain; the final stable image shows a cool‑blue ‘BAR’ sign and matching blue reflections and casts."
+  },
+  "image_path": "imgs/Optics/Light_Source_Effects/replace/anvesh-reddy-ucU1DJn3y4c-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0117_light_source_effects\\input.png",
+  "input_image_size": {
+    "width": 683,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 706.0925449871465,
+      "id": "pcHf8MpN",
+      "order": 1,
+      "width": 430.8097686375321,
+      "x": 67.77249357326471,
+      "y": 3.1105398457583546
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 696.2205323193913,
+        "width": 384.1216730038022,
+        "x": 106.88022813688204,
+        "y": 2.182492854477335
+      },
+      "question": "Is the wall strip immediately left of the hanging sign illuminated blue?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 706.0925449871465,
+        "width": 430.8097686375321,
+        "x": 67.77249357326471,
+        "y": 3.1105398457583546
+      },
+      "question": "Is the letter 'B' blue?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 706.0925449871465,
+        "width": 430.8097686375321,
+        "x": 67.77249357326471,
+        "y": 3.1105398457583546
+      },
+      "question": "Is the neon arrow green?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 706.0925449871465,
+        "width": 430.8097686375321,
+        "x": 67.77249357326471,
+        "y": 3.1105398457583546
+      },
+      "question": "Is there overexposure on the BAR neon letters?"
+    }
+  ]
+}

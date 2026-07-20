@@ -1,0 +1,105 @@
+{
+  "case_id": "picabench_0358_causality",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 358,
+  "physics_category": "Mechanics",
+  "physics_law": "Causality",
+  "edit_operation": "others",
+  "instruction": "Reposition the green ceramic cup at the top-center edge of the white marble table so it lies fully on its side, resting stably on the tabletop. Orient its opening toward the tabletop area directly in front of it. Empty the cup: depict a brown coffee puddle spread flat on the marble in front of the sideways cup. From the rim to the tabletop, render a visible, continuous trail of coffee that connects the rim to the puddle. Ensure the puddle touches the rim and sits level with smooth, glossy edges appropriate to liquid on polished stone. Keep the sugar bowl and spoon exactly as they are. The person’s hand is no longer gripping the cup and sits naturally nearby without intersecting the spill. Maintain the scene’s lighting: show the sideways cup’s shadow clearly on the tabletop, consistent with existing shadows. The final state is static with no coffee in motion.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Knock over the cup, spilling the coffee.",
+    "intermediate": "Rotate the green ceramic mug onto its side near the top-center edge of the marble table and release it so the liquid responds to gravity and the non‑absorbent surface, with realistic wet sheen, reflections, and consistent shadows for all objects; keep the sugar bowl and spoon unchanged.",
+    "explicit": "Reposition the green ceramic cup at the top-center edge of the white marble table so it lies fully on its side, resting stably on the tabletop. Orient its opening toward the tabletop area directly in front of it. Empty the cup: depict a brown coffee puddle spread flat on the marble in front of the sideways cup. From the rim to the tabletop, render a visible, continuous trail of coffee that connects the rim to the puddle. Ensure the puddle touches the rim and sits level with smooth, glossy edges appropriate to liquid on polished stone. Keep the sugar bowl and spoon exactly as they are. The person’s hand is no longer gripping the cup and sits naturally nearby without intersecting the spill. Maintain the scene’s lighting: show the sideways cup’s shadow clearly on the tabletop, consistent with existing shadows. The final state is static with no coffee in motion."
+  },
+  "image_path": "imgs/Mechanics/Causality/inside-weather-YBG3jopJaS0-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0358_causality\\input.png",
+  "input_image_size": {
+    "width": 1024,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 335.5681233933162,
+      "id": "YXfErmM4",
+      "order": 1,
+      "width": 445.9125964010283,
+      "x": 258.0565552699229,
+      "y": 258.47814910025704
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 810.9196858373449,
+        "width": 889.5110210286294,
+        "x": 83.57752240504922,
+        "y": 212.85268461761615
+      },
+      "question": "Does a continuous trail of coffee connect the green cup's rim to a puddle on the tabletop?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 769.9987601043931,
+        "width": 778.0743094830372,
+        "x": 149.6477416616942,
+        "y": 253.4801608253541
+      },
+      "question": "Is a brown coffee puddle spread flat on the tabletop?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 416.35524034522837,
+        "width": 519.9856869320022,
+        "x": 165.4233694311266,
+        "y": 230.8879390426518
+      },
+      "question": "Is the green cup's opening facing the coffee puddle?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 335.5681233933162,
+        "width": 445.9125964010283,
+        "x": 258.0565552699229,
+        "y": 258.47814910025704
+      },
+      "question": "Is the interior of the green cup dry?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 335.5681233933162,
+        "width": 445.9125964010283,
+        "x": 258.0565552699229,
+        "y": 258.47814910025704
+      },
+      "question": "Is the person's hand touching the cup?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 326.5159944367176,
+        "width": 350.048678720445,
+        "x": 275.61509323867045,
+        "y": 267.3853174537406
+      },
+      "question": "Is the green cup resting on the tabletop?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 673.743842364532,
+        "width": 754.3152709359606,
+        "x": 170.56652324805648,
+        "y": 232.54695341232554
+      },
+      "question": "Is the green cup casting a shadow?"
+    }
+  ]
+}

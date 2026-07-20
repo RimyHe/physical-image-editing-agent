@@ -1,0 +1,75 @@
+{
+  "case_id": "picabench_0148_light_propagation",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 148,
+  "physics_category": "Optics",
+  "physics_law": "Light_Propagation",
+  "edit_operation": "remove",
+  "instruction": "Remove the entire red road bicycle at the far-left edge of the frame. Delete every part of it—frame, wheels, tires, spokes, handlebar, saddle, and any lock touching the rail—and also remove its complete, sharp shadow cast on the asphalt path, including the circular wheel silhouettes and spoke patterns that extend diagonally toward the lower left. Fill the revealed area with continuous sunlit asphalt matching the surrounding fine-grain texture and warm tone, and restore the occluded background elements: the line of cobblestones and scattered leaves along the curb and the metal rail/wooden post behind, following their existing perspective and alignment. Eliminate any contact shadows or highlights where the bicycle met the ground or rail so the space reads as empty, flat pavement. Keep the remaining bicycles and their long shadows unchanged and consistent with the low, single-direction sunlight from the upper right.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Remove the bicycle on the left.",
+    "intermediate": "Remove the bicycle on the far left while accounting for the scene’s single, directional sunlight and the object’s interactions: ensure any cast shadows on the flat pavement, contact shadows at the ground and rail, and occlusions of the curb/rail are handled consistently with the lighting and perspective across the image.",
+    "explicit": "Remove the entire red road bicycle at the far-left edge of the frame. Delete every part of it—frame, wheels, tires, spokes, handlebar, saddle, and any lock touching the rail—and also remove its complete, sharp shadow cast on the asphalt path, including the circular wheel silhouettes and spoke patterns that extend diagonally toward the lower left. Fill the revealed area with continuous sunlit asphalt matching the surrounding fine-grain texture and warm tone, and restore the occluded background elements: the line of cobblestones and scattered leaves along the curb and the metal rail/wooden post behind, following their existing perspective and alignment. Eliminate any contact shadows or highlights where the bicycle met the ground or rail so the space reads as empty, flat pavement. Keep the remaining bicycles and their long shadows unchanged and consistent with the low, single-direction sunlight from the upper right."
+  },
+  "image_path": "imgs/Optics/Light_Propagation/remove/bicycle_turned_sideways_sunlight_3_unsplash_VzeXmOkLf20.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0148_light_propagation\\input.png",
+  "input_image_size": {
+    "width": 1024,
+    "height": 683
+  },
+  "edit_area": [
+    {
+      "height": 684.4884318766067,
+      "id": "muuuJ6qn",
+      "order": 1,
+      "width": 541.5732647814909,
+      "x": 0.5141388174807344,
+      "y": 0.0
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 457.6738305941846,
+        "width": 206.94816687737043,
+        "x": 324.9506953223767,
+        "y": 235.8015170670038
+      },
+      "question": "Does the black post cast a shadow toward the lower-left?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 684.4884318766067,
+        "width": 541.5732647814909,
+        "x": 0.5141388174807344,
+        "y": 0.0
+      },
+      "question": "Does the annotated left region contain a bicycle shadow?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 684.4884318766067,
+        "width": 541.5732647814909,
+        "x": 0.5141388174807344,
+        "y": 0.0
+      },
+      "question": "Do the cobblestones along the left curb form a continuous pattern matching the adjacent cobblestones?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 684.4884318766067,
+        "width": 541.5732647814909,
+        "x": 0.5141388174807344,
+        "y": 0.0
+      },
+      "question": "Does the left pavement exhibit the same asphalt texture as the adjacent pavement?"
+    }
+  ]
+}

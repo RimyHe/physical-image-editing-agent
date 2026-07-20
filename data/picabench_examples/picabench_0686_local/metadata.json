@@ -1,0 +1,85 @@
+{
+  "case_id": "picabench_0686_local",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 686,
+  "physics_category": "State",
+  "physics_law": "Local",
+  "edit_operation": "wet",
+  "instruction": "Show the final, stable aftermath of the spill. The small white coffee cup at the lower-right edge of the open book has toppled toward the book and now lies on its side on the lower-right corner of the right page, its opening facing inward over the paper. Most of the coffee has emptied out. The right page is visibly wet: a dark brown, irregular stain spreads from the lower-right corner inward with feathered edges from capillary absorption; the wet paper appears slightly wrinkled and darker than the dry areas. Along the page’s edge and onto the adjacent dark stone surface, form a shallow puddle of coffee with smooth, mirrorlike highlights consistent with the strong sunlight from the upper left. Leave a faint coffee ring at the cup’s rim and a few clinging droplets on the cup exterior. The left page, the hand, and the pink paper bits remain dry and unchanged. No mid-air splashes—only settled puddles and absorbed moisture. Keep all other scene elements, lighting, and composition intact.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Make the coffee cup fall over.",
+    "intermediate": "Tip the small white coffee cup at the lower-right edge of the open book onto its side so its contents are released. Ensure gravity drives the liquid onto nearby surfaces, that the porous paper absorbs some of it, and that the nonporous stone allows pooling and reflections. Keep the wetting localized to the book’s right page and adjacent tabletop, preserving the rest of the scene unchanged.",
+    "explicit": "Show the final, stable aftermath of the spill. The small white coffee cup at the lower-right edge of the open book has toppled toward the book and now lies on its side on the lower-right corner of the right page, its opening facing inward over the paper. Most of the coffee has emptied out. The right page is visibly wet: a dark brown, irregular stain spreads from the lower-right corner inward with feathered edges from capillary absorption; the wet paper appears slightly wrinkled and darker than the dry areas. Along the page’s edge and onto the adjacent dark stone surface, form a shallow puddle of coffee with smooth, mirrorlike highlights consistent with the strong sunlight from the upper left. Leave a faint coffee ring at the cup’s rim and a few clinging droplets on the cup exterior. The left page, the hand, and the pink paper bits remain dry and unchanged. No mid-air splashes—only settled puddles and absorbed moisture. Keep all other scene elements, lighting, and composition intact."
+  },
+  "image_path": "imgs/State/Local/pexels-melike-baran-407276327-32922657.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0686_local\\input.png",
+  "input_image_size": {
+    "width": 773,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 524.0366972477065,
+      "id": "LQmBjwjz",
+      "order": 1,
+      "width": 481.2889908256881,
+      "x": 291.7110091743119,
+      "y": 450.0550458715596
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 414.29201101928373,
+        "width": 406.3856749311295,
+        "x": 215.7231404958677,
+        "y": 431.6949381762628
+      },
+      "question": "Is there a dark brown coffee stain on the right page?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 381.0853994490358,
+        "width": 394.4063360881543,
+        "x": 378.5936639118457,
+        "y": 545.5461778456843
+      },
+      "question": "Does the cup's exterior show coffee streaks?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 524.0366972477065,
+        "width": 481.2889908256881,
+        "x": 291.7110091743119,
+        "y": 450.0550458715596
+      },
+      "question": "Is the small white coffee cup on its side?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 524.0366972477065,
+        "width": 481.2889908256881,
+        "x": 291.7110091743119,
+        "y": 450.0550458715596
+      },
+      "question": "Does the shallow puddle on the stone show specular (mirrorlike) highlights?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 524.0366972477065,
+        "width": 481.2889908256881,
+        "x": 291.7110091743119,
+        "y": 450.0550458715596
+      },
+      "question": "Is the left page dry?"
+    }
+  ]
+}

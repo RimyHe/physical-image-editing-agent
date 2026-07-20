@@ -1,0 +1,85 @@
+{
+  "case_id": "picabench_0049_deformation",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 49,
+  "physics_category": "Mechanics",
+  "physics_law": "Deformation",
+  "edit_operation": "others",
+  "instruction": "Repose the subject so her arms are no longer hugging the pillow. Move both forearms from the crossed, elevated position to a lowered rest along her sides on top of the duvet; elbows relaxed with a slight natural bend, wrists loose, palms facing inward near the hips. Shoulders stay flush against the mattress. Release the pillow from the hands and let it settle by gravity on her torso: it lies horizontally and flat across the chest/upper abdomen, aligned with the bed plane, loft recovered and rounded with no finger impressions; its top edge sits just below the chin so the face is uncovered, and the lower edge reaches toward the waist. The duvet shows soft depressions under the forearms and pillow with realistic fabric bunching and wrinkles; areas previously squeezed rebound. Update lighting and shadows to match the new geometry—soft contact shadows under the arms and pillow, reduced cast shadows that were caused by the raised arms—while keeping the scene’s overall direction, color, and camera unchanged. Depict the final, steady pose with no motion blur or mid-movement artifacts.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Lower the woman's arms in the image.",
+    "intermediate": "Lower both of the woman’s arms from their raised, crossed position to a relaxed, downward pose and release the grip on the pillow. Ensure gravity-driven settling, soft‑body deformation, contact response, and appropriate contact shadows for the arms, pillow, duvet, and skin; maintain texture continuity and lighting consistent with the new geometry.",
+    "explicit": "Repose the subject so her arms are no longer hugging the pillow. Move both forearms from the crossed, elevated position to a lowered rest along her sides on top of the duvet; elbows relaxed with a slight natural bend, wrists loose, palms facing inward near the hips. Shoulders stay flush against the mattress. Release the pillow from the hands and let it settle by gravity on her torso: it lies horizontally and flat across the chest/upper abdomen, aligned with the bed plane, loft recovered and rounded with no finger impressions; its top edge sits just below the chin so the face is uncovered, and the lower edge reaches toward the waist. The duvet shows soft depressions under the forearms and pillow with realistic fabric bunching and wrinkles; areas previously squeezed rebound. Update lighting and shadows to match the new geometry—soft contact shadows under the arms and pillow, reduced cast shadows that were caused by the raised arms—while keeping the scene’s overall direction, color, and camera unchanged. Depict the final, steady pose with no motion blur or mid-movement artifacts."
+  },
+  "image_path": "imgs/Mechanics/Deformation/67977fb48dca6e1a21844df8de7ade48.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0049_deformation\\input.png",
+  "input_image_size": {
+    "width": 1024,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 734.0540540540541,
+      "id": "DqBQosmk",
+      "order": 1,
+      "width": 1010.7027027027026,
+      "x": 13.297297297297286,
+      "y": 225.51351351351352
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 410.9150149334781,
+        "width": 372.36984653545215,
+        "x": 0.0,
+        "y": 611.2390426998246
+      },
+      "question": "Is the woman's hand positioned at her waist?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 275.6448547379853,
+        "width": 243.82847421959585,
+        "x": 780.1715257804042,
+        "y": 578.3396993794579
+      },
+      "question": "Is the woman's hand touching a pillow?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 658.7768595041323,
+        "width": 452.9586776859504,
+        "x": 0.0,
+        "y": 275.01709564461197
+      },
+      "question": "Is the woman's right arm resting along her right side?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 504.9586776859504,
+        "width": 485.58677685950414,
+        "x": 538.4132231404959,
+        "y": 315.413789859488
+      },
+      "question": "Is the woman's left arm positioned along her left side?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 511.17355371900834,
+        "width": 570.2148760330579,
+        "x": 246.31404958677686,
+        "y": 248.6038725041161
+      },
+      "question": "Is there a hand-shaped indentation?"
+    }
+  ]
+}

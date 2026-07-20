@@ -1,0 +1,65 @@
+{
+  "case_id": "picabench_0733_causality",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 733,
+  "physics_category": "Mechanics",
+  "physics_law": "Causality",
+  "edit_operation": "others",
+  "instruction": "Add enough milk to the cappuccino so that, after mixing and settling, the white cup is filled to or slightly beyond capacity. Show the stable result: the drink surface is now a pale milky beige with the former latte-art pattern largely dispersed, sitting level with the rim. Thin rivulets have overflowed and dried into a glossy wet look down the cup’s exterior and onto the white saucer, creating a shallow puddle around the cup base. Coffee beans on the saucer are partially wet and stuck in this puddle; other beans on the table and cloth remain dry and in place. Keep all original objects and positions (white ceramic cup and saucer on the blue‑and‑white cloth, spoon and sugar packets) unchanged. Maintain scene lighting and shadows consistent with the existing top-left illumination, with realistic highlights on the liquid and ceramics. Do not show an active pouring stream—only the post-pour, settled state.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Pour more milk into the cup.",
+    "intermediate": "Add a downward stream of white milk into the center‑foreground white cup, applying gravity, fluid continuity, conservation of volume, and surface tension so the stream realistically interacts with the coffee surface and the container. Keep lighting, perspective, and shadows consistent with the scene and avoid any overflow that would affect the saucer or table.",
+    "explicit": "Add enough milk to the cappuccino so that, after mixing and settling, the white cup is filled to or slightly beyond capacity. Show the stable result: the drink surface is now a pale milky beige with the former latte-art pattern largely dispersed, sitting level with the rim. Thin rivulets have overflowed and dried into a glossy wet look down the cup’s exterior and onto the white saucer, creating a shallow puddle around the cup base. Coffee beans on the saucer are partially wet and stuck in this puddle; other beans on the table and cloth remain dry and in place. Keep all original objects and positions (white ceramic cup and saucer on the blue‑and‑white cloth, spoon and sugar packets) unchanged. Maintain scene lighting and shadows consistent with the existing top-left illumination, with realistic highlights on the liquid and ceramics. Do not show an active pouring stream—only the post-pour, settled state."
+  },
+  "image_path": "imgs/Mechanics/Causality/pexels-studio-d7-2153673512-32845307.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0733_causality\\input.png",
+  "input_image_size": {
+    "width": 683,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 534.8256880733944,
+      "id": "GqNDTzm4",
+      "order": 1,
+      "width": 608.8073394495412,
+      "x": 44.802752293578024,
+      "y": 181.87155963302752
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 534.8256880733944,
+        "width": 608.8073394495412,
+        "x": 44.802752293578024,
+        "y": 181.87155963302752
+      },
+      "question": "Is the drink surface of the cup milky beige?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 534.8256880733944,
+        "width": 608.8073394495412,
+        "x": 44.802752293578024,
+        "y": 181.87155963302752
+      },
+      "question": "Are the overflow rivulets continuous from the cup rim to the puddle on the saucer?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 534.8256880733944,
+        "width": 608.8073394495412,
+        "x": 44.802752293578024,
+        "y": 181.87155963302752
+      },
+      "question": "Is at least one coffee bean on the saucer stuck in a puddle?"
+    }
+  ]
+}

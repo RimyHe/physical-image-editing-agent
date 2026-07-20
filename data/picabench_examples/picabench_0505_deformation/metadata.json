@@ -1,0 +1,95 @@
+{
+  "case_id": "picabench_0505_deformation",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 505,
+  "physics_category": "Mechanics",
+  "physics_law": "Deformation",
+  "edit_operation": "remove",
+  "instruction": "Remove the tan pug and all of its cast shadows from the center of the blue quilted couch. Reconstruct the seat where the dog sat as an empty, stable surface: the upholstered foam and quilted cover are elastic, so the depressed area rebounds to the same loft as the surrounding cushion. Continue the diamond quilting and stitch spacing across the cleared area with the same perspective and scale, maintaining the subtle existing fabric puckers but leaving no paw or body-shaped dents. Keep the front seam and any anchored edges straight and flush. Reveal the portions of the two large blue pillows behind the dog as uninterrupted pillow fabric; restore their surfaces to an uncompressed, naturally creased shape consistent with the adjacent visible areas. Remove the rim shadows and occlusion the dog created on the seat and pillows, and relight the revealed fabric with the scene’s left-to-right illumination so brightness and color match the rest of the couch. Preserve the shallow depth of field, overall texture, and color; introduce no new objects.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Remove the dog from the couch.",
+    "intermediate": "Remove the dog from the center of the blue quilted couch while accounting for material physics: the seat cushion and cover behave as soft, elastic bodies with anchored seams; any areas previously under load respond accordingly once the load is gone. Update contact-related occlusion and lighting by removing dog-cast shadows and matching illumination on newly revealed regions. Maintain continuity of the fabric texture, stitch alignment, perspective, and depth of field, and avoid adding new elements.",
+    "explicit": "Remove the tan pug and all of its cast shadows from the center of the blue quilted couch. Reconstruct the seat where the dog sat as an empty, stable surface: the upholstered foam and quilted cover are elastic, so the depressed area rebounds to the same loft as the surrounding cushion. Continue the diamond quilting and stitch spacing across the cleared area with the same perspective and scale, maintaining the subtle existing fabric puckers but leaving no paw or body-shaped dents. Keep the front seam and any anchored edges straight and flush. Reveal the portions of the two large blue pillows behind the dog as uninterrupted pillow fabric; restore their surfaces to an uncompressed, naturally creased shape consistent with the adjacent visible areas. Remove the rim shadows and occlusion the dog created on the seat and pillows, and relight the revealed fabric with the scene’s left-to-right illumination so brightness and color match the rest of the couch. Preserve the shallow depth of field, overall texture, and color; introduce no new objects."
+  },
+  "image_path": "imgs/Mechanics/Deformation/meritt-thomas-uVooaXOCwCA-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0505_deformation\\input.png",
+  "input_image_size": {
+    "width": 683,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 699.8560411311054,
+      "id": "pN1rbXgS",
+      "order": 1,
+      "width": 603.1156812339332,
+      "x": 30.116966580976932,
+      "y": 178.3650385604113
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "No",
+      "box": {
+        "height": 836.2438220757825,
+        "width": 611.3871499176277,
+        "x": 62.7520593080725,
+        "y": 135.65733113673807
+      },
+      "question": "Is there an indentation in the couch seat that is deeper than the surrounding cushion surface?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 904.0263591433278,
+        "width": 665.7265238879736,
+        "x": 8.636738056013249,
+        "y": 117.25864909390444
+      },
+      "question": "Is the fabric texture in the center of the couch seat continuous?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 699.8560411311054,
+        "width": 603.1156812339332,
+        "x": 30.116966580976932,
+        "y": 178.3650385604113
+      },
+      "question": "Is the front seam flush with the surrounding cushion?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 699.8560411311054,
+        "width": 603.1156812339332,
+        "x": 30.116966580976932,
+        "y": 178.3650385604113
+      },
+      "question": "Is the fabric brighter on the left than on the right?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 699.8560411311054,
+        "width": 603.1156812339332,
+        "x": 30.116966580976932,
+        "y": 178.3650385604113
+      },
+      "question": "Is a dog-cast shadow present on the seat?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 830.2668863261944,
+        "width": 644.1029654036242,
+        "x": 38.89703459637568,
+        "y": 145.62767710049422
+      },
+      "question": "Is a dog on the center of the couch seat?"
+    }
+  ]
+}

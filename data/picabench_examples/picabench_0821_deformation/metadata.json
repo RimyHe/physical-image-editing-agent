@@ -1,0 +1,65 @@
+{
+  "case_id": "picabench_0821_deformation",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 821,
+  "physics_category": "Mechanics",
+  "physics_law": "Deformation",
+  "edit_operation": "remove",
+  "instruction": "Remove the sleeping person entirely (head, arm, shoulder, and covered torso) and reconstruct the bed so it shows the stable state after the load is gone. Restore the two white pillows against the headboard to a full, uniform loft with no head-shaped indentation; keep their edges flush to the headboard and let only small, natural fabric creases remain. Make the mattress surface even. Extend and close the white sheet where the arm and shoulder were so it becomes a continuous surface on the mattress, keeping fine residual wrinkles and fold lines appropriate for fabric. Reshape the light-blue quilted comforter to settle naturally onto the mattress without the raised ridge created by the body; continue the quilting pattern and seams smoothly, with gentle gravity-driven drape and soft folds, and keep the foot and side edges aligned with their original positions. Remove all shadows and occlusions cast by the person, retaining only lighting and shading from the bedding, headboard, and bed frame consistent with the ambient light in the room. Do not add any new objects or textures beyond the existing bedding materials.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Remove the person from the image.",
+    "intermediate": "Remove the person from the bed and adjust the scene according to material and lighting physics: soft bedding should respond to the removal of load; elastic components (pillow foam, mattress) rebound, while fabric retains some wrinkles; anchored edges remain in place; update occlusion and shading so lighting is consistent with the room after the subject is gone.",
+    "explicit": "Remove the sleeping person entirely (head, arm, shoulder, and covered torso) and reconstruct the bed so it shows the stable state after the load is gone. Restore the two white pillows against the headboard to a full, uniform loft with no head-shaped indentation; keep their edges flush to the headboard and let only small, natural fabric creases remain. Make the mattress surface even. Extend and close the white sheet where the arm and shoulder were so it becomes a continuous surface on the mattress, keeping fine residual wrinkles and fold lines appropriate for fabric. Reshape the light-blue quilted comforter to settle naturally onto the mattress without the raised ridge created by the body; continue the quilting pattern and seams smoothly, with gentle gravity-driven drape and soft folds, and keep the foot and side edges aligned with their original positions. Remove all shadows and occlusions cast by the person, retaining only lighting and shading from the bedding, headboard, and bed frame consistent with the ambient light in the room. Do not add any new objects or textures beyond the existing bedding materials."
+  },
+  "image_path": "imgs/Mechanics/Deformation/slaapwijsheid-nl-mHWmTL_EtLQ-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0821_deformation\\input.png",
+  "input_image_size": {
+    "width": 1024,
+    "height": 683
+  },
+  "edit_area": [
+    {
+      "height": 427.3622047244094,
+      "id": "mMbfks8p",
+      "order": 1,
+      "width": 643.2349081364829,
+      "x": 379.40813648293965,
+      "y": 212.58530183727035
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "No",
+      "box": {
+        "height": 282.107202680067,
+        "width": 499.61976549413737,
+        "x": 194.29983249581238,
+        "y": 200.3752093802345
+      },
+      "question": "Is there a head-shaped indentation in the white pillow?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 427.3622047244094,
+        "width": 643.2349081364829,
+        "x": 379.40813648293965,
+        "y": 212.58530183727035
+      },
+      "question": "Is the white sheet continuous over the arm area?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 557.6231155778895,
+        "width": 938.5996649916248,
+        "x": 82.24790619765493,
+        "y": 123.91624790619765
+      },
+      "question": "Is a person present?"
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "case_id": "picabench_0542_local",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 542,
+  "physics_category": "State",
+  "physics_law": "Local",
+  "edit_operation": "wet",
+  "instruction": "Edit the image so that only the central green canvas backpack becomes fully wet in a stable state while the mossy ground and the rest of the environment remain unchanged. Render the canvas body and top flap as uniformly damp and noticeably darker than dry canvas, with a soft, continuous sheen. Emphasize heavier darkening and slight water accumulation along seams, the bottom edge, and deep creases where water would collect at rest. Place many small, stationary water droplets across the top flap and upper sloped panels; bead droplets along the blue piping and stitching, and a thin line of settled droplets along the lower seam, all oriented consistently with gravity. The light-gray fabric straps should appear damp and darker with a satin, wet look, especially at overlaps and edges. Increase gloss on the blue piping and on the plastic/metal hardware, adding tiny clinging droplets and bright specular highlights on the buckles. Keep the backpack’s shape and pose unchanged; no flowing water, splashes, or rainfall. Adjust lighting and reflections only on the backpack to match the scene’s existing light direction. The final image shows the backpack wet and at rest, with moisture effects (droplets, darker porous fabric, absorption and minor pooling) confined to the backpack.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Make the backpack appear wet.",
+    "intermediate": "Make only the backpack wet as a local state change, respecting real wetting physics for its materials (canvas fabric, nylon/webbing straps, blue piping, plastic/metal hardware). Apply wetting consistent with gravity, absorption, adhesion, and surface tension, and adjust optical properties accordingly, but keep these effects confined to the backpack. Leave the mossy ground and the rest of the scene unaltered and avoid depicting transient drips or splashes.",
+    "explicit": "Edit the image so that only the central green canvas backpack becomes fully wet in a stable state while the mossy ground and the rest of the environment remain unchanged. Render the canvas body and top flap as uniformly damp and noticeably darker than dry canvas, with a soft, continuous sheen. Emphasize heavier darkening and slight water accumulation along seams, the bottom edge, and deep creases where water would collect at rest. Place many small, stationary water droplets across the top flap and upper sloped panels; bead droplets along the blue piping and stitching, and a thin line of settled droplets along the lower seam, all oriented consistently with gravity. The light-gray fabric straps should appear damp and darker with a satin, wet look, especially at overlaps and edges. Increase gloss on the blue piping and on the plastic/metal hardware, adding tiny clinging droplets and bright specular highlights on the buckles. Keep the backpack’s shape and pose unchanged; no flowing water, splashes, or rainfall. Adjust lighting and reflections only on the backpack to match the scene’s existing light direction. The final image shows the backpack wet and at rest, with moisture effects (droplets, darker porous fabric, absorption and minor pooling) confined to the backpack."
+  },
+  "image_path": "imgs/State/Local/niklas-sagren-JyVW1wWuM50-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0542_local\\input.png",
+  "input_image_size": {
+    "width": 684,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 467.07455012853467,
+      "id": "Lgcm39fU",
+      "order": 1,
+      "width": 562.3033419023136,
+      "x": 32.12853470437026,
+      "y": 273.5938303341902
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 467.07455012853467,
+        "width": 562.3033419023136,
+        "x": 32.12853470437026,
+        "y": 273.5938303341902
+      },
+      "question": "Is the moss surrounding the backpack dry?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 467.07455012853467,
+        "width": 562.3033419023136,
+        "x": 32.12853470437026,
+        "y": 273.5938303341902
+      },
+      "question": "Are the backpack's seams darker than the adjacent fabric?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 467.5274223034735,
+        "width": 565.9049360146252,
+        "x": 35.09622841304219,
+        "y": 273.34797957511176
+      },
+      "question": "Does the front buckle strap of the canvas backpack have water droplets?"
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "case_id": "picabench_0744_global",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 744,
+  "physics_category": "State",
+  "physics_law": "Global",
+  "edit_operation": "season",
+  "instruction": "Transform the entire outdoor scene from winter to a settled midsummer afternoon. Replace all snow on the central foreground lawn, around the tree base, along curbs, and beside paths with healthy, dense green grass; edges against the pavement are crisp and dry, with no slush or wet patches. Fill the large foreground tree with a full canopy of medium‑green leaves; its foliage casts soft, dappled shadows to the right, matching the existing shadow direction. Warm, clear sunlight from the left (summer afternoon, slightly higher sun) brightens the church façade and windows; shadows are a bit shorter and well defined. Remove any snow from rooftops and steps. Dry the sidewalks and benches completely. Adjust the sky to a clean, saturated blue summer sky with clear visibility and no winter haze. Change distant mountains from white, snow‑covered slopes to mostly snow‑free summer terrain—dark green vegetation and exposed gray rock—consistent with the same lighting. Update pedestrians’ clothing to light summer wear (short sleeves or light layers; no heavy coats, scarves, or gloves). Keep all structures, objects, and composition unchanged; the result is a coherent, dry, warm summer scene.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Change the scene to summer.",
+    "intermediate": "Apply a global season change to summer across this outdoor scene, updating atmosphere, lighting (solar angle and color temperature), vegetation state, ground surface conditions, distant terrain appearance, and human attire consistently. Ensure changes follow real‑world constraints such as plant phenology, thermodynamics, solar geometry, and material reflectance, so all objects and shadows remain coherent with the new environment.",
+    "explicit": "Transform the entire outdoor scene from winter to a settled midsummer afternoon. Replace all snow on the central foreground lawn, around the tree base, along curbs, and beside paths with healthy, dense green grass; edges against the pavement are crisp and dry, with no slush or wet patches. Fill the large foreground tree with a full canopy of medium‑green leaves; its foliage casts soft, dappled shadows to the right, matching the existing shadow direction. Warm, clear sunlight from the left (summer afternoon, slightly higher sun) brightens the church façade and windows; shadows are a bit shorter and well defined. Remove any snow from rooftops and steps. Dry the sidewalks and benches completely. Adjust the sky to a clean, saturated blue summer sky with clear visibility and no winter haze. Change distant mountains from white, snow‑covered slopes to mostly snow‑free summer terrain—dark green vegetation and exposed gray rock—consistent with the same lighting. Update pedestrians’ clothing to light summer wear (short sleeves or light layers; no heavy coats, scarves, or gloves). Keep all structures, objects, and composition unchanged; the result is a coherent, dry, warm summer scene."
+  },
+  "image_path": "imgs/State/Global/pexels-tobiasbjorkli-2119709.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0744_global\\input.png",
+  "input_image_size": {
+    "width": 768,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 1021.8715596330275,
+      "id": "MUSPQ3h6",
+      "order": 1,
+      "width": 763.9266055045872,
+      "x": 4.073394495412882,
+      "y": 0.0
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 337.98039630491485,
+        "width": 563.786327349315,
+        "x": 204.21367265068494,
+        "y": 686.6556084484206
+      },
+      "question": "Is there green grass along the edge of the walkway?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 537.0913294797688,
+        "width": 706.2011560693642,
+        "x": 57.336457009279094,
+        "y": 90.09822330361563
+      },
+      "question": "Is snow present on the church tower roof?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 1021.8715596330275,
+        "width": 763.9266055045872,
+        "x": 4.073394495412882,
+        "y": 0.0
+      },
+      "question": "Are the pedestrians wearing short-sleeve shirts?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 1021.8715596330275,
+        "width": 763.9266055045872,
+        "x": 4.073394495412882,
+        "y": 0.0
+      },
+      "question": "Do the shadows fall to the right?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 1021.8715596330275,
+        "width": 763.9266055045872,
+        "x": 4.073394495412882,
+        "y": 0.0
+      },
+      "question": "Does the large foreground tree have a full canopy of medium-green leaves?"
+    }
+  ]
+}

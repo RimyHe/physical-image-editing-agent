@@ -1,0 +1,85 @@
+{
+  "case_id": "picabench_0261_light_source_effects",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 261,
+  "physics_category": "Optics",
+  "physics_law": "Light_Source_Effects",
+  "edit_operation": "add",
+  "instruction": "Switch on the top‑center hanging pendant lamp. Make the bulb visibly glowing warm (about 2700–3000 K) and the underside of the metal shade lit, with almost no light emitted upward. Emit a downward, focused cone that forms a bright, warm circular pool on the glossy tabletop directly beneath the lamp, centered on the area with the metal tray and the inverted glass. Update all shadows and reflections for two light sources (cool daylight from the window blinds and this warm lamp): within the pool, the cool horizontal blind stripes remain but are lower in contrast and slightly warmer. From the new lamp, the inverted glass, tray, utensils, and book cast short, soft‑edged shadows that fall radially outward across the table away from the point under the bulb; edges soften with distance. Add warm specular highlights: a distinct warm hotspot and a small reflection of the glowing bulb appear on the tabletop, and the glass shows brighter warm rim highlights. Apply gentle warm falloff on the nearby wall tiles and bench while areas outside the beam remain mostly unchanged under the cooler window light. Render the scene as this stable, fully illuminated state.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Turn on the lamp in the room.",
+    "intermediate": "Switch on the top‑center metal pendant lamp and treat it as an additional warm, downward‑directed light source located at the bulb beneath the shade. Recompute the global illumination so that brightness, color temperature, and cast shadows across the room and on the tabletop, tray, inverted glass, wall tiles, and bench respond to the interaction between this lamp and the existing strong daylight entering through the window blinds. Ensure shadow directions and softness are consistent with the lamp’s position, size, and shade geometry, and update reflections on glossy and glass surfaces accordingly.",
+    "explicit": "Switch on the top‑center hanging pendant lamp. Make the bulb visibly glowing warm (about 2700–3000 K) and the underside of the metal shade lit, with almost no light emitted upward. Emit a downward, focused cone that forms a bright, warm circular pool on the glossy tabletop directly beneath the lamp, centered on the area with the metal tray and the inverted glass. Update all shadows and reflections for two light sources (cool daylight from the window blinds and this warm lamp): within the pool, the cool horizontal blind stripes remain but are lower in contrast and slightly warmer. From the new lamp, the inverted glass, tray, utensils, and book cast short, soft‑edged shadows that fall radially outward across the table away from the point under the bulb; edges soften with distance. Add warm specular highlights: a distinct warm hotspot and a small reflection of the glowing bulb appear on the tabletop, and the glass shows brighter warm rim highlights. Apply gentle warm falloff on the nearby wall tiles and bench while areas outside the beam remain mostly unchanged under the cooler window light. Render the scene as this stable, fully illuminated state."
+  },
+  "image_path": "imgs/Optics/Light_Source_Effects/add/doyle-shin-fBHydk-TCBM-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0261_light_source_effects\\input.png",
+  "input_image_size": {
+    "width": 768,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 916.7892030848329,
+      "id": "PQFNtfQc",
+      "order": 1,
+      "width": 534.0372750642674,
+      "x": 129.84061696658102,
+      "y": 0.0
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 252.8038976857491,
+        "width": 295.3958587088916,
+        "x": 272.7113276492083,
+        "y": 4.121802679658953
+      },
+      "question": "Is the lamp bulb illuminated?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 279.65895249695495,
+        "width": 472.62362971985385,
+        "x": 163.06942752740568,
+        "y": 659.9951278928137
+      },
+      "question": "Is there a circular specular highlight on the tabletop?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 474.02192448233865,
+        "width": 451.64920828258226,
+        "x": 195.23020706455551,
+        "y": 23.77101096224117
+      },
+      "question": "Is the underside of the top-center pendant lampshade brighter than its outer top surface?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 142.62606577344704,
+        "width": 198.55785627283802,
+        "x": 445.5249695493302,
+        "y": 636.2241169305726
+      },
+      "question": "Does the glass cast a shadow that contacts the tabletop immediately adjacent to its base?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 916.7892030848329,
+        "width": 534.0372750642674,
+        "x": 129.84061696658102,
+        "y": 0.0
+      },
+      "question": "Are horizontal window‑blind shadow stripes present on the tabletop inside the circular lit area beneath the pendant lamp?"
+    }
+  ]
+}

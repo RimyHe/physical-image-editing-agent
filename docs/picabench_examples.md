@@ -51,8 +51,32 @@ Run a small batch:
 python scripts\run_picabench_examples.py --limit 3
 ```
 
+Run without the paper-style evaluator:
+
+```powershell
+python scripts\run_picabench_examples.py --limit 3 --skip-pica-eval
+```
+
 Agent outputs are written under:
 
 ```text
 outputs/picabench/<case_id>/run_YYYYMMDD_HHMMSS/
 ```
+
+## PICABench-style scoring
+
+The batch runner now records two metrics aligned with the PICABench paper:
+
+| field | meaning |
+| --- | --- |
+| `pica_accuracy` | PICAEval QA accuracy: the fraction of annotated yes/no questions whose VLM answer exactly matches the reference answer. |
+| `pica_consistency_psnr` | Non-edit-region PSNR: source and edited images are compared outside `edit_area`, so higher values mean better preservation. |
+
+For each case, the runner writes cropped QA regions and `pica_eval.json` under:
+
+```text
+outputs/picabench/<case_id>/run_YYYYMMDD_HHMMSS/pica_eval/
+```
+
+The top-level `summary.json` includes per-case metrics. `summary_metrics.json` reports the average
+accuracy and consistency, plus a breakdown by `physics_law`.

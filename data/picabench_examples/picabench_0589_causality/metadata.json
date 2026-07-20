@@ -1,0 +1,85 @@
+{
+  "case_id": "picabench_0589_causality",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 589,
+  "physics_category": "Mechanics",
+  "physics_law": "Causality",
+  "edit_operation": "others",
+  "instruction": "After 10 minutes, render the white soft-serve on the center-foreground cone heavily melted from warmth of the hand and air. The scoop has slumped toward the left side, and thick glossy streams of melted white ice cream run down the sides of the cone, following the waffle ridges and flowing toward the bottom edge of the image. The hand that grips the cone remains in contact with it, and the fingers are smeared where the melted ice cream touches them. The paper wrapper around the lower cone is wet and covered with melted ice cream. Below the wrapper, include a single viscous strand of melted ice cream hanging straight downward, aligned with gravity, attached to the wrapper’s lowest edge. Keep the beach background unchanged, keep the cone in the hand, and ensure there are no detached floating drops in the air. Show the stable, settled state of the melt, not a splash or mid-fall moment.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Make the ice cream look as it would after 10 minutes.",
+    "intermediate": "Simulate 10 minutes of real-world effects on the white ice cream: heat transfer from the warm hand and ambient seaside air softens it from solid to viscous liquid; gravity drives downward flow; contact and wetting spread onto the paper wrapper and skin; keep the cone and background unchanged; show the stable condition after this period with no mid-air droplets.",
+    "explicit": "After 10 minutes, render the white soft-serve on the center-foreground cone heavily melted from warmth of the hand and air. The scoop has slumped toward the left side, and thick glossy streams of melted white ice cream run down the sides of the cone, following the waffle ridges and flowing toward the bottom edge of the image. The hand that grips the cone remains in contact with it, and the fingers are smeared where the melted ice cream touches them. The paper wrapper around the lower cone is wet and covered with melted ice cream. Below the wrapper, include a single viscous strand of melted ice cream hanging straight downward, aligned with gravity, attached to the wrapper’s lowest edge. Keep the beach background unchanged, keep the cone in the hand, and ensure there are no detached floating drops in the air. Show the stable, settled state of the melt, not a splash or mid-fall moment."
+  },
+  "image_path": "imgs/Mechanics/Causality/pexels-bianeyre-1979749.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0589_causality\\input.png",
+  "input_image_size": {
+    "width": 768,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 660.0424164524422,
+      "id": "Cxlgywlu",
+      "order": 1,
+      "width": 283.09511568123395,
+      "x": 253.2223650385603,
+      "y": 367.71593830334194
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 245.51932497700096,
+        "width": 181.64235280588775,
+        "x": 297.0031250000001,
+        "y": 780.5056750229991
+      },
+      "question": "Is the strand of melted ice cream attached to the wrapper's lowest edge oriented straight downward?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 283.6539030597147,
+        "width": 172.40042611114396,
+        "x": 297.3915211456563,
+        "y": 718.6552458720721
+      },
+      "question": "Is the waffle cone touching the hand holding it?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 283.4125,
+        "width": 195.51875,
+        "x": 295.20937500000014,
+        "y": 722.88125
+      },
+      "question": "Does the melted white ice cream contact the fingers holding the cone?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 281.05241771637543,
+        "width": 186.59081674116212,
+        "x": 300.5855229073548,
+        "y": 740.0563515847217
+      },
+      "question": "Does the paper wrapper have melted white ice cream on it?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 374.89375,
+        "width": 337.2250000000001,
+        "x": 227.04687500000014,
+        "y": 643.9562500000001
+      },
+      "question": "Are there detached droplets of ice cream suspended in the air?"
+    }
+  ]
+}

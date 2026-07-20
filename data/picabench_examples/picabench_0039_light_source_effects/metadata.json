@@ -1,0 +1,65 @@
+{
+  "case_id": "picabench_0039_light_source_effects",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 39,
+  "physics_category": "Optics",
+  "physics_law": "Light_Source_Effects",
+  "edit_operation": "add",
+  "instruction": "Place a small warm (about 2700K) table lamp with a short cylindrical shade on the desk right beside the window sill under the lace curtain. Turn it on. Treat the scene as lit by two sources: the cool blue light coming through the window and the new warm lamp. The lamp’s shade directs light downward and slightly to the left, creating a warm pool on the right half of the desktop; the white sheet on the desk shows the brightest warm highlight. Desk objects and clutter cast soft‑edged shadows that extend leftward and slightly toward the viewer; each object also shows a fainter, cool secondary shadow to its right from the window light. The lower‑right portion of the lace curtain glows with a warm patch, and a warm gradient appears on the adjacent wall and windowsill. The upper right of the bed catches a subtle warm rim while the rest of the room stays dark. Intensity falls off with distance from the lamp, shadow softness increases with distance, and all brightness and color transitions are consistent with these two lights only.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Add a turned-on lamp by the window sill",
+    "intermediate": "Add a small table lamp on the desk by the window sill and switch it on as a second light source. Ensure physically accurate photometric falloff, color‑temperature mixing between the warm lamp and the cool window light, and occlusion‑driven cast shadows across all objects, walls, curtain, and bed. Recompute the entire scene’s brightness distribution and shadow geometry using only these two lights, keeping directions and hardness consistent with their positions.",
+    "explicit": "Place a small warm (about 2700K) table lamp with a short cylindrical shade on the desk right beside the window sill under the lace curtain. Turn it on. Treat the scene as lit by two sources: the cool blue light coming through the window and the new warm lamp. The lamp’s shade directs light downward and slightly to the left, creating a warm pool on the right half of the desktop; the white sheet on the desk shows the brightest warm highlight. Desk objects and clutter cast soft‑edged shadows that extend leftward and slightly toward the viewer; each object also shows a fainter, cool secondary shadow to its right from the window light. The lower‑right portion of the lace curtain glows with a warm patch, and a warm gradient appears on the adjacent wall and windowsill. The upper right of the bed catches a subtle warm rim while the rest of the room stays dark. Intensity falls off with distance from the lamp, shadow softness increases with distance, and all brightness and color transitions are consistent with these two lights only."
+  },
+  "image_path": "imgs/Optics/Light_Source_Effects/add/4.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0039_light_source_effects\\input.png",
+  "input_image_size": {
+    "width": 819,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 724.0746460746461,
+      "id": "PWkFPZAj",
+      "order": 1,
+      "width": 587.7425997425997,
+      "x": 137.5933075933076,
+      "y": 140.87644787644788
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 518.7829977628635,
+        "width": 401.9284116331096,
+        "x": 228.43959731543634,
+        "y": 226.01784721903618
+      },
+      "question": "Is the end of the windowsill closest to the viewer brighter than the end farthest from the viewer?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 724.0746460746461,
+        "width": 587.7425997425997,
+        "x": 137.5933075933076,
+        "y": 140.87644787644788
+      },
+      "question": "Is the lamp's brightest warm highlight located on the white sheet on the desk?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 724.0746460746461,
+        "width": 587.7425997425997,
+        "x": 137.5933075933076,
+        "y": 140.87644787644788
+      },
+      "question": "Do objects on the desk cast shadows extending leftward?"
+    }
+  ]
+}

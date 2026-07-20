@@ -1,0 +1,65 @@
+{
+  "case_id": "picabench_0036_refraction",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 36,
+  "physics_category": "Optics",
+  "physics_law": "Refraction",
+  "edit_operation": "remove",
+  "instruction": "Remove the clear cylindrical glass of water from the center foreground on the teal glossy tabletop. Delete the entire glass and its water line, rim highlights, internal reflections, and any droplets or condensation. Remove all optical effects produced by the glass/water: the elliptical cast shadow and bright caustic on the tabletop, and the mirror-like reflection of the glass on the surface. Reconstruct the tabletop where the glass and its shadow were with a continuous teal surface and matching gloss: keep the same lighting direction and specular gradient as the adjacent area and preserve the straight table edge. Replace the refracted view of the person’s face that appeared through the glass with an unobstructed, undistorted continuation of her features—nose, lips, and chin aligned naturally with the surrounding skin tones and shading. Keep the bright horizontal band of light across the eyes/forehead, the earring, hair, and the dark background unchanged. Match local sharpness, color, and noise so the scene appears stable and coherent with no evidence a glass was ever present.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Remove the glass of water from the image.",
+    "intermediate": "Remove the cylindrical glass of water on the tabletop and account for refractive optics: eliminate and replace content seen through the glass so it no longer shows refraction, and remove associated cast shadows, caustics, rim highlights, and reflections. Ensure continuity of lighting, perspective, surface texture, and depth-of-field on both the tabletop and background.",
+    "explicit": "Remove the clear cylindrical glass of water from the center foreground on the teal glossy tabletop. Delete the entire glass and its water line, rim highlights, internal reflections, and any droplets or condensation. Remove all optical effects produced by the glass/water: the elliptical cast shadow and bright caustic on the tabletop, and the mirror-like reflection of the glass on the surface. Reconstruct the tabletop where the glass and its shadow were with a continuous teal surface and matching gloss: keep the same lighting direction and specular gradient as the adjacent area and preserve the straight table edge. Replace the refracted view of the person’s face that appeared through the glass with an unobstructed, undistorted continuation of her features—nose, lips, and chin aligned naturally with the surrounding skin tones and shading. Keep the bright horizontal band of light across the eyes/forehead, the earring, hair, and the dark background unchanged. Match local sharpness, color, and noise so the scene appears stable and coherent with no evidence a glass was ever present."
+  },
+  "image_path": "imgs/Optics/Refraction/408cccfe1c92ebcc2c72d83d181b7105.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0036_refraction\\input.png",
+  "input_image_size": {
+    "width": 867,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 413.1891891891892,
+      "id": "XFQhCwSf",
+      "order": 1,
+      "width": 479.7837837837838,
+      "x": 198.14864864864862,
+      "y": 455.56756756756755
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "No",
+      "box": {
+        "height": 413.1891891891892,
+        "width": 479.7837837837838,
+        "x": 198.14864864864862,
+        "y": 455.56756756756755
+      },
+      "question": "Is the woman's face distorted?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 413.1891891891892,
+        "width": 479.7837837837838,
+        "x": 198.14864864864862,
+        "y": 455.56756756756755
+      },
+      "question": "Is there an elliptical cast shadow on the tabletop?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 413.1891891891892,
+        "width": 479.7837837837838,
+        "x": 198.14864864864862,
+        "y": 455.56756756756755
+      },
+      "question": "Is the tabletop color continuous teal across the tabletop at that location?"
+    }
+  ]
+}

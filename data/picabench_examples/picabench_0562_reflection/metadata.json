@@ -1,0 +1,75 @@
+{
+  "case_id": "picabench_0562_reflection",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 562,
+  "physics_category": "Optics",
+  "physics_law": "Reflection",
+  "edit_operation": "remove",
+  "instruction": "Remove the circular chrome side mirror and its short angled stalk and base from the upper-left edge of the green car door. Reconstruct the occluded areas so the door shows continuous green metallic paint following the door’s curvature, with a smooth specular gradient and no mounting holes or ghosting. Extend the window frame’s chrome and black rubber trim cleanly across where the mirror sat, matching thickness and alignment of the existing trim and the vertical chrome pillar. Simultaneously erase the mirror’s circular reflection on the adjacent glass pane to the right and any mirror highlights or silhouettes in nearby chrome surfaces; replace those with the scene’s existing window reflections (soft foliage/ground hues) and uninterrupted pillar reflections so the glass reads as a single clear, evenly lit surface. Remove any shadowing or bright rim halo cast by the mirror on the paint. Final image: a clean car side with no mirror or trace of it, and reflections on paint, glass, and chrome that are coherent and continuous.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Remove the car side mirror from the image.",
+    "intermediate": "Remove the circular chrome side mirror attached to the green car door, including its base and stalk, and ensure all reflective surfaces—window glass and nearby chrome trim—are updated so any reflections or shadows of the removed mirror are also eliminated. Maintain consistent lighting, perspective, and material continuity across paint, glass, and metal.",
+    "explicit": "Remove the circular chrome side mirror and its short angled stalk and base from the upper-left edge of the green car door. Reconstruct the occluded areas so the door shows continuous green metallic paint following the door’s curvature, with a smooth specular gradient and no mounting holes or ghosting. Extend the window frame’s chrome and black rubber trim cleanly across where the mirror sat, matching thickness and alignment of the existing trim and the vertical chrome pillar. Simultaneously erase the mirror’s circular reflection on the adjacent glass pane to the right and any mirror highlights or silhouettes in nearby chrome surfaces; replace those with the scene’s existing window reflections (soft foliage/ground hues) and uninterrupted pillar reflections so the glass reads as a single clear, evenly lit surface. Remove any shadowing or bright rim halo cast by the mirror on the paint. Final image: a clean car side with no mirror or trace of it, and reflections on paint, glass, and chrome that are coherent and continuous."
+  },
+  "image_path": "imgs/Optics/Reflection/remove/pair_of_sunglasses_resting_on_chrome_car_bumper_reflection_6_unsplash_3280kxG2HXI.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0562_reflection\\input.png",
+  "input_image_size": {
+    "width": 1024,
+    "height": 683
+  },
+  "edit_area": [
+    {
+      "height": 403.547557840617,
+      "id": "BjjP48ip",
+      "order": 1,
+      "width": 718.0141388174808,
+      "x": 158.89588688946014,
+      "y": 88.00771208226222
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "No",
+      "box": {
+        "height": 444.7093259869141,
+        "width": 305.50668378048397,
+        "x": 97.85026291443711,
+        "y": 67.14265496622758
+      },
+      "question": "Is there a circular chrome side mirror on the car door?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 335.9187192118227,
+        "width": 337.9064039408867,
+        "x": 566.6613300492611,
+        "y": 182.86699507389162
+      },
+      "question": "Is a circular reflection of the side mirror present?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 403.547557840617,
+        "width": 718.0141388174808,
+        "x": 158.89588688946014,
+        "y": 88.00771208226222
+      },
+      "question": "Is there a shadow of the side mirror on the green door?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 403.547557840617,
+        "width": 718.0141388174808,
+        "x": 158.89588688946014,
+        "y": 88.00771208226222
+      },
+      "question": "Does the chrome window frame display continuous reflections of the environment?"
+    }
+  ]
+}

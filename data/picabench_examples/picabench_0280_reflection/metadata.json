@@ -1,0 +1,115 @@
+{
+  "case_id": "picabench_0280_reflection",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 280,
+  "physics_category": "Optics",
+  "physics_law": "Reflection",
+  "edit_operation": "move",
+  "instruction": "In the mountain-lake scene with mirror-still water, move the teal-covered boat in the foreground left by roughly one boat length so it sits in the lower-left area, parallel to the wooden pier and separated from the pier’s corner by about half a boat width of water (no overlap with the dock or posts). Keep the boat’s orientation and waterline unchanged. Do not move the orange buoy; keep the rope attached from the boat’s stern to the buoy and redraw it as a taut diagonal spanning the new gap, with a slight dip near the water. Because the water acts as a near-perfect mirror, translate the boat’s reflection by the same amount and mirror it about the water surface so the reflected boat lies directly beneath the relocated boat; likewise mirror and reposition the rope’s reflection, joining the buoy’s reflection to the boat’s reflection. The boat and its reflection should cleanly occlude the tree and mountain reflections beneath them. Maintain the soft, overcast lighting, realistic contact shading around the hull, and a glassy surface with only faint existing ripples—no new wake or splash.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Move the boat to the left.",
+    "intermediate": "Translate the foreground teal-covered boat horizontally to the left across the calm lake while keeping perspective and scale consistent. Since the water is a mirror-like surface, also reposition its mirror image according to reflection symmetry about the water plane. Keep the mooring connection to the orange buoy continuous and adjust the rope and its mirrored counterpart to remain physically consistent with the new boat position. Preserve the calm-water look and lighting continuity.",
+    "explicit": "In the mountain-lake scene with mirror-still water, move the teal-covered boat in the foreground left by roughly one boat length so it sits in the lower-left area, parallel to the wooden pier and separated from the pier’s corner by about half a boat width of water (no overlap with the dock or posts). Keep the boat’s orientation and waterline unchanged. Do not move the orange buoy; keep the rope attached from the boat’s stern to the buoy and redraw it as a taut diagonal spanning the new gap, with a slight dip near the water. Because the water acts as a near-perfect mirror, translate the boat’s reflection by the same amount and mirror it about the water surface so the reflected boat lies directly beneath the relocated boat; likewise mirror and reposition the rope’s reflection, joining the buoy’s reflection to the boat’s reflection. The boat and its reflection should cleanly occlude the tree and mountain reflections beneath them. Maintain the soft, overcast lighting, realistic contact shading around the hull, and a glassy surface with only faint existing ripples—no new wake or splash."
+  },
+  "image_path": "imgs/Optics/Reflection/move/engjell-gjepali-4_NfLMeE-y8-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0280_reflection\\input.png",
+  "input_image_size": {
+    "width": 819,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 171.43958868894603,
+      "id": "uLbyBPdE",
+      "order": 1,
+      "width": 708.3161953727507,
+      "x": 1.9550128534703688,
+      "y": 745.9125964010283
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 211.58587088915957,
+        "width": 432.78928136419,
+        "x": 46.781364190012155,
+        "y": 792.7600487210719
+      },
+      "question": "Is the boat's reflection connected to the hull at the waterline?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 226.52375152253353,
+        "width": 440.4628501827041,
+        "x": 38.95188794153474,
+        "y": 791.4348355663825
+      },
+      "question": "Is the orange buoy's reflection directly beneath the buoy?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 251.4299634591961,
+        "width": 292.64799025578566,
+        "x": 0.06760048721069205,
+        "y": 757.0377588306943
+      },
+      "question": "Is the wooden boathouse with a red roof reflected in the water?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 171.43958868894603,
+        "width": 708.3161953727507,
+        "x": 1.9550128534703688,
+        "y": 745.9125964010283
+      },
+      "question": "Is the horizontal distance from the teal-covered boat's hull to the wooden pier corner equal to half the boat's width?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 171.43958868894603,
+        "width": 708.3161953727507,
+        "x": 1.9550128534703688,
+        "y": 745.9125964010283
+      },
+      "question": "Is the orange buoy to the right of the boat?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 171.43958868894603,
+        "width": 708.3161953727507,
+        "x": 1.9550128534703688,
+        "y": 745.9125964010283
+      },
+      "question": "Does a continuous rope connect the boat's stern to the orange buoy?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 171.43958868894603,
+        "width": 708.3161953727507,
+        "x": 1.9550128534703688,
+        "y": 745.9125964010283
+      },
+      "question": "Does the boat have a reflection directly beneath it in the water?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 271.2691839220463,
+        "width": 345.37880633373936,
+        "x": 454.2454323995128,
+        "y": 729.9098660170524
+      },
+      "question": "Is there a teal-covered boat?"
+    }
+  ]
+}

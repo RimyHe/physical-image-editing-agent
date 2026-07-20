@@ -1,0 +1,65 @@
+{
+  "case_id": "picabench_0387_reflection",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 387,
+  "physics_category": "Optics",
+  "physics_law": "Reflection",
+  "edit_operation": "add",
+  "instruction": "On the glass‑calm mountain lake, place a small empty wooden rowboat floating exactly at the center of the frame on the water. Align the boat’s long axis with the lake’s perspective toward the distant mountains (bow pointing into the valley). The water is mirror-flat, so render a sharp inverted reflection of the boat directly beneath it on the lake surface, matching position, scale, and orientation. Make the reflection slightly darker and less saturated than the boat and with edges softened to the same degree as the mountains’ reflections. Add a thin dark contact band at the waterline and only minimal micro‑ripples under the hull—no wake or disturbance to the broad reflections. Use the scene’s soft, overcast lighting: diffuse shading with subtle sky highlights on upper edges and no strong cast shadows. Keep all other elements (shoreline rocks, trees, mountains and their reflections) unchanged; the boat and its reflection should sit cleanly over the existing mirrored landscape in correct perspective.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Add a boat in the center of the image.",
+    "intermediate": "Add a small boat floating on the lake at the image center. Because the water acts as a mirror, include the boat’s mirror image on the water according to geometric optics (correct position, orientation, and scale), and keep lighting and perspective consistent with the scene while preserving the calm, undisturbed surface.",
+    "explicit": "On the glass‑calm mountain lake, place a small empty wooden rowboat floating exactly at the center of the frame on the water. Align the boat’s long axis with the lake’s perspective toward the distant mountains (bow pointing into the valley). The water is mirror-flat, so render a sharp inverted reflection of the boat directly beneath it on the lake surface, matching position, scale, and orientation. Make the reflection slightly darker and less saturated than the boat and with edges softened to the same degree as the mountains’ reflections. Add a thin dark contact band at the waterline and only minimal micro‑ripples under the hull—no wake or disturbance to the broad reflections. Use the scene’s soft, overcast lighting: diffuse shading with subtle sky highlights on upper edges and no strong cast shadows. Keep all other elements (shoreline rocks, trees, mountains and their reflections) unchanged; the boat and its reflection should sit cleanly over the existing mirrored landscape in correct perspective."
+  },
+  "image_path": "imgs/Optics/Reflection/add/jonathan-letniak-LJJxRJm5-j4-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0387_reflection\\input.png",
+  "input_image_size": {
+    "width": 1024,
+    "height": 576
+  },
+  "edit_area": [
+    {
+      "height": 133.80976863753213,
+      "id": "mUvxfYXB",
+      "order": 1,
+      "width": 384.58611825192804,
+      "x": 295.8457583547558,
+      "y": 360.2570694087404
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 133.80976863753213,
+        "width": 384.58611825192804,
+        "x": 295.8457583547558,
+        "y": 360.2570694087404
+      },
+      "question": "Is the boat's long axis aligned with the lake's perspective toward the distant mountains?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 133.80976863753213,
+        "width": 384.58611825192804,
+        "x": 295.8457583547558,
+        "y": 360.2570694087404
+      },
+      "question": "Is the boat's reflection the same scale as the boat?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 133.80976863753213,
+        "width": 384.58611825192804,
+        "x": 295.8457583547558,
+        "y": 360.2570694087404
+      },
+      "question": "Are micro-ripples present beneath the boat's hull?"
+    }
+  ]
+}

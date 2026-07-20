@@ -1,0 +1,95 @@
+{
+  "case_id": "picabench_0561_light_propagation",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 561,
+  "physics_category": "Optics",
+  "physics_law": "Light_Propagation",
+  "edit_operation": "remove",
+  "instruction": "Remove the tortoiseshell sunglasses resting on the lower-middle of the white-and-yellow striped beach towel. Delete their entire hard-edged shadow that falls to the right on the towel, along with any dark contact shadow where the rims and right temple touched the fabric. Fill the uncovered area with uninterrupted towel stripes that match the surrounding perspective, stripe widths, and terry-cloth texture, including any small grains of sand and existing wrinkles. Illuminate that area with the same strong sunlight coming from the upper left so the brightness and color match adjacent sunlit towel, leaving no outline, tint, or imprint of the glasses. Do not add new objects and keep everything else—the flip-flops, sand, towel edges, and their lighting/shadows—unchanged.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Remove the sunglasses.",
+    "intermediate": "Remove the sunglasses and update the scene to respect light propagation: eliminate the object’s cast and contact shadows and any associated reflections/occlusion, keeping the single directional sunlight and the rest of the scene (flip-flops, sand, towel) consistent.",
+    "explicit": "Remove the tortoiseshell sunglasses resting on the lower-middle of the white-and-yellow striped beach towel. Delete their entire hard-edged shadow that falls to the right on the towel, along with any dark contact shadow where the rims and right temple touched the fabric. Fill the uncovered area with uninterrupted towel stripes that match the surrounding perspective, stripe widths, and terry-cloth texture, including any small grains of sand and existing wrinkles. Illuminate that area with the same strong sunlight coming from the upper left so the brightness and color match adjacent sunlit towel, leaving no outline, tint, or imprint of the glasses. Do not add new objects and keep everything else—the flip-flops, sand, towel edges, and their lighting/shadows—unchanged."
+  },
+  "image_path": "imgs/Optics/Light_Propagation/remove/pair_of_sunglasses_on_bright_beach_sand_under_midday_sun_crisp_outline_shadow_9_unsplash_ueZh9QhuBNM.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0561_light_propagation\\input.png",
+  "input_image_size": {
+    "width": 1024,
+    "height": 683
+  },
+  "edit_area": [
+    {
+      "height": 384.68894601542416,
+      "id": "ndZ5XVjE",
+      "order": 1,
+      "width": 727.4704370179949,
+      "x": 20.930591259640117,
+      "y": 249.2956298200514
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "No",
+      "box": {
+        "height": 375.80309081437747,
+        "width": 793.9694391387393,
+        "x": 62.299025439796,
+        "y": 277.53820019136185
+      },
+      "question": "Is a sunglasses-shaped shadow present?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 342.0016108000306,
+        "width": 674.7181099946306,
+        "x": 0.07747719815198251,
+        "y": 245.89593382974152
+      },
+      "question": "Is there a pair of sunglasses on the towel?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 384.68894601542416,
+        "width": 727.4704370179949,
+        "x": 20.930591259640117,
+        "y": 249.2956298200514
+      },
+      "question": "Do the towel stripes continue uninterrupted into adjacent stripes?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 384.68894601542416,
+        "width": 727.4704370179949,
+        "x": 20.930591259640117,
+        "y": 249.2956298200514
+      },
+      "question": "Does the towel area exhibit the same terry-cloth texture as adjacent towel regions?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 384.68894601542416,
+        "width": 727.4704370179949,
+        "x": 20.930591259640117,
+        "y": 249.2956298200514
+      },
+      "question": "Is the brightness of the towel area equal to the brightness of the adjacent sunlit towel?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 384.68894601542416,
+        "width": 727.4704370179949,
+        "x": 20.930591259640117,
+        "y": 249.2956298200514
+      },
+      "question": "Do shadows within the annotated region point away from the upper-left, consistent with a single sunlight source?"
+    }
+  ]
+}

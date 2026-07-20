@@ -1,0 +1,85 @@
+{
+  "case_id": "picabench_0294_causality",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 294,
+  "physics_category": "Mechanics",
+  "physics_law": "Causality",
+  "edit_operation": "remove",
+  "instruction": "Eliminate the side kickstand and its metal foot entirely from the central white motorcycle—remove the hinged arm, footpad, and any shadow or reflection they cast. Heal the asphalt and the painted center line where the foot contacted the ground, and tidy the lower-left mounting area so the frame/engine edge looks continuous. With the support gone, place the motorcycle in its final, gravity-settled state: the bike has toppled and now rests fully on its left side on the road surface. The lower engine casing is in firm contact with the asphalt, and the wheels are angled with the right side raised off the ground. Adjust shadows and highlights to match the low backlighting from the sun, creating a broad contact shadow along the left side of the fallen bike. No kickstand or kickstand foot remains visible anywhere.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Remove the motorcycle's kickstand.",
+    "intermediate": "Remove the motorcycle’s side kickstand and update the scene to reflect the loss of this support under gravity, recomputing the bike’s resting pose, ground contacts, and lighting/shadows so it is no longer propped up by any stand.",
+    "explicit": "Eliminate the side kickstand and its metal foot entirely from the central white motorcycle—remove the hinged arm, footpad, and any shadow or reflection they cast. Heal the asphalt and the painted center line where the foot contacted the ground, and tidy the lower-left mounting area so the frame/engine edge looks continuous. With the support gone, place the motorcycle in its final, gravity-settled state: the bike has toppled and now rests fully on its left side on the road surface. The lower engine casing is in firm contact with the asphalt, and the wheels are angled with the right side raised off the ground. Adjust shadows and highlights to match the low backlighting from the sun, creating a broad contact shadow along the left side of the fallen bike. No kickstand or kickstand foot remains visible anywhere."
+  },
+  "image_path": "imgs/Mechanics/Causality/fabio-spinelli-cPpmFa1OiGU-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0294_causality\\input.png",
+  "input_image_size": {
+    "width": 819,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 380.9151670951157,
+      "id": "ZVT34opr",
+      "order": 1,
+      "width": 523.0025706940874,
+      "x": 151.02185089974282,
+      "y": 343.12596401028276
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "No",
+      "box": {
+        "height": 65.89116651602218,
+        "width": 71.30054815641107,
+        "x": 344.79927972829154,
+        "y": 645.4808916672794
+      },
+      "question": "Is a side kickstand attached to the white motorcycle?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 380.9151670951157,
+        "width": 523.0025706940874,
+        "x": 151.02185089974282,
+        "y": 343.12596401028276
+      },
+      "question": "Is the motorcycle lying on the road surface?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 380.9151670951157,
+        "width": 523.0025706940874,
+        "x": 151.02185089974282,
+        "y": 343.12596401028276
+      },
+      "question": "Is there a continuous contact shadow along the motorcycle's left-side contact area?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 380.9151670951157,
+        "width": 523.0025706940874,
+        "x": 151.02185089974282,
+        "y": 343.12596401028276
+      },
+      "question": "Is the painted center line continuous at the kickstand contact area?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 380.9151670951157,
+        "width": 523.0025706940874,
+        "x": 151.02185089974282,
+        "y": 343.12596401028276
+      },
+      "question": "Is the lower-left frame-to-engine edge at the kickstand mount a continuous unbroken surface?"
+    }
+  ]
+}

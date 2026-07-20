@@ -1,0 +1,65 @@
+{
+  "case_id": "picabench_0064_local",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 64,
+  "physics_category": "State",
+  "physics_law": "Local",
+  "edit_operation": "others",
+  "instruction": "Replace the clear water only in the immediate vicinity of the beige hiking shoe with settled, opaque brown mud with muddy splash. Remove all frozen-in-time transparent splashes and droplets; instead show a stable muddy patch that has leveled out around the shoe. The shoe’s outsole and lower side are partially embedded and coated with a thin layer of wet mud; a few small specks cling to the laces and the rolled-up pant cuff. Rocks within this localized patch are smeared and partially covered by brown sludge, and the bed beneath the mud is no longer visible. Outside this roughly foot-width radius, keep the stream unchanged with clear water and visible stones. Use the same lighting and camera angle; replace water glare/refraction with a damp, low-gloss sheen on the mud. Add a natural transition edge where the mud meets the surrounding clear water, without any airborne droplets or splash arcs, depicting the final, stable state after the change.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Change the water surrounding the foot to mud.",
+    "intermediate": "Convert only the liquid in direct contact with and immediately surrounding the hiking shoe into mud, respecting local physics: higher viscosity than water, opaque brown coloration due to suspended sediment, adhesion/wetting on the shoe and nearby rocks, gravity-driven settling and displacement under the shoe’s weight, and lighting interactions appropriate for muddy slurry. Keep the rest of the stream and environment unchanged.",
+    "explicit": "Replace the clear water only in the immediate vicinity of the beige hiking shoe with settled, opaque brown mud with muddy splash. Remove all frozen-in-time transparent splashes and droplets; instead show a stable muddy patch that has leveled out around the shoe. The shoe’s outsole and lower side are partially embedded and coated with a thin layer of wet mud; a few small specks cling to the laces and the rolled-up pant cuff. Rocks within this localized patch are smeared and partially covered by brown sludge, and the bed beneath the mud is no longer visible. Outside this roughly foot-width radius, keep the stream unchanged with clear water and visible stones. Use the same lighting and camera angle; replace water glare/refraction with a damp, low-gloss sheen on the mud. Add a natural transition edge where the mud meets the surrounding clear water, without any airborne droplets or splash arcs, depicting the final, stable state after the change."
+  },
+  "image_path": "imgs/State/Local/SS23.jpeg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0064_local\\input.png",
+  "input_image_size": {
+    "width": 819,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 638.7027027027027,
+      "id": "peqO0z52",
+      "order": 1,
+      "width": 811.4324324324325,
+      "x": 0.0,
+      "y": 142.2702702702703
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "No",
+      "box": {
+        "height": 507.58677685950414,
+        "width": 819.0000000000001,
+        "x": 0.0,
+        "y": 251.43047536634543
+      },
+      "question": "Are the splashes transparent?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 330.01789709172243,
+        "width": 694.3076062639819,
+        "x": 107.9988814317675,
+        "y": 607.4003975546062
+      },
+      "question": "Is there a contiguous patch of mud directly surrounding the shoe?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 324.3294345264267,
+        "width": 815.9409144838696,
+        "x": 1.261982235511388,
+        "y": 695.1909526261085
+      },
+      "question": "Do rocks in the region have mud on their surfaces?"
+    }
+  ]
+}

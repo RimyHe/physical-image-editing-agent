@@ -1,0 +1,105 @@
+{
+  "case_id": "picabench_0032_light_propagation",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 32,
+  "physics_category": "Optics",
+  "physics_law": "Light_Propagation",
+  "edit_operation": "remove",
+  "instruction": "Remove the entire potted plant sitting on the tabletop, including all leaves, stems, soil, and the ceramic pot. Eliminate every trace of its lighting interaction: delete the circular contact shadow beneath the pot and the long, sharp leaf silhouettes cast to the right on both the wall and the tabletop. Reconstruct the occluded wall with clean, uninterrupted horizontal bands of warm sunlight and shadow from the window blinds, matching their spacing, angle, edge sharpness, and brightness to the surrounding pattern. Restore the tabletop where the pot stood with the same smooth, light-colored surface and lighting gradient, continuing any blind stripes across it and preserving the cabinet edges and the soft highlight on the front face. The final image should show an empty tabletop under the same single directional sunlight, with no residual color bleed or shadow remnants from the removed plant and pot.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Remove the plant and the pot.",
+    "intermediate": "Remove the plant and pot and account for light propagation: delete their cast and contact shadows and any reflected color, and restore the surfaces they occluded so the single, sharply directional sunlight from window blinds remains consistent. Leave the nearby tabletop space empty.",
+    "explicit": "Remove the entire potted plant sitting on the tabletop, including all leaves, stems, soil, and the ceramic pot. Eliminate every trace of its lighting interaction: delete the circular contact shadow beneath the pot and the long, sharp leaf silhouettes cast to the right on both the wall and the tabletop. Reconstruct the occluded wall with clean, uninterrupted horizontal bands of warm sunlight and shadow from the window blinds, matching their spacing, angle, edge sharpness, and brightness to the surrounding pattern. Restore the tabletop where the pot stood with the same smooth, light-colored surface and lighting gradient, continuing any blind stripes across it and preserving the cabinet edges and the soft highlight on the front face. The final image should show an empty tabletop under the same single directional sunlight, with no residual color bleed or shadow remnants from the removed plant and pot."
+  },
+  "image_path": "imgs/Optics/Light_Propagation/remove/33.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0032_light_propagation\\input.png",
+  "input_image_size": {
+    "width": 768,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 578.6537966537967,
+      "id": "GrsL9pAh",
+      "order": 1,
+      "width": 536.2393822393823,
+      "x": 206.01093951093952,
+      "y": 284.7824967824968
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "No",
+      "box": {
+        "height": 730.7578117835734,
+        "width": 539.6338529115573,
+        "x": 156.22105496387007,
+        "y": 21.873472372518993
+      },
+      "question": "Are the sunlight stripes horizontal?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 508.96551724137936,
+        "width": 555.6206896551724,
+        "x": 188.8965517241378,
+        "y": 243.17241379310346
+      },
+      "question": "Is there a shadow of a plant on the wall?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 138.91625615763547,
+        "width": 297.2807881773399,
+        "x": 254.80788177339895,
+        "y": 754.3152709359606
+      },
+      "question": "Is there a circular contact shadow from a round pot?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 577.365790746413,
+        "width": 619.4180235369982,
+        "x": 143.28766709894842,
+        "y": 235.17494236461152
+      },
+      "question": "Is a plant present?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 197.26108374384236,
+        "width": 222.26600985221677,
+        "x": 272.86699507389153,
+        "y": 607.0640394088671
+      },
+      "question": "Is a pot present?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 578.6537966537967,
+        "width": 536.2393822393823,
+        "x": 206.01093951093952,
+        "y": 284.7824967824968
+      },
+      "question": "Are the bands of sunlight from the window blinds continuous across the tabletop?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 578.6537966537967,
+        "width": 536.2393822393823,
+        "x": 206.01093951093952,
+        "y": 284.7824967824968
+      },
+      "question": "Does the tabletop show a green color cast?"
+    }
+  ]
+}

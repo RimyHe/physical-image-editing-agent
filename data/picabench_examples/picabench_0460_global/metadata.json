@@ -1,0 +1,65 @@
+{
+  "case_id": "picabench_0460_global",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 460,
+  "physics_category": "State",
+  "physics_law": "Global",
+  "edit_operation": "time",
+  "instruction": "Transform this nighttime street scene into a clear, mid‑morning day. Set a single sunlight source high in the upper-left, producing short, crisp shadows falling down and to the right across all geometry. Replace the dark, clouded sky with a bright light‑blue daytime sky; keep any subtle cloud texture very light. Turn the streetlamp fully off: remove the orange glow, filament core, and bloom; the glass lens should appear clear with neutral reflections of the blue sky and surrounding building, and the metal housing a matte gray. Remove all tungsten spill from nearby surfaces. Illuminate the brick facade and the awning with neutral daylight (cooler than the former tungsten), revealing brick detail and mortar lines; the awning throws a sharp shadow diagonally down-right on the wall. The lamp head casts a compact shadow on its pole and onto the awning below, aligned with the same direction. Any window panes read as reflective daylight glass, not glowing; interior lights are not visible. Adjust global exposure to daylight brightness with natural contrast and skylight fill in shadows; maintain original objects, materials, and composition, only changing lighting, color temperature, and shadows to the stable daytime state.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Change the scene from night to day.",
+    "intermediate": "Convert the entire scene from night to day with a globally consistent environment. Use a single sun direction for direct illumination, adjust overall exposure and white balance to daylight, brighten the sky to a daytime blue, and ensure all objects (building, streetlamp, cables, awning, windows) respond to daylight with appropriate shadows, reflections, and ambient skylight. Disable artificial lighting such as the streetlamp glow and remove any tungsten spill, keeping materials and geometry unchanged.",
+    "explicit": "Transform this nighttime street scene into a clear, mid‑morning day. Set a single sunlight source high in the upper-left, producing short, crisp shadows falling down and to the right across all geometry. Replace the dark, clouded sky with a bright light‑blue daytime sky; keep any subtle cloud texture very light. Turn the streetlamp fully off: remove the orange glow, filament core, and bloom; the glass lens should appear clear with neutral reflections of the blue sky and surrounding building, and the metal housing a matte gray. Remove all tungsten spill from nearby surfaces. Illuminate the brick facade and the awning with neutral daylight (cooler than the former tungsten), revealing brick detail and mortar lines; the awning throws a sharp shadow diagonally down-right on the wall. The lamp head casts a compact shadow on its pole and onto the awning below, aligned with the same direction. Any window panes read as reflective daylight glass, not glowing; interior lights are not visible. Adjust global exposure to daylight brightness with natural contrast and skylight fill in shadows; maintain original objects, materials, and composition, only changing lighting, color temperature, and shadows to the stable daytime state."
+  },
+  "image_path": "imgs/State/Global/levi-ventura-dbq7_E50Cm4-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0460_global\\input.png",
+  "input_image_size": {
+    "width": 819,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 1026.3547557840616,
+      "id": "XB3gWvHn",
+      "order": 1,
+      "width": 819.0,
+      "x": 0.0,
+      "y": 0.0
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 999.7759472817133,
+        "width": 728.4612850082373,
+        "x": 9.961285008237278,
+        "y": 1.85831960461285
+      },
+      "question": "Is the brick facade on the left side receiving direct sunlight?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 955.176276771005,
+        "width": 696.8698517298187,
+        "x": 115.88550247116973,
+        "y": 13.00823723228995
+      },
+      "question": "Are the clouds white?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 1026.3547557840616,
+        "width": 819.0,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "question": "Does the lamp head's shadow fall down and to the right?"
+    }
+  ]
+}

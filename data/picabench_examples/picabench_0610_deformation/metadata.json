@@ -1,0 +1,85 @@
+{
+  "case_id": "picabench_0610_deformation",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 610,
+  "physics_category": "Mechanics",
+  "physics_law": "Deformation",
+  "edit_operation": "move",
+  "instruction": "On the yellow wooden planks, reposition the blue rope so it is a single straight length lying flat on the deck. Remove the loop and the knot and stretch the same rope length into a straight segment that runs diagonally from the upper-left area toward the lower-right area, staying flush against the wood across the plank gaps with no floating. Because the rope is soft, let the braided fibers rebound where the knot and bends were so the thickness becomes uniform; slight compression only where the rope touches the wood. The wooden planks are rigid, so they show no dents; restore continuous yellow paint texture where the loop and knot previously covered it. Update lighting and shadows to follow the new straight geometry: a thin, continuous shadow on the down‑sun side of the rope and highlights aligned along the rope’s top ridge. Keep both rope ends visible on the deck, untied, and do not add supports or anchors.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Make the rope straight.",
+    "intermediate": "Arrange the blue rope into a straight configuration on the yellow wooden planks while respecting gravity, contact, and material elasticity. Keep the rope lying in full contact with the deck (no floating), preserve its thickness limits, and account for recovery of the soft rope where bends are removed. Update shading, highlights, and cast shadows to match the new rope geometry and existing light direction. Do not introduce new anchors or objects.",
+    "explicit": "On the yellow wooden planks, reposition the blue rope so it is a single straight length lying flat on the deck. Remove the loop and the knot and stretch the same rope length into a straight segment that runs diagonally from the upper-left area toward the lower-right area, staying flush against the wood across the plank gaps with no floating. Because the rope is soft, let the braided fibers rebound where the knot and bends were so the thickness becomes uniform; slight compression only where the rope touches the wood. The wooden planks are rigid, so they show no dents; restore continuous yellow paint texture where the loop and knot previously covered it. Update lighting and shadows to follow the new straight geometry: a thin, continuous shadow on the down‑sun side of the rope and highlights aligned along the rope’s top ridge. Keep both rope ends visible on the deck, untied, and do not add supports or anchors."
+  },
+  "image_path": "imgs/Mechanics/Deformation/pexels-davidmceachan-91416.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0610_deformation\\input.png",
+  "input_image_size": {
+    "width": 1024,
+    "height": 683
+  },
+  "edit_area": [
+    {
+      "height": 568.8303341902314,
+      "id": "B9aikxYj",
+      "order": 1,
+      "width": 1024.0,
+      "x": 0.0,
+      "y": 50.443444730077125
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 568.8303341902314,
+        "width": 1024.0,
+        "x": 0.0,
+        "y": 50.443444730077125
+      },
+      "question": "Are both ends of the blue rope visible?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 568.8303341902314,
+        "width": 1024.0,
+        "x": 0.0,
+        "y": 50.443444730077125
+      },
+      "question": "Does a continuous shadow contact the rope along the side away from the sun for its entire length?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 568.8303341902314,
+        "width": 1024.0,
+        "x": 0.0,
+        "y": 50.443444730077125
+      },
+      "question": "Is the wooden plank surface undented beneath the rope?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 568.8303341902314,
+        "width": 1024.0,
+        "x": 0.0,
+        "y": 50.443444730077125
+      },
+      "question": "Is the yellow paint surface uninterrupted across the wooden planks?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 601.3171875,
+        "width": 898.7367187499999,
+        "x": 0.0,
+        "y": 35.6609375
+      },
+      "question": "Is the blue rope touching the wooden planks?"
+    }
+  ]
+}

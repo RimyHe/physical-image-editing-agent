@@ -1,0 +1,75 @@
+{
+  "case_id": "picabench_0007_reflection",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 7,
+  "physics_category": "Optics",
+  "physics_law": "Reflection",
+  "edit_operation": "remove",
+  "instruction": "Remove the white ceramic bowl positioned near the front-center of the glossy black marble side table between the two white chairs. Eliminate every trace of the bowl and simultaneously remove its mirror image from all reflective surfaces, especially the polished tabletop and any nearby glass. Remove its contact shadow and any glare it introduced. Reconstruct the cleared area with uninterrupted black marble grain, correct perspective, and continuous specular highlights; extend the reflections of the chairs/window across the area with no breaks or halos. Keep the small succulent planter on the tabletop unchanged in position; restore the portions of the pot and leaves that were occluded by the bowl and complete their reflection on the tabletop. Preserve table geometry and lighting so the scene shows the stable post-edit result: the bowl is gone and the tabletop reads as clean, coherent, and reflective.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Remove the white bowl from the table.",
+    "intermediate": "Remove the white bowl from the glossy black marble side table between the two white chairs, accounting for optics and lighting. Ensure the object and any of its reflections or shadows on reflective surfaces are handled consistently with reflection physics, without leaving artifacts or mismatches.",
+    "explicit": "Remove the white ceramic bowl positioned near the front-center of the glossy black marble side table between the two white chairs. Eliminate every trace of the bowl and simultaneously remove its mirror image from all reflective surfaces, especially the polished tabletop and any nearby glass. Remove its contact shadow and any glare it introduced. Reconstruct the cleared area with uninterrupted black marble grain, correct perspective, and continuous specular highlights; extend the reflections of the chairs/window across the area with no breaks or halos. Keep the small succulent planter on the tabletop unchanged in position; restore the portions of the pot and leaves that were occluded by the bowl and complete their reflection on the tabletop. Preserve table geometry and lighting so the scene shows the stable post-edit result: the bowl is gone and the tabletop reads as clean, coherent, and reflective."
+  },
+  "image_path": "imgs/Optics/Reflection/remove/144.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0007_reflection\\input.png",
+  "input_image_size": {
+    "width": 683,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 185.21235521235522,
+      "id": "9sItMyAu",
+      "order": 1,
+      "width": 131.003861003861,
+      "x": 248.89382239382235,
+      "y": 237.91505791505793
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "No",
+      "box": {
+        "height": 205.0,
+        "width": 175.31034482758622,
+        "x": 228.39655172413788,
+        "y": 220.55172413793105
+      },
+      "question": "Is the reflection of the white bowl present on the tabletop?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 185.21235521235522,
+        "width": 131.003861003861,
+        "x": 248.89382239382235,
+        "y": 237.91505791505793
+      },
+      "question": "Are the specular highlights on the glossy black marble tabletop continuous across the surface?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 185.21235521235522,
+        "width": 131.003861003861,
+        "x": 248.89382239382235,
+        "y": 237.91505791505793
+      },
+      "question": "Are the marble veins continuous across the tabletop?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 185.21235521235522,
+        "width": 131.003861003861,
+        "x": 248.89382239382235,
+        "y": 237.91505791505793
+      },
+      "question": "Does the small succulent planter form exactly one contiguous object with a continuous shape?"
+    }
+  ]
+}

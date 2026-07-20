@@ -1,0 +1,75 @@
+{
+  "case_id": "picabench_0226_deformation",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 226,
+  "physics_category": "Mechanics",
+  "physics_law": "Deformation",
+  "edit_operation": "add",
+  "instruction": "Add a neatly folded towel to the very top of the existing stack on the pedestal. Place it centered on the light-gray rolled towel that is currently on top. The new towel settles under gravity and conforms to the curved roll: its folded rectangle lies across the crest, bending with a radius matching a typical towel thickness. Its weight slightly compresses and flattens the top coils of the rolled towel beneath, which in turn presses a bit more into the green towel below; no gaps or floating. The edges of the added towel droop gently over both sides of the roll while the front fold stays straight and parallel to the front of the stack, producing a stable, at-rest arrangement. Update lighting and shadows to match the scene’s warm light from the upper left: soft contact shadows along the touch line where the new towel meets the roll, deeper occlusion in the creases, and an extended cast shadow to the right/rear on the towels and pedestal. Keep materials, texture scale, and color family consistent with the existing towels and do not change anything else in the scene.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Add a folded towel on top of the stack.",
+    "intermediate": "Add a folded towel on top of the current towel stack, positioned above the light-gray rolled towel. Ensure the result respects gravity, soft-body contact and deformation, thickness-dependent bending, and scene-consistent lighting and shadows so the towel rests stably without floating.",
+    "explicit": "Add a neatly folded towel to the very top of the existing stack on the pedestal. Place it centered on the light-gray rolled towel that is currently on top. The new towel settles under gravity and conforms to the curved roll: its folded rectangle lies across the crest, bending with a radius matching a typical towel thickness. Its weight slightly compresses and flattens the top coils of the rolled towel beneath, which in turn presses a bit more into the green towel below; no gaps or floating. The edges of the added towel droop gently over both sides of the roll while the front fold stays straight and parallel to the front of the stack, producing a stable, at-rest arrangement. Update lighting and shadows to match the scene’s warm light from the upper left: soft contact shadows along the touch line where the new towel meets the roll, deeper occlusion in the creases, and an extended cast shadow to the right/rear on the towels and pedestal. Keep materials, texture scale, and color family consistent with the existing towels and do not change anything else in the scene."
+  },
+  "image_path": "imgs/Mechanics/Deformation/cut-collective-8yIYQDR8Qr8-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0226_deformation\\input.png",
+  "input_image_size": {
+    "width": 768,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 429.2853470437018,
+      "id": "3bUc52E0",
+      "order": 1,
+      "width": 494.2827763496144,
+      "x": 128.54498714652954,
+      "y": 250.92030848329048
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 311.3652892561983,
+        "width": 594.7636363636364,
+        "x": 95.00826446280996,
+        "y": 173.39504132231403
+      },
+      "question": "Is there a folded towel on top of the towel stack?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 674.9355371900826,
+        "width": 639.5107438016529,
+        "x": 83.82148760330584,
+        "y": 214.41322314049586
+      },
+      "question": "Are there exactly four towel instances in the stack?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 429.2853470437018,
+        "width": 494.2827763496144,
+        "x": 128.54498714652954,
+        "y": 250.92030848329048
+      },
+      "question": "Is the folded towel centered on the light-gray rolled towel below it?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 516.4561983471074,
+        "width": 650.697520661157,
+        "x": 67.04132231404964,
+        "y": 186.44628099173553
+      },
+      "question": "Does the top folded towel directly contact the rolled towel beneath it?"
+    }
+  ]
+}

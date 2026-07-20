@@ -1,0 +1,113 @@
+{
+  "case_id": "picabench_0799_reflection",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 799,
+  "physics_category": "Optics",
+  "physics_law": "Reflection",
+  "edit_operation": "move",
+  "instruction": "Translate the yellow wooden rowboat laterally to the open water on the right half of the lake, keeping its size, camera distance, and heading the same. Place it roughly one third in from the right edge and at about the same vertical level as before so it does not overlap the foreground shrubs. The boat remains afloat and stable with the hull riding at the same waterline; lighting and shading on the hull stay consistent with the scene. Recompute its reflection in the calm, mirrorlike water: show the boat’s vertically inverted silhouette directly beneath it, horizontally shifted the same amount, slightly darker and softly blurred with a green water tint, and aligned so the bow, stern, and oars mirror correctly across the flat water plane. Around the hull show only settled, faint elliptical contact ripples; no wakes, splashes, or motion streaks. Remove the boat and its old reflection from the previous position and restore undisturbed, clear reflections of the distant treeline there, matching the surrounding water texture, color, and brightness. Keep all other scene elements unchanged.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Move the boat to right in the image.",
+    "intermediate": "Move the yellow wooden rowboat to the right side of the lake and update all physics-driven cues: adjust its mirror image on the calm water according to the law of reflection, keep the boat floating with correct buoyancy, and revise any local ripples, shading, and occlusions to match the new position and lighting.",
+    "explicit": "Translate the yellow wooden rowboat laterally to the open water on the right half of the lake, keeping its size, camera distance, and heading the same. Place it roughly one third in from the right edge and at about the same vertical level as before so it does not overlap the foreground shrubs. The boat remains afloat and stable with the hull riding at the same waterline; lighting and shading on the hull stay consistent with the scene. Recompute its reflection in the calm, mirrorlike water: show the boat’s vertically inverted silhouette directly beneath it, horizontally shifted the same amount, slightly darker and softly blurred with a green water tint, and aligned so the bow, stern, and oars mirror correctly across the flat water plane. Around the hull show only settled, faint elliptical contact ripples; no wakes, splashes, or motion streaks. Remove the boat and its old reflection from the previous position and restore undisturbed, clear reflections of the distant treeline there, matching the surrounding water texture, color, and brightness. Keep all other scene elements unchanged."
+  },
+  "image_path": "imgs/Optics/Reflection/move/sergio-zhukov-oy3FMSfe5Mw-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0799_reflection\\input.png",
+  "input_image_size": {
+    "width": 683,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 680.5984251968504,
+      "id": "Y46i0Wm1",
+      "order": 1,
+      "width": 299.40157480314963,
+      "x": 381.6259842519685,
+      "y": 345.7007874015748
+    },
+    {
+      "height": 141.65454545454537,
+      "id": "PhkcTqjc",
+      "order": 2,
+      "width": 203.12727272727273,
+      "x": 177.79545454545453,
+      "y": 654.8320988741789
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 680.5984251968504,
+        "width": 299.40157480314963,
+        "x": 381.6259842519685,
+        "y": 345.7007874015748
+      },
+      "question": "Are elliptical contact ripples present around the hull?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 711.1504424778763,
+        "width": 563.5530973451328,
+        "x": 119.4469026548672,
+        "y": 298.97345132743357
+      },
+      "question": "Is the yellow wooden rowboat floating on the water?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 597.9469026548674,
+        "width": 361.8185840707965,
+        "x": 321.1814159292035,
+        "y": 428.14159292035396
+      },
+      "question": "Is the reflection of the yellow wooden rowboat vertically inverted relative to the boat?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 648.7433628318586,
+        "width": 518.1238938053098,
+        "x": 160.0840707964601,
+        "y": 380.2477876106194
+      },
+      "question": "Is a yellow wooden rowboat present?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 550.0530973451329,
+        "width": 393.30973451327435,
+        "x": 284.89823008849555,
+        "y": 487.646017699115
+      },
+      "question": "Does the reflection of the yellow wooden rowboat touch the boat at the waterline?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 654.5537294563843,
+        "width": 409.95006321112515,
+        "x": 273.04993678887485,
+        "y": 386.4576485461441
+      },
+      "question": "Is there a reflection of the yellow wooden rowboat directly beneath the boat on the water?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 680.5984251968504,
+        "width": 299.40157480314963,
+        "x": 381.6259842519685,
+        "y": 345.7007874015748
+      },
+      "question": "Is the boat's reflection darker than the boat?"
+    }
+  ]
+}

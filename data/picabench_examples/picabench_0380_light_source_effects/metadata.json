@@ -1,0 +1,65 @@
+{
+  "case_id": "picabench_0380_light_source_effects",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 380,
+  "physics_category": "Optics",
+  "physics_law": "Light_Source_Effects",
+  "edit_operation": "add",
+  "instruction": "Switch on the tall cylindrical floor lamp positioned to the immediate right of the armchair. Treat it as a warm tungsten source (~2900 K) with a diffusing fabric shade that glows and emits more strongly from the open top and bottom. The final image should show the lampshade clearly illuminated with a soft brightness gradient and the lamp becoming the dominant light in this corner. Create a warm oval halo on the wall centered around and slightly above the shade, fading smoothly outward. Add a gentle warm band on the inner edge of the curtain next to the lamp. Brighten the right sides of the armchair and the ottoman with warm highlights and subtle specular streaks appropriate for leather and wood; their left sides remain comparatively darker and cooler. Recompute all shadows so they are consistent with the lamp’s position and height: they fall leftward and downward with soft penumbrae—broader, softer shadows from the chair and ottoman across the carpet and onto the wall; subtle leftward shadows or warm reflections for smaller elements like the picture frame and the lamp pole. Add a soft pool of warm light on the carpet around the lamp’s base. Keep geometry and camera unchanged; only lighting, color balance, and shadows are updated to a stable state with the lamp on.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Turn on the lamp in the room.",
+    "intermediate": "Turn on the tall cylindrical floor lamp to the right of the armchair and treat it as a warm tungsten emitter (about 2800–3000 K) with a diffusing fabric shade and open top and bottom. Update the scene lighting consistently with this new localized light source: apply inverse-square falloff, diffusion through the shade, occlusion-driven soft shadows from all objects, warmer color near the source with appropriate material reflections and secondary bounces on leather, wood, painted wall, curtain fabric, glass frame, and carpet. Keep camera and geometry fixed; only illumination and shadows change.",
+    "explicit": "Switch on the tall cylindrical floor lamp positioned to the immediate right of the armchair. Treat it as a warm tungsten source (~2900 K) with a diffusing fabric shade that glows and emits more strongly from the open top and bottom. The final image should show the lampshade clearly illuminated with a soft brightness gradient and the lamp becoming the dominant light in this corner. Create a warm oval halo on the wall centered around and slightly above the shade, fading smoothly outward. Add a gentle warm band on the inner edge of the curtain next to the lamp. Brighten the right sides of the armchair and the ottoman with warm highlights and subtle specular streaks appropriate for leather and wood; their left sides remain comparatively darker and cooler. Recompute all shadows so they are consistent with the lamp’s position and height: they fall leftward and downward with soft penumbrae—broader, softer shadows from the chair and ottoman across the carpet and onto the wall; subtle leftward shadows or warm reflections for smaller elements like the picture frame and the lamp pole. Add a soft pool of warm light on the carpet around the lamp’s base. Keep geometry and camera unchanged; only lighting, color balance, and shadows are updated to a stable state with the lamp on."
+  },
+  "image_path": "imgs/Optics/Light_Source_Effects/add/jiawei-zhao-HpnQZMeoe8I-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0380_light_source_effects\\input.png",
+  "input_image_size": {
+    "width": 683,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 774.5809768637532,
+      "id": "awTcrUhJ",
+      "order": 1,
+      "width": 461.0154241645243,
+      "x": 221.98457583547565,
+      "y": 78.66838046272494
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 319.2093802345059,
+        "width": 223.06197654941374,
+        "x": 387.6507537688442,
+        "y": 136.52931323283082
+      },
+      "question": "Is there a localized high-luminance oval region on the wall?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 774.5809768637532,
+        "width": 461.0154241645243,
+        "x": 221.98457583547565,
+        "y": 78.66838046272494
+      },
+      "question": "Do shadows cast by nearby furniture fall toward the lower-left?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 211.6180904522613,
+        "width": 141.70854271356782,
+        "x": 447.30904522613065,
+        "y": 185.16582914572862
+      },
+      "question": "Is the floor lamp emitting light?"
+    }
+  ]
+}

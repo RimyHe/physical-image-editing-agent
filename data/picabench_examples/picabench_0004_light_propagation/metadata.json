@@ -1,0 +1,75 @@
+{
+  "case_id": "picabench_0004_light_propagation",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 4,
+  "physics_category": "Optics",
+  "physics_law": "Light_Propagation",
+  "edit_operation": "remove",
+  "instruction": "Delete the entire right‑foreground marble statue of a child holding grapes—including head, torso, draped cloth, both bunches of grapes, hands, and any small protrusions. Remove all lighting effects it creates: erase its sharp, complete silhouette shadow on the flat wall to the left and any shadowing on the base/floor and tight contact shadow at the feet. Reconstruct the background where the statue and its shadow were with a clean, uniformly sunlit wall and baseboard that continue the existing smooth surface, warm color, and vertical panel seams, consistent with a single directional light coming from the right. Leave the surrounding area empty, keep the rest of the scene unchanged, and do not introduce new objects or lights.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Remove the statue of the child holding grapes.",
+    "intermediate": "Remove the statue and also remove any shadows and light interactions it produces, consistent with a scene lit by one strong directional light that casts sharp shadows onto a flat wall and floor. Maintain the lighting direction and leave the nearby space empty.",
+    "explicit": "Delete the entire right‑foreground marble statue of a child holding grapes—including head, torso, draped cloth, both bunches of grapes, hands, and any small protrusions. Remove all lighting effects it creates: erase its sharp, complete silhouette shadow on the flat wall to the left and any shadowing on the base/floor and tight contact shadow at the feet. Reconstruct the background where the statue and its shadow were with a clean, uniformly sunlit wall and baseboard that continue the existing smooth surface, warm color, and vertical panel seams, consistent with a single directional light coming from the right. Leave the surrounding area empty, keep the rest of the scene unchanged, and do not introduce new objects or lights."
+  },
+  "image_path": "imgs/Optics/Light_Propagation/remove/1000.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0004_light_propagation\\input.png",
+  "input_image_size": {
+    "width": 683,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 731.3873873873873,
+      "id": "XhfMiuX0",
+      "order": 1,
+      "width": 683.0,
+      "x": 0.0,
+      "y": 302.16216216216213
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "No",
+      "box": {
+        "height": 734.8669950738916,
+        "width": 391.50985221674864,
+        "x": 0.0,
+        "y": 287.5566502463054
+      },
+      "question": "Is there a shadow shaped like a child?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 731.3873873873873,
+        "width": 683.0,
+        "x": 0.0,
+        "y": 302.16216216216213
+      },
+      "question": "Is there a contact shadow at the baseboard?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 731.3873873873873,
+        "width": 683.0,
+        "x": 0.0,
+        "y": 302.16216216216213
+      },
+      "question": "Is the scene lit by a single directional light from the right?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 731.3873873873873,
+        "width": 683.0,
+        "x": 0.0,
+        "y": 302.16216216216213
+      },
+      "question": "Are the vertical panel seams on the wall continuous?"
+    }
+  ]
+}

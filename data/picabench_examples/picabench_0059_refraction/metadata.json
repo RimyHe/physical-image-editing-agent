@@ -1,0 +1,65 @@
+{
+  "case_id": "picabench_0059_refraction",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 59,
+  "physics_category": "Optics",
+  "physics_law": "Refraction",
+  "edit_operation": "remove",
+  "instruction": "Remove the tall clear drinking glass and the water from the center of the scene. Erase the rim, meniscus, base, internal reflections, highlights, and any cast shadow or caustic. Replace the area the glass covered with the undisturbed striped backdrop and tabletop: above the horizon/crease line, continue the evenly spaced black-and-white diagonal stripes that slant from upper left to lower right, matching their spacing, angle, contrast, and lighting; below that line on the tabletop, continue the stripes that slant from lower left to upper right with matching spacing and contrast. Eliminate all refractive distortions the glass created—the wavy/bent bands, magnification at the edges, and compressed stripes—so the stripes read as straight, continuous lines across both planes and the corner line is uninterrupted, as if no glass was ever present.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Remove the glass of water from the image.",
+    "intermediate": "Remove the glass of water while respecting optical physics: the glass and water refract and reflect the striped background, so remove any warped, magnified, or reflected views of the pattern, as well as highlights, rim artifacts, base effects, and any cast shadow. Reconstruct the occluded background and surface in a way consistent with the scene’s geometry and lighting.",
+    "explicit": "Remove the tall clear drinking glass and the water from the center of the scene. Erase the rim, meniscus, base, internal reflections, highlights, and any cast shadow or caustic. Replace the area the glass covered with the undisturbed striped backdrop and tabletop: above the horizon/crease line, continue the evenly spaced black-and-white diagonal stripes that slant from upper left to lower right, matching their spacing, angle, contrast, and lighting; below that line on the tabletop, continue the stripes that slant from lower left to upper right with matching spacing and contrast. Eliminate all refractive distortions the glass created—the wavy/bent bands, magnification at the edges, and compressed stripes—so the stripes read as straight, continuous lines across both planes and the corner line is uninterrupted, as if no glass was ever present."
+  },
+  "image_path": "imgs/Optics/Refraction/920f06276f59b60d5b20f1317968c505.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0059_refraction\\input.png",
+  "input_image_size": {
+    "width": 654,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 714.3783783783784,
+      "id": "F7MOA8dr",
+      "order": 1,
+      "width": 438.9189189189189,
+      "x": 97.70270270270272,
+      "y": 174.05405405405406
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 728.0939597315436,
+        "width": 434.0313199105145,
+        "x": 112.55257270693511,
+        "y": 172.08496131299592
+      },
+      "question": "Are the diagonal stripes continuous across the vertical band?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 714.3783783783784,
+        "width": 438.9189189189189,
+        "x": 97.70270270270272,
+        "y": 174.05405405405406
+      },
+      "question": "Is a cast shadow present?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 767.5172153570419,
+        "width": 470.1248425072869,
+        "x": 93.18088336763073,
+        "y": 144.05358344036463
+      },
+      "question": "Is a tall clear drinking glass present?"
+    }
+  ]
+}

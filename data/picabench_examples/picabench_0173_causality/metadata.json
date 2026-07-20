@@ -1,0 +1,85 @@
+{
+  "case_id": "picabench_0173_causality",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 173,
+  "physics_category": "Mechanics",
+  "physics_law": "Causality",
+  "edit_operation": "remove",
+  "instruction": "Erase the entire orange‑yellow flower and its green stem on the left, including all petals, the flower disk, and the vertical stem segment, and delete any flower‑shaped shadow it cast. Fill the vacated area with the same softly blurred background bokeh and lighting as the surroundings, leaving no cut stem stump or artifacts. Keep only the right‑hand orange‑yellow flower unchanged so there is exactly one flower visible in the foreground. Detach the pale butterfly from any support by placing it near the center‑left, hovering steadily in midair with wings open and legs tucked so it touches no flower or stem; remove the former contact shadow under its feet. The left foreground should show only smooth background blur—no flower, no green stem, and no flower‑shaped shadow.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Remove the plant on the left.",
+    "intermediate": "Remove the entire left plant (its orange‑yellow flower head, green stem, and any associated shadow). Because this plant currently supports a butterfly, account for the loss-of-support physics by updating the butterfly and lighting/occlusion accordingly, and keep the depth‑of‑field background continuous with no leftover stump or contact marks.",
+    "explicit": "Erase the entire orange‑yellow flower and its green stem on the left, including all petals, the flower disk, and the vertical stem segment, and delete any flower‑shaped shadow it cast. Fill the vacated area with the same softly blurred background bokeh and lighting as the surroundings, leaving no cut stem stump or artifacts. Keep only the right‑hand orange‑yellow flower unchanged so there is exactly one flower visible in the foreground. Detach the pale butterfly from any support by placing it near the center‑left, hovering steadily in midair with wings open and legs tucked so it touches no flower or stem; remove the former contact shadow under its feet. The left foreground should show only smooth background blur—no flower, no green stem, and no flower‑shaped shadow."
+  },
+  "image_path": "imgs/Mechanics/Causality/butterfly-9692535_1280.webp",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0173_causality\\input.png",
+  "input_image_size": {
+    "width": 1024,
+    "height": 607
+  },
+  "edit_area": [
+    {
+      "height": 573.6401028277635,
+      "id": "D66afl8G",
+      "order": 1,
+      "width": 501.44730077120823,
+      "x": 79.81876606683802,
+      "y": 33.16966580976864
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 364.93805309734506,
+        "width": 657.6156763590392,
+        "x": 366.3843236409608,
+        "y": 243.59165613147917
+      },
+      "question": "Is there exactly one contiguous orange-yellow flower visible?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 456.6219974715549,
+        "width": 483.5878634639696,
+        "x": 103.91656131479144,
+        "y": 6.292035398230139
+      },
+      "question": "Is the pale butterfly detached from plants?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 573.6401028277635,
+        "width": 501.44730077120823,
+        "x": 79.81876606683802,
+        "y": 33.16966580976864
+      },
+      "question": "Are the butterfly's legs tucked?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 573.6401028277635,
+        "width": 501.44730077120823,
+        "x": 79.81876606683802,
+        "y": 33.16966580976864
+      },
+      "question": "Is a contact shadow directly beneath the butterfly's feet present?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 573.6401028277635,
+        "width": 501.44730077120823,
+        "x": 79.81876606683802,
+        "y": 33.16966580976864
+      },
+      "question": "Is a plant visible in the left foreground?"
+    }
+  ]
+}

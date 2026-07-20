@@ -1,0 +1,85 @@
+{
+  "case_id": "picabench_0017_refraction",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 17,
+  "physics_category": "Optics",
+  "physics_law": "Refraction",
+  "edit_operation": "remove",
+  "instruction": "Empty the clear cylindrical drinking glass completely and leave it dry. Remove the liquid surface, meniscus, ripples, bubbles, caustic highlights, and any white speculars from water. Replace the refracted, offset underwater image of the yellow pencil with a single straight, continuous pencil seen through air and clear glass: the portion visible inside the cylinder aligns perfectly with the portion outside, with no lateral shift, bending, or magnification. Keep the pencil resting across the rim in the same position. Through the now-empty glass, show the black tabletop and glass base/walls with dry-glass reflections only—no waterline or distortions caused by water. Do not add new objects or supports; preserve the original lighting, camera angle, and materials.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Remove the water from the image.",
+    "intermediate": "Remove the liquid from the glass and recompute the scene as if only air and clear glass remain. Eliminate all refraction- and reflection-based effects produced by water, including the displaced/magnified view of objects seen through it (such as the pencil), surface boundaries like the waterline and meniscus, and water-caused highlights. Keep composition and lighting consistent with a dry, empty glass.",
+    "explicit": "Empty the clear cylindrical drinking glass completely and leave it dry. Remove the liquid surface, meniscus, ripples, bubbles, caustic highlights, and any white speculars from water. Replace the refracted, offset underwater image of the yellow pencil with a single straight, continuous pencil seen through air and clear glass: the portion visible inside the cylinder aligns perfectly with the portion outside, with no lateral shift, bending, or magnification. Keep the pencil resting across the rim in the same position. Through the now-empty glass, show the black tabletop and glass base/walls with dry-glass reflections only—no waterline or distortions caused by water. Do not add new objects or supports; preserve the original lighting, camera angle, and materials."
+  },
+  "image_path": "imgs/Optics/Refraction/1ccebf6bd87584db2bc4fedef65aaf50.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0017_refraction\\input.png",
+  "input_image_size": {
+    "width": 1024,
+    "height": 864
+  },
+  "edit_area": [
+    {
+      "height": 784.5559845559845,
+      "id": "07gPamHi",
+      "order": 1,
+      "width": 546.5740025740026,
+      "x": 23.613899613899598,
+      "y": 81.07078507078508
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 849.4993469743144,
+        "width": 583.7427700727658,
+        "x": 20.43028442315754,
+        "y": 17.76046452734623
+      },
+      "question": "Is there exactly one contiguous rear inner rim edge of the glass?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 225.0377588306943,
+        "width": 264.75030450669914,
+        "x": 179.85870889159554,
+        "y": 175.6979293544458
+      },
+      "question": "Is the pencil bent?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 445.31481657393294,
+        "width": 529.9584828308242,
+        "x": 45.473441343410734,
+        "y": 414.92341708306503
+      },
+      "question": "Are there wavy distortions on the glass surface?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 784.5559845559845,
+        "width": 546.5740025740026,
+        "x": 23.613899613899598,
+        "y": 81.07078507078508
+      },
+      "question": "Is the glass empty of liquid?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 784.5559845559845,
+        "width": 546.5740025740026,
+        "x": 23.613899613899598,
+        "y": 81.07078507078508
+      },
+      "question": "Is there a caustic light pattern on the tabletop near the glass?"
+    }
+  ]
+}

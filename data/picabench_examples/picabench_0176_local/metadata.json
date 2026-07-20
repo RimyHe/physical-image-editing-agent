@@ -1,0 +1,75 @@
+{
+  "case_id": "picabench_0176_local",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 176,
+  "physics_category": "State",
+  "physics_law": "Local",
+  "edit_operation": "others",
+  "instruction": "Apply a confined, steady left-to-right wind that affects only the candle flame on the cake. Show the final stable result: the white candle remains upright and centered; the flame stays lit but is pushed hard to the right, elongated and slightly flattened into a curved tear‑drop with a small blue base attached to the wick and a bright yellow/orange body whose axis leans roughly 70° toward the right. No motion blur and no global scene changes—the frosting, berries, sticks in the background, table, and lighting remain unchanged.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Create a strong wind.",
+    "intermediate": "Introduce a strong crosswind localized around the candle area, blowing from left to right. Ensure airflow interacts with susceptible elements (e.g., the candle flame) according to fluid flow and combustion behavior while keeping the rest of the scene unaffected and unblurred.",
+    "explicit": "Apply a confined, steady left-to-right wind that affects only the candle flame on the cake. Show the final stable result: the white candle remains upright and centered; the flame stays lit but is pushed hard to the right, elongated and slightly flattened into a curved tear‑drop with a small blue base attached to the wick and a bright yellow/orange body whose axis leans roughly 70° toward the right. No motion blur and no global scene changes—the frosting, berries, sticks in the background, table, and lighting remain unchanged."
+  },
+  "image_path": "imgs/State/Local/cake-8470012_1280.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0176_local\\input.png",
+  "input_image_size": {
+    "width": 1024,
+    "height": 682
+  },
+  "edit_area": [
+    {
+      "height": 445.94344473007715,
+      "id": "VAQOR3em",
+      "order": 1,
+      "width": 1024.0,
+      "x": 0.0,
+      "y": 170.44473007712082
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 377.597977243995,
+        "width": 555.4664981036663,
+        "x": 207.93426042983563,
+        "y": 81.48166877370411
+      },
+      "question": "Is the candle flame tilted to the right?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 445.94344473007715,
+        "width": 1024.0,
+        "x": 0.0,
+        "y": 170.44473007712082
+      },
+      "question": "Is motion blur present in the image?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 500.05534995977484,
+        "width": 627.6527525571776,
+        "x": 10.192161820480365,
+        "y": 140.10872313527176
+      },
+      "question": "Is the leftmost cocktail pick leaning?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 535.213515687852,
+        "width": 377.3089070221814,
+        "x": 258.41314791403283,
+        "y": 85.37508332375583
+      },
+      "question": "Is any berry not touching a surface?"
+    }
+  ]
+}

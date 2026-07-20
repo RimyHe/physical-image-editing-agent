@@ -10,6 +10,7 @@ import urllib.request
 from io import BytesIO
 from pathlib import Path
 from typing import Any
+from urllib.error import HTTPError
 
 from PIL import Image
 
@@ -65,15 +66,14 @@ def main() -> int:
     wanted_categories = {c.casefold() for c in args.categories or []}
 
     if args.row_indices:
-        selected = []
-        for row_index in args.row_indices:
-            rows = fetch_rows(row_index, 1, args.timeout, args.retries)
-            if not rows:
-                raise RuntimeError(f"PICABench row {row_index} was not returned.")
-            row = rows[0]["row"]
+        selected = fetch_row_indices(args.row_indices, args.batch_size, args.timeout, args.retries)
+        filtered = []
+        for item in selected:
+            row = item["row"]
             if wanted_categories and row.get("physics_category", "").casefold() not in wanted_categories:
                 continue
-            selected.append({"row_idx": int(rows[0]["row_idx"]), "row": row})
+            filtered.append(item)
+        selected = filtered
     else:
         selected = []
         inspected = 0
@@ -143,7 +143,9 @@ def main() -> int:
             "edit_area": row.get("edit_area"),
             "annotated_qa_pairs": row.get("annotated_qa_pairs"),
         }
-        write_json(case_dir / "metadata.json", metadata)
+        metadata_path = case_dir / "metadata.json"
+        if not metadata_path.exists():
+            write_json(metadata_path, metadata)
         cases.append(metadata)
 
     manifest = {
@@ -176,6 +178,26 @@ def fetch_rows(offset: int, length: int, timeout: int, retries: int) -> list[dic
     return payload.get("rows") or []
 
 
+def fetch_row_indices(row_indices: list[int], batch_size: int, timeout: int, retries: int) -> list[dict[str, Any]]:
+    wanted = list(dict.fromkeys(int(index) for index in row_indices))
+    if not wanted:
+        return []
+    by_index: dict[int, dict[str, Any]] = {}
+    start = min(wanted)
+    end = max(wanted)
+    offset = start
+    while offset <= end:
+        length = min(max(batch_size, 1), end - offset + 1)
+        for wrapped in fetch_rows(offset, length, timeout, retries):
+            by_index[int(wrapped["row_idx"])] = {"row_idx": int(wrapped["row_idx"]), "row": wrapped["row"]}
+        offset += length
+        time.sleep(0.2)
+    missing = [index for index in wanted if index not in by_index]
+    if missing:
+        raise RuntimeError(f"PICABench rows were not returned: {missing}")
+    return [by_index[index] for index in wanted]
+
+
 def fetch_json(url: str, timeout: int, retries: int) -> dict[str, Any]:
     return json.loads(fetch_bytes(url, timeout, retries).decode("utf-8"))
 
@@ -191,7 +213,10 @@ def fetch_bytes(url: str, timeout: int, retries: int) -> bytes:
             last_error = exc
             if attempt >= retries:
                 break
-            time.sleep(1.5 * (attempt + 1))
+            if isinstance(exc, HTTPError) and exc.code == 429:
+                time.sleep(10 * (attempt + 1))
+            else:
+                time.sleep(1.5 * (attempt + 1))
     raise RuntimeError(f"Failed to fetch {url}") from last_error
 
 

@@ -1,0 +1,85 @@
+{
+  "case_id": "picabench_0269_refraction",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 269,
+  "physics_category": "Optics",
+  "physics_law": "Refraction",
+  "edit_operation": "remove",
+  "instruction": "Edit the photo of a clear cylindrical drinking glass resting on a stack of books in front of horizontal window blinds. Remove all liquid so the interior is empty air with no droplets, residue, or condensation. Delete the curved waterline and meniscus at mid‑height. Replace the lower half’s strong, wavy, magnified distortion of the blind slats (the water‑caused lensing) with the appearance expected through an empty clear glass cylinder: the horizontal blind stripes continue across the glass with only subtle, symmetric lateral bending from the glass walls and base thickness. Eliminate any double images, bright caustic streaks, or internal reflections produced by the water volume. Keep the glass geometry (rim, wall thickness, base), the books, lighting, and surroundings unchanged. Ensure that any distorted image of the blinds that belonged to the removed water is gone, leaving refraction consistent with glass alone.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Remove the water in the glass.",
+    "intermediate": "Remove the water from the glass and recompute the optics accordingly: remove the water–air surface and any refraction, magnification, or caustic effects produced by the water, updating how the background window‑blind lines appear through the cylinder while leaving the glass, books, viewpoint, and lighting unchanged.",
+    "explicit": "Edit the photo of a clear cylindrical drinking glass resting on a stack of books in front of horizontal window blinds. Remove all liquid so the interior is empty air with no droplets, residue, or condensation. Delete the curved waterline and meniscus at mid‑height. Replace the lower half’s strong, wavy, magnified distortion of the blind slats (the water‑caused lensing) with the appearance expected through an empty clear glass cylinder: the horizontal blind stripes continue across the glass with only subtle, symmetric lateral bending from the glass walls and base thickness. Eliminate any double images, bright caustic streaks, or internal reflections produced by the water volume. Keep the glass geometry (rim, wall thickness, base), the books, lighting, and surroundings unchanged. Ensure that any distorted image of the blinds that belonged to the removed water is gone, leaving refraction consistent with glass alone."
+  },
+  "image_path": "imgs/Optics/Refraction/e4521e261d5cc27592c070a58bae52e7.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0269_refraction\\input.png",
+  "input_image_size": {
+    "width": 711,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 444.40102827763496,
+      "id": "hgg2WO2a",
+      "order": 1,
+      "width": 349.172236503856,
+      "x": 131.78791773778917,
+      "y": 344.6375321336761
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "No",
+      "box": {
+        "height": 700.5456760048721,
+        "width": 426.4799025578563,
+        "x": 98.2137637028015,
+        "y": 96.48233861144946
+      },
+      "question": "Is there a meniscus on the inner wall of the glass?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 697.7490864799026,
+        "width": 367.75152253349574,
+        "x": 134.56942752740565,
+        "y": 96.48233861144946
+      },
+      "question": "Are the horizontal blind slats visible through the central region of the glass aligned horizontally?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 474.6413343936543,
+        "width": 396.71818081154817,
+        "x": 101.01035322777105,
+        "y": 313.99691164775874
+      },
+      "question": "Is there a contiguous discontinuity where the horizontal blind stripes shift position?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 444.40102827763496,
+        "width": 349.172236503856,
+        "x": 131.78791773778917,
+        "y": 344.6375321336761
+      },
+      "question": "Is the glass rim present?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 444.40102827763496,
+        "width": 349.172236503856,
+        "x": 131.78791773778917,
+        "y": 344.6375321336761
+      },
+      "question": "Are caustic streaks present behind the glass?"
+    }
+  ]
+}

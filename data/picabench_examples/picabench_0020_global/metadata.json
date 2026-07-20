@@ -1,0 +1,65 @@
+{
+  "case_id": "picabench_0020_global",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 20,
+  "physics_category": "State",
+  "physics_law": "Global",
+  "edit_operation": "time",
+  "instruction": "Transform the riverside fishing scene at sunset into a clear, sunny midday environment. Set the sun high in the sky at the upper-left (about 60° elevation), producing bright, neutral daylight. Replace the orange-pink sky with a clean, saturated blue sky and remove the warm dusk gradient. Increase overall brightness and contrast to midday levels. Cast short, crisp shadows to the right and slightly downward from every object: the fisherman, his fishing rod and line, the railing posts and top rail, the bridge decks, pylons and cables, the train cars, the small boat, and distant buildings. Change the water from orange reflections to a bright blue surface with strong daylight specular glitter and highlights running left-to-right consistent with the sun direction; reflections of structures appear darker blue-gray against the bright water. Eliminate any appearance of artificial lighting (train or boat lights not glowing). Reveal natural colors and textures previously in silhouette: the fisherman and metal railing are now clearly lit from the left with cool daylight on lit faces and darker right-side shadowing. Reduce atmospheric haze so distant details are sharper, and ensure all lighting, shadows, reflections, and color temperature are consistently that of a sunny midday, with no residual sunset tones.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Change to sunny day.",
+    "intermediate": "Convert the entire outdoor riverside-bridge scene from dusk to bright sunny daytime. Establish a consistent sun position, adjust global illumination and color temperature to daylight, and update the sky, river reflections, and shadows across all objects (fisherman, railing, bridges, pylons, cables, train, boat, and distant buildings). Ensure artificial lights are treated consistently with daytime conditions and apply the lighting change coherently to the whole scene.",
+    "explicit": "Transform the riverside fishing scene at sunset into a clear, sunny midday environment. Set the sun high in the sky at the upper-left (about 60° elevation), producing bright, neutral daylight. Replace the orange-pink sky with a clean, saturated blue sky and remove the warm dusk gradient. Increase overall brightness and contrast to midday levels. Cast short, crisp shadows to the right and slightly downward from every object: the fisherman, his fishing rod and line, the railing posts and top rail, the bridge decks, pylons and cables, the train cars, the small boat, and distant buildings. Change the water from orange reflections to a bright blue surface with strong daylight specular glitter and highlights running left-to-right consistent with the sun direction; reflections of structures appear darker blue-gray against the bright water. Eliminate any appearance of artificial lighting (train or boat lights not glowing). Reveal natural colors and textures previously in silhouette: the fisherman and metal railing are now clearly lit from the left with cool daylight on lit faces and darker right-side shadowing. Reduce atmospheric haze so distant details are sharper, and ensure all lighting, shadows, reflections, and color temperature are consistently that of a sunny midday, with no residual sunset tones."
+  },
+  "image_path": "imgs/Optics/Light_Source_Effects/replace/24.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0020_global\\input.png",
+  "input_image_size": {
+    "width": 1024,
+    "height": 683
+  },
+  "edit_area": [
+    {
+      "height": 682.4002574002574,
+      "id": "XOaQ3LKj",
+      "order": 1,
+      "width": 1021.9195624195623,
+      "x": 0.0,
+      "y": 0.0
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 339.61313295914056,
+        "width": 1001.5204790204581,
+        "x": 22.479520979541793,
+        "y": 344.3493905222485
+      },
+      "question": "Is the river water blue?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 315.37515225334954,
+        "width": 993.0962241169306,
+        "x": 30.789281364190003,
+        "y": 85.3142509135201
+      },
+      "question": "Is the top surface of the bridge deck lit by direct sunlight?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 682.4002574002574,
+        "width": 1021.9195624195623,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "question": "Do all cast shadows point to the right?"
+    }
+  ]
+}

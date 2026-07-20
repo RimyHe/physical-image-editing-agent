@@ -1,0 +1,105 @@
+{
+  "case_id": "picabench_0801_local",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 801,
+  "physics_category": "State",
+  "physics_law": "Local",
+  "edit_operation": "frozen",
+  "instruction": "Transform the green-capped wine bottle so it has fully finished freezing while standing upright on the table. Show a stable, intact bottle whose glass and metal cap are cold enough to be coated with a thin, even layer of white frost and small ice crystals, concentrated on the shoulder, neck, and just below the cap. Through the green glass the contents are no longer transparent: the white wine is frozen solid into a pale, opaque, crystal-textured interior with a small trapped air pocket below the shoulder; no liquid remains. The paper label stays attached and readable but has a light dusting of frost around its edges. Add a faint frosty condensation ring where the cold base meets the tabletop, and reduce shiny reflections so the frosted surfaces look matte and cold. Leave the wine glass, food, cutting board, and background unchanged and free of any winterizing effects.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Freeze the wine bottle.",
+    "intermediate": "Freeze only the green-capped wine bottle in the center of the scene. Apply local thermodynamic effects to that object: the wine undergoes a phase change, volume expansion is accommodated within the intact container, the glass and cap cool enough for surface nucleation, and heat transfer is confined so surrounding objects and the environment keep their original temperature and appearance. Do not modify any other items.",
+    "explicit": "Transform the green-capped wine bottle so it has fully finished freezing while standing upright on the table. Show a stable, intact bottle whose glass and metal cap are cold enough to be coated with a thin, even layer of white frost and small ice crystals, concentrated on the shoulder, neck, and just below the cap. Through the green glass the contents are no longer transparent: the white wine is frozen solid into a pale, opaque, crystal-textured interior with a small trapped air pocket below the shoulder; no liquid remains. The paper label stays attached and readable but has a light dusting of frost around its edges. Add a faint frosty condensation ring where the cold base meets the tabletop, and reduce shiny reflections so the frosted surfaces look matte and cold. Leave the wine glass, food, cutting board, and background unchanged and free of any winterizing effects."
+  },
+  "image_path": "imgs/State/Local/serjan-midili-LavGkxbnR-8-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0801_local\\input.png",
+  "input_image_size": {
+    "width": 684,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 589.6062992125984,
+      "id": "m81ZxO9v",
+      "order": 1,
+      "width": 162.75590551181102,
+      "x": 322.03937007874015,
+      "y": 64.48818897637796
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 622.2411693057247,
+        "width": 233.5152253349574,
+        "x": 281.87332521315466,
+        "y": 43.34713763702802
+      },
+      "question": "Is the green-capped wine bottle coated with frost?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 139.82947624847748,
+        "width": 218.13398294762487,
+        "x": 465.04993909866016,
+        "y": 515.9707673568819
+      },
+      "question": "Are the dark grapes covered in frost?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 589.6062992125984,
+        "width": 162.75590551181102,
+        "x": 322.03937007874015,
+        "y": 64.48818897637796
+      },
+      "question": "Is the wine inside the green-capped bottle frozen solid?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 589.6062992125984,
+        "width": 162.75590551181102,
+        "x": 322.03937007874015,
+        "y": 64.48818897637796
+      },
+      "question": "Is there a frosty condensation ring at the base of the bottle where it contacts the tabletop?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 589.6062992125984,
+        "width": 162.75590551181102,
+        "x": 322.03937007874015,
+        "y": 64.48818897637796
+      },
+      "question": "Is the wine bottle intact?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 659.9951278928137,
+        "width": 254.489646772229,
+        "x": 286.068209500609,
+        "y": 26.567600487210722
+      },
+      "question": "Is the green-capped wine bottle standing upright on the table?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 465.63215590743,
+        "width": 226.5237515225335,
+        "x": 67.93422655298413,
+        "y": 290.84531059683314
+      },
+      "question": "Is frost present on the wine glass?"
+    }
+  ]
+}
