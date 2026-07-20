@@ -1,0 +1,95 @@
+{
+  "case_id": "picabench_0100_global",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 100,
+  "physics_category": "State",
+  "physics_law": "Global",
+  "edit_operation": "weather",
+  "instruction": "Convert the entire rainy alleyway scene into a clear, sunny day in a physically consistent final state. The image shows a narrow street with shops on both sides, dense overhead wires, a person centered under an open umbrella, a motorcycle at right, and a cart in the distance. Replace the gray overcast gap between rooftops with a clear, saturated blue sky. Remove all rainfall streaks and the rain veil so visibility to the far end is crisp. Change global illumination to strong, warm sunlight coming from the upper left; cast hard, well-aligned shadows to the right and slightly forward for every object and edge: the person and umbrella as a single silhouette, the motorcycle and its parts, the cart, poles, cables, building edges, and signage. Update material responses to dry conditions: eliminate wet sheen and puddles from the roadway so it appears dry and matte with no mirrorlike reflections; dry building facades and signs; no droplets or splash patterns on any surfaces. Colors should be more saturated and contrast higher under direct sun. Keep all existing objects and geometry; the umbrella remains open but dry and simply casts a sharp shadow consistent with the sun. The final image should show a stable, coherent sunny environment with no traces of precipitation or haze.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Make it a sunny day.",
+    "intermediate": "Change the global weather in the scene from rainy/overcast to sunny, enforcing physical consistency across the entire environment. Apply a single sun direction for illumination and shadow casting, and ensure atmosphere, sky condition, material reflectance, and visibility are all governed by direct solar lighting. Resolve all weather-dependent cues (precipitation, haze, wetness) coherently across buildings, street surfaces, vehicles, people, and overhead wires so there are no contradictions between lighting, shading, and surface state.",
+    "explicit": "Convert the entire rainy alleyway scene into a clear, sunny day in a physically consistent final state. The image shows a narrow street with shops on both sides, dense overhead wires, a person centered under an open umbrella, a motorcycle at right, and a cart in the distance. Replace the gray overcast gap between rooftops with a clear, saturated blue sky. Remove all rainfall streaks and the rain veil so visibility to the far end is crisp. Change global illumination to strong, warm sunlight coming from the upper left; cast hard, well-aligned shadows to the right and slightly forward for every object and edge: the person and umbrella as a single silhouette, the motorcycle and its parts, the cart, poles, cables, building edges, and signage. Update material responses to dry conditions: eliminate wet sheen and puddles from the roadway so it appears dry and matte with no mirrorlike reflections; dry building facades and signs; no droplets or splash patterns on any surfaces. Colors should be more saturated and contrast higher under direct sun. Keep all existing objects and geometry; the umbrella remains open but dry and simply casts a sharp shadow consistent with the sun. The final image should show a stable, coherent sunny environment with no traces of precipitation or haze."
+  },
+  "image_path": "imgs/State/Global/anandu-vinod-y5iUA9C0x_Y-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0100_global\\input.png",
+  "input_image_size": {
+    "width": 575,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 1020.3084832904884,
+      "id": "ZDCJdJbL",
+      "order": 1,
+      "width": 571.6748071979434,
+      "x": 3.3251928020565296,
+      "y": 4.5347043701799485
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 281.5437262357414,
+        "width": 384.62167300380236,
+        "x": 0.0,
+        "y": 2.182492854477335
+      },
+      "question": "Is the sky blue?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 460.5095057034219,
+        "width": 570.1349809885929,
+        "x": 2.682509505703433,
+        "y": 539.0798312575191
+      },
+      "question": "Is there standing water on the road next to the motorcycle?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 379.7566539923954,
+        "width": 353.56653992395434,
+        "x": 0.0,
+        "y": 165.87070578223398
+      },
+      "question": "Is atmospheric haze obscuring visibility down the street?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 296.82129277566537,
+        "width": 381.9391634980988,
+        "x": 2.6825095057034987,
+        "y": 4.365002360180757
+      },
+      "question": "Are there rain streaks between the overhead wires?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 1020.3084832904884,
+        "width": 571.6748071979434,
+        "x": 3.3251928020565296,
+        "y": 4.5347043701799485
+      },
+      "question": "Shadows are cast toward the right."
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 1020.3084832904884,
+        "width": 571.6748071979434,
+        "x": 3.3251928020565296,
+        "y": 4.5347043701799485
+      },
+      "question": "Does the person holding an open umbrella cast exactly one contiguous shadow silhouette pointing to the right?"
+    }
+  ]
+}

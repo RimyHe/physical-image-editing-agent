@@ -1,0 +1,75 @@
+{
+  "case_id": "picabench_0000_causality",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 0,
+  "physics_category": "Mechanics",
+  "physics_law": "Causality",
+  "edit_operation": "remove",
+  "instruction": "Remove the front-left vertical support card—the 5 of spades—from the card structure beneath the glass tabletop. After its removal, show the final stable outcome: the front-left bay is open with a visible gap where that card used to stand; no 5-of-spades appears anywhere in the structure or on the floor. The glass tabletop has rotated and now rests tilted downward toward the front-left corner, still supported by the remaining card stacks. One nearby card that lost support (not a 5 of spades—use a clubs card face or a card back) has fallen out and now lies flat on the floor in the front-left foreground beneath the lowered glass corner. Ensure all cards and the glass have natural contact points, correct perspective, and updated shadows/reflections consistent with the new tilted glass and collapsed corner.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Remove the 5 of spades card from the structure.",
+    "intermediate": "Delete the vertical 5-of-spades card at the front-left corner that serves as a support under the glass corner, then let gravity and load redistribution act on the remaining cards and the glass until they settle into a new stable configuration. Update contacts, occlusions, shadows, and reflections to match the new equilibrium, with no floating elements and no new supports introduced.",
+    "explicit": "Remove the front-left vertical support card—the 5 of spades—from the card structure beneath the glass tabletop. After its removal, show the final stable outcome: the front-left bay is open with a visible gap where that card used to stand; no 5-of-spades appears anywhere in the structure or on the floor. The glass tabletop has rotated and now rests tilted downward toward the front-left corner, still supported by the remaining card stacks. One nearby card that lost support (not a 5 of spades—use a clubs card face or a card back) has fallen out and now lies flat on the floor in the front-left foreground beneath the lowered glass corner. Ensure all cards and the glass have natural contact points, correct perspective, and updated shadows/reflections consistent with the new tilted glass and collapsed corner."
+  },
+  "image_path": "imgs/Mechanics/Causality/'house of cards table' by mauricio arruda.jpeg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0000_causality\\input.png",
+  "input_image_size": {
+    "width": 683,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 1017.0630630630632,
+      "id": "jldsY2vL",
+      "order": 1,
+      "width": 683.0,
+      "x": 0.0,
+      "y": 3.0913770913770917
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 1018.9510313336491,
+        "width": 643.1751853303017,
+        "x": 0.0,
+        "y": 0.0
+      },
+      "question": "Is the glass tabletop tilted toward the front-left corner?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 1017.0630630630632,
+        "width": 683.0,
+        "x": 0.0,
+        "y": 3.0913770913770917
+      },
+      "question": "Is there exactly one contiguous playing card lying flat on the floor beneath the lowered front-left corner of the glass?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 1017.0630630630632,
+        "width": 683.0,
+        "x": 0.0,
+        "y": 3.0913770913770917
+      },
+      "question": "Is there a grounded shadow directly beneath the fallen card at the front-left?"
+    },
+    {
+      "answer": "No",
+      "box": {
+        "height": 560.9180035650623,
+        "width": 445.8110516934047,
+        "x": 0.11558792796111962,
+        "y": 466.24174810990223
+      },
+      "question": "Is a 5 of spades card present within the annotated region?"
+    }
+  ]
+}

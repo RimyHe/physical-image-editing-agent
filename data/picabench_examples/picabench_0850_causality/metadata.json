@@ -1,0 +1,65 @@
+{
+  "case_id": "picabench_0850_causality",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 850,
+  "physics_category": "Mechanics",
+  "physics_law": "Causality",
+  "edit_operation": "remove",
+  "instruction": "Erase the swing completely: remove both vertical ropes hanging near the center, the wooden seat at the lower center, and any rope segment tied to the thin branch in the upper-right. Inpaint the cleared areas with consistent sky, mountains, branches, and grass so no rope fragments or knots remain. Update the person so they are no longer in a seated, suspended pose: place them on the grassy ground in the same central foreground position, facing away, with both feet firmly touching the grass and legs naturally vertical under the dress. Let the dress hang straight under gravity (no seat-induced bunching), and lower the hands so they are no longer gripping anything. Preserve lighting and add the person’s soft shadow on the grass below in the existing light direction, and remove any shadows previously cast by the swing. Keep all other scene elements unchanged and ensure no human figure is left seated unsupported in mid-air.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Remove the swing from the image.",
+    "intermediate": "Remove the swing (seat and all ropes) from the scene and account for real-world causality: with the support gone, the person must no longer be suspended. Apply gravity and let the figure settle into a stable pose on the ground; adjust clothing, hands, and shadows accordingly, and cleanly inpaint the background where ropes and seat were.",
+    "explicit": "Erase the swing completely: remove both vertical ropes hanging near the center, the wooden seat at the lower center, and any rope segment tied to the thin branch in the upper-right. Inpaint the cleared areas with consistent sky, mountains, branches, and grass so no rope fragments or knots remain. Update the person so they are no longer in a seated, suspended pose: place them on the grassy ground in the same central foreground position, facing away, with both feet firmly touching the grass and legs naturally vertical under the dress. Let the dress hang straight under gravity (no seat-induced bunching), and lower the hands so they are no longer gripping anything. Preserve lighting and add the person’s soft shadow on the grass below in the existing light direction, and remove any shadows previously cast by the swing. Keep all other scene elements unchanged and ensure no human figure is left seated unsupported in mid-air."
+  },
+  "image_path": "imgs/Mechanics/Causality/swing-6763642_1280.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0850_causality\\input.png",
+  "input_image_size": {
+    "width": 684,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 946.0472440944882,
+      "id": "3q2cin2P",
+      "order": 1,
+      "width": 462.99212598425197,
+      "x": 119.76377952755902,
+      "y": 4.6299212598425195
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "No",
+      "box": {
+        "height": 662.0657534246575,
+        "width": 448.1917808219178,
+        "x": 110.04109589041089,
+        "y": 53.46849315068493
+      },
+      "question": "Is a person seated on a swing?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 935.6986301369864,
+        "width": 330.24657534246575,
+        "x": 166.65479452054788,
+        "y": 81.77534246575343
+      },
+      "question": "Do the person's feet touch the grass?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 946.0472440944882,
+        "width": 462.99212598425197,
+        "x": 119.76377952755902,
+        "y": 4.6299212598425195
+      },
+      "question": "Are both of the person's hands at their sides?"
+    }
+  ]
+}

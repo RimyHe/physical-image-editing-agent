@@ -1,0 +1,460 @@
+{
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "source": "https://huggingface.co/datasets/Andrew613/PICABench",
+  "count": 6,
+  "prompt_field": "explicit_prompt",
+  "cases": [
+    {
+      "case_id": "picabench_0000_causality",
+      "dataset": "Andrew613/PICABench",
+      "config": "default",
+      "split": "picabench",
+      "row_idx": 0,
+      "physics_category": "Mechanics",
+      "physics_law": "Causality",
+      "edit_operation": "remove",
+      "instruction": "Remove the front-left vertical support card—the 5 of spades—from the card structure beneath the glass tabletop. After its removal, show the final stable outcome: the front-left bay is open with a visible gap where that card used to stand; no 5-of-spades appears anywhere in the structure or on the floor. The glass tabletop has rotated and now rests tilted downward toward the front-left corner, still supported by the remaining card stacks. One nearby card that lost support (not a 5 of spades—use a clubs card face or a card back) has fallen out and now lies flat on the floor in the front-left foreground beneath the lowered glass corner. Ensure all cards and the glass have natural contact points, correct perspective, and updated shadows/reflections consistent with the new tilted glass and collapsed corner.",
+      "prompt_field": "explicit_prompt",
+      "prompts": {
+        "superficial": "Remove the 5 of spades card from the structure.",
+        "intermediate": "Delete the vertical 5-of-spades card at the front-left corner that serves as a support under the glass corner, then let gravity and load redistribution act on the remaining cards and the glass until they settle into a new stable configuration. Update contacts, occlusions, shadows, and reflections to match the new equilibrium, with no floating elements and no new supports introduced.",
+        "explicit": "Remove the front-left vertical support card—the 5 of spades—from the card structure beneath the glass tabletop. After its removal, show the final stable outcome: the front-left bay is open with a visible gap where that card used to stand; no 5-of-spades appears anywhere in the structure or on the floor. The glass tabletop has rotated and now rests tilted downward toward the front-left corner, still supported by the remaining card stacks. One nearby card that lost support (not a 5 of spades—use a clubs card face or a card back) has fallen out and now lies flat on the floor in the front-left foreground beneath the lowered glass corner. Ensure all cards and the glass have natural contact points, correct perspective, and updated shadows/reflections consistent with the new tilted glass and collapsed corner."
+      },
+      "image_path": "imgs/Mechanics/Causality/'house of cards table' by mauricio arruda.jpeg",
+      "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0000_causality\\input.png",
+      "input_image_size": {
+        "width": 683,
+        "height": 1024
+      },
+      "edit_area": [
+        {
+          "height": 1017.0630630630632,
+          "id": "jldsY2vL",
+          "order": 1,
+          "width": 683.0,
+          "x": 0.0,
+          "y": 3.0913770913770917
+        }
+      ],
+      "annotated_qa_pairs": [
+        {
+          "answer": "Yes",
+          "box": {
+            "height": 1018.9510313336491,
+            "width": 643.1751853303017,
+            "x": 0.0,
+            "y": 0.0
+          },
+          "question": "Is the glass tabletop tilted toward the front-left corner?"
+        },
+        {
+          "answer": "Yes",
+          "box": {
+            "height": 1017.0630630630632,
+            "width": 683.0,
+            "x": 0.0,
+            "y": 3.0913770913770917
+          },
+          "question": "Is there exactly one contiguous playing card lying flat on the floor beneath the lowered front-left corner of the glass?"
+        },
+        {
+          "answer": "Yes",
+          "box": {
+            "height": 1017.0630630630632,
+            "width": 683.0,
+            "x": 0.0,
+            "y": 3.0913770913770917
+          },
+          "question": "Is there a grounded shadow directly beneath the fallen card at the front-left?"
+        },
+        {
+          "answer": "No",
+          "box": {
+            "height": 560.9180035650623,
+            "width": 445.8110516934047,
+            "x": 0.11558792796111962,
+            "y": 466.24174810990223
+          },
+          "question": "Is a 5 of spades card present within the annotated region?"
+        }
+      ]
+    },
+    {
+      "case_id": "picabench_0100_global",
+      "dataset": "Andrew613/PICABench",
+      "config": "default",
+      "split": "picabench",
+      "row_idx": 100,
+      "physics_category": "State",
+      "physics_law": "Global",
+      "edit_operation": "weather",
+      "instruction": "Convert the entire rainy alleyway scene into a clear, sunny day in a physically consistent final state. The image shows a narrow street with shops on both sides, dense overhead wires, a person centered under an open umbrella, a motorcycle at right, and a cart in the distance. Replace the gray overcast gap between rooftops with a clear, saturated blue sky. Remove all rainfall streaks and the rain veil so visibility to the far end is crisp. Change global illumination to strong, warm sunlight coming from the upper left; cast hard, well-aligned shadows to the right and slightly forward for every object and edge: the person and umbrella as a single silhouette, the motorcycle and its parts, the cart, poles, cables, building edges, and signage. Update material responses to dry conditions: eliminate wet sheen and puddles from the roadway so it appears dry and matte with no mirrorlike reflections; dry building facades and signs; no droplets or splash patterns on any surfaces. Colors should be more saturated and contrast higher under direct sun. Keep all existing objects and geometry; the umbrella remains open but dry and simply casts a sharp shadow consistent with the sun. The final image should show a stable, coherent sunny environment with no traces of precipitation or haze.",
+      "prompt_field": "explicit_prompt",
+      "prompts": {
+        "superficial": "Make it a sunny day.",
+        "intermediate": "Change the global weather in the scene from rainy/overcast to sunny, enforcing physical consistency across the entire environment. Apply a single sun direction for illumination and shadow casting, and ensure atmosphere, sky condition, material reflectance, and visibility are all governed by direct solar lighting. Resolve all weather-dependent cues (precipitation, haze, wetness) coherently across buildings, street surfaces, vehicles, people, and overhead wires so there are no contradictions between lighting, shading, and surface state.",
+        "explicit": "Convert the entire rainy alleyway scene into a clear, sunny day in a physically consistent final state. The image shows a narrow street with shops on both sides, dense overhead wires, a person centered under an open umbrella, a motorcycle at right, and a cart in the distance. Replace the gray overcast gap between rooftops with a clear, saturated blue sky. Remove all rainfall streaks and the rain veil so visibility to the far end is crisp. Change global illumination to strong, warm sunlight coming from the upper left; cast hard, well-aligned shadows to the right and slightly forward for every object and edge: the person and umbrella as a single silhouette, the motorcycle and its parts, the cart, poles, cables, building edges, and signage. Update material responses to dry conditions: eliminate wet sheen and puddles from the roadway so it appears dry and matte with no mirrorlike reflections; dry building facades and signs; no droplets or splash patterns on any surfaces. Colors should be more saturated and contrast higher under direct sun. Keep all existing objects and geometry; the umbrella remains open but dry and simply casts a sharp shadow consistent with the sun. The final image should show a stable, coherent sunny environment with no traces of precipitation or haze."
+      },
+      "image_path": "imgs/State/Global/anandu-vinod-y5iUA9C0x_Y-unsplash.jpg",
+      "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0100_global\\input.png",
+      "input_image_size": {
+        "width": 575,
+        "height": 1024
+      },
+      "edit_area": [
+        {
+          "height": 1020.3084832904884,
+          "id": "ZDCJdJbL",
+          "order": 1,
+          "width": 571.6748071979434,
+          "x": 3.3251928020565296,
+          "y": 4.5347043701799485
+        }
+      ],
+      "annotated_qa_pairs": [
+        {
+          "answer": "Yes",
+          "box": {
+            "height": 281.5437262357414,
+            "width": 384.62167300380236,
+            "x": 0.0,
+            "y": 2.182492854477335
+          },
+          "question": "Is the sky blue?"
+        },
+        {
+          "answer": "No",
+          "box": {
+            "height": 460.5095057034219,
+            "width": 570.1349809885929,
+            "x": 2.682509505703433,
+            "y": 539.0798312575191
+          },
+          "question": "Is there standing water on the road next to the motorcycle?"
+        },
+        {
+          "answer": "No",
+          "box": {
+            "height": 379.7566539923954,
+            "width": 353.56653992395434,
+            "x": 0.0,
+            "y": 165.87070578223398
+          },
+          "question": "Is atmospheric haze obscuring visibility down the street?"
+        },
+        {
+          "answer": "No",
+          "box": {
+            "height": 296.82129277566537,
+            "width": 381.9391634980988,
+            "x": 2.6825095057034987,
+            "y": 4.365002360180757
+          },
+          "question": "Are there rain streaks between the overhead wires?"
+        },
+        {
+          "answer": "Yes",
+          "box": {
+            "height": 1020.3084832904884,
+            "width": 571.6748071979434,
+            "x": 3.3251928020565296,
+            "y": 4.5347043701799485
+          },
+          "question": "Shadows are cast toward the right."
+        },
+        {
+          "answer": "Yes",
+          "box": {
+            "height": 1020.3084832904884,
+            "width": 571.6748071979434,
+            "x": 3.3251928020565296,
+            "y": 4.5347043701799485
+          },
+          "question": "Does the person holding an open umbrella cast exactly one contiguous shadow silhouette pointing to the right?"
+        }
+      ]
+    },
+    {
+      "case_id": "picabench_0300_global",
+      "dataset": "Andrew613/PICABench",
+      "config": "default",
+      "split": "picabench",
+      "row_idx": 300,
+      "physics_category": "State",
+      "physics_law": "Global",
+      "edit_operation": "weather",
+      "instruction": "Transform this misty conifer-forest roadway into a settled winter scene after a recent snowfall. Apply cold, overcast daylight with soft, diffuse shadows and a slightly bluish, desaturated palette. Lay a continuous 3–5 cm blanket of fresh snow across the entire view: the curved asphalt road in the center foreground is fully covered and remains covered into the distance, with its painted center line largely obscured. Replace the wet reflective asphalt look with a matte, granular snow surface and avoid slush, spray, or tire tracks. Build slightly thicker, rounded accumulations along the grassy verges and the soil banks. Add stable clumps of snow on the upward-facing sides of the evergreen branches and on the tops of roadside posts; tree trunks receive only a light dusting while vertical faces stay mostly dark. Under dense canopies the ground shows a thinner, patchier layer due to sheltering. Convert the existing fog to a cold white haze so distant trees fade more and overall visibility is mildly reduced. Adjust exposure and reflections to match the brighter, high-albedo snow environment, and present a static, fully settled result with no falling flakes.",
+      "prompt_field": "explicit_prompt",
+      "prompts": {
+        "superficial": "Add snow to the scene.",
+        "intermediate": "Convert the outdoor forest road scene to snowy winter weather in a globally consistent manner. Use a cold, overcast lighting model and a snow-laden atmosphere; ensure snow deposition follows gravity and surface orientation/roughness across the road, vegetation, ground, and roadside posts. Update global illumination, color temperature, and contrast for a snow-covered environment, and adjust visibility to account for atmospheric scattering. Keep the result as a stable post-event state rather than a transient moment.",
+        "explicit": "Transform this misty conifer-forest roadway into a settled winter scene after a recent snowfall. Apply cold, overcast daylight with soft, diffuse shadows and a slightly bluish, desaturated palette. Lay a continuous 3–5 cm blanket of fresh snow across the entire view: the curved asphalt road in the center foreground is fully covered and remains covered into the distance, with its painted center line largely obscured. Replace the wet reflective asphalt look with a matte, granular snow surface and avoid slush, spray, or tire tracks. Build slightly thicker, rounded accumulations along the grassy verges and the soil banks. Add stable clumps of snow on the upward-facing sides of the evergreen branches and on the tops of roadside posts; tree trunks receive only a light dusting while vertical faces stay mostly dark. Under dense canopies the ground shows a thinner, patchier layer due to sheltering. Convert the existing fog to a cold white haze so distant trees fade more and overall visibility is mildly reduced. Adjust exposure and reflections to match the brighter, high-albedo snow environment, and present a static, fully settled result with no falling flakes."
+      },
+      "image_path": "imgs/State/Global/filip-zrnzevic-_EMkxLdko9k-unsplash.jpg",
+      "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0300_global\\input.png",
+      "input_image_size": {
+        "width": 683,
+        "height": 1024
+      },
+      "edit_area": [
+        {
+          "height": 1025.6298200514138,
+          "id": "QUhAYQAv",
+          "order": 1,
+          "width": 678.2390745501285,
+          "x": 1.6285347043700753,
+          "y": 0.0
+        }
+      ],
+      "annotated_qa_pairs": [
+        {
+          "answer": "Yes",
+          "box": {
+            "height": 360.27985074626866,
+            "width": 370.98880597014926,
+            "x": 89.24343798250118,
+            "y": 665.9522603421354
+          },
+          "question": "Is any portion of the yellow centerline covered by snow?"
+        },
+        {
+          "answer": "Yes",
+          "box": {
+            "height": 513.9237867452847,
+            "width": 440.22466110640903,
+            "x": 242.77533889359097,
+            "y": 0.0
+          },
+          "question": "Do the upper surfaces of the pine branches in the region have snow?"
+        },
+        {
+          "answer": "Yes",
+          "box": {
+            "height": 1025.6298200514138,
+            "width": 678.2390745501285,
+            "x": 1.6285347043700753,
+            "y": 0.0
+          },
+          "question": "Exactly zero falling snowflakes are visible."
+        }
+      ]
+    },
+    {
+      "case_id": "picabench_0500_light_source_effects",
+      "dataset": "Andrew613/PICABench",
+      "config": "default",
+      "split": "picabench",
+      "row_idx": 500,
+      "physics_category": "Optics",
+      "physics_law": "Light_Source_Effects",
+      "edit_operation": "add",
+      "instruction": "Turn on the bulb inside the black conical floor lamp behind the sofa and render the scene after the lighting has settled. Treat the lamp as a warm (about 2700 K) directional spot light that emits through the opening of the shade, which faces left and slightly downward toward the beige curtain and the near arm of the sofa. Make the white interior of the shade and the bulb visibly glowing, with a subtle rim bloom. On the curtain to the left of the lamp head, add a bright, warm teardrop/oval pool of light with smooth inverse‑square falloff; brightest near the shade opening and fading outward. Light the top of the sofa armrest and the near part of the seat under the lamp with the same warm tone, producing soft-edged highlights on the fabric and deeper shadows in folds away from the lamp. Add a small warm specular highlight on the wooden tabletop closest to the sofa; the books and glasses case cast short, soft shadows pointing to the right and slightly forward (away from the lamp head). Recompute all scene shadows for two lights: the existing right-side sunlight keeps its long, cool-golden shadows, while the new lamp creates a second set of warmer, softer, shorter shadows; where both lights overlap, shadows lighten or separate into two edges. Keep dark regions under the table and in the far corners mostly dim; avoid overexposure while preserving the visible gradient in brightness and color temperature across surfaces.",
+      "prompt_field": "explicit_prompt",
+      "prompts": {
+        "superficial": "Turn on the lamp.",
+        "intermediate": "Switch on the bulb in the black conical floor lamp next to the sofa and treat it as an added warm, directional light source. Recalculate global illumination for the entire scene so that all surfaces, reflections, and shadows are updated for the presence of both the existing right-side daylight and this new lamp. Use realistic inverse-square falloff, appropriate color temperature mixing, soft penumbrae from the nearby lamp, and consistent shadow geometry across the curtain, sofa, floor, and tabletop. Adjust exposure to keep highlights within range and maintain clear contrast between lit and dark areas.",
+        "explicit": "Turn on the bulb inside the black conical floor lamp behind the sofa and render the scene after the lighting has settled. Treat the lamp as a warm (about 2700 K) directional spot light that emits through the opening of the shade, which faces left and slightly downward toward the beige curtain and the near arm of the sofa. Make the white interior of the shade and the bulb visibly glowing, with a subtle rim bloom. On the curtain to the left of the lamp head, add a bright, warm teardrop/oval pool of light with smooth inverse‑square falloff; brightest near the shade opening and fading outward. Light the top of the sofa armrest and the near part of the seat under the lamp with the same warm tone, producing soft-edged highlights on the fabric and deeper shadows in folds away from the lamp. Add a small warm specular highlight on the wooden tabletop closest to the sofa; the books and glasses case cast short, soft shadows pointing to the right and slightly forward (away from the lamp head). Recompute all scene shadows for two lights: the existing right-side sunlight keeps its long, cool-golden shadows, while the new lamp creates a second set of warmer, softer, shorter shadows; where both lights overlap, shadows lighten or separate into two edges. Keep dark regions under the table and in the far corners mostly dim; avoid overexposure while preserving the visible gradient in brightness and color temperature across surfaces."
+      },
+      "image_path": "imgs/Optics/Light_Source_Effects/add/mary-skrynnikova-DfcHoNUqOqY-unsplash.jpg",
+      "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0500_light_source_effects\\input.png",
+      "input_image_size": {
+        "width": 768,
+        "height": 1024
+      },
+      "edit_area": [
+        {
+          "height": 797.2737789203085,
+          "id": "u5sjW7ib",
+          "order": 1,
+          "width": 558.2429305912597,
+          "x": 29.992287917737844,
+          "y": 157.33676092544988
+        }
+      ],
+      "annotated_qa_pairs": [
+        {
+          "answer": "Yes",
+          "box": {
+            "height": 873.7660626029653,
+            "width": 635.5387149917627,
+            "x": 130.57001647446464,
+            "y": 104.01976935749587
+          },
+          "question": "Is the bulb inside the black conical floor lamp behind the sofa lit?"
+        },
+        {
+          "answer": "Yes",
+          "box": {
+            "height": 321.5156507413509,
+            "width": 650.668863261944,
+            "x": 117.33113673805606,
+            "y": 703.5518945634267
+          },
+          "question": "Is there a specular highlight on the top surface of the wooden coffee table?"
+        },
+        {
+          "answer": "Yes",
+          "box": {
+            "height": 1025.0675453047775,
+            "width": 597.7133443163098,
+            "x": 0.0,
+            "y": 3.7825370675453045
+          },
+          "question": "Is there a localized pool of light on the beige curtain?"
+        }
+      ]
+    },
+    {
+      "case_id": "picabench_0700_deformation",
+      "dataset": "Andrew613/PICABench",
+      "config": "default",
+      "split": "picabench",
+      "row_idx": 700,
+      "physics_category": "Mechanics",
+      "physics_law": "Deformation",
+      "edit_operation": "others",
+      "instruction": "Edit the image so the blue resistance band is clearly under strong horizontal tension between the person’s two raised hands. Increase the hand separation so the band segment between the grips is about twice its relaxed length. The free span is taut and settles into a shallow, symmetric downward catenary curve rather than a straight line. Due to stretch, the band’s width is visibly reduced along the midspan (about 30–40%), while its blue color and satin/latex sheen are preserved; specular highlights run along the stretched length. At each grip, the band wraps flush around the fingers with a small bend radius set by its thickness, showing flattened contact patches and slight indentations in the skin; no gaps, twists, or overlaps at the grips. Update lighting and shadows to match the new geometry so the band casts a thin, consistent shadow on the fingers and nearby areas under the existing overhead light. Keep the brick wall background and the person’s pose otherwise unchanged. Depict the final, stable hold with no motion blur, the tightened band running horizontally across the upper portion of the frame.",
+      "prompt_field": "explicit_prompt",
+      "prompts": {
+        "superficial": "Stretch the resistance band horizontally by pulling it apart with both hands.",
+        "intermediate": "Stretch the blue resistance band horizontally between the two raised hands, increasing the distance between the grips. Treat the band as an elastic soft body anchored at the hands and account for gravity, tension, and contact with the skin. Ensure lighting and shadows are updated to follow the new geometry and maintain correct perspective, without introducing new elements.",
+        "explicit": "Edit the image so the blue resistance band is clearly under strong horizontal tension between the person’s two raised hands. Increase the hand separation so the band segment between the grips is about twice its relaxed length. The free span is taut and settles into a shallow, symmetric downward catenary curve rather than a straight line. Due to stretch, the band’s width is visibly reduced along the midspan (about 30–40%), while its blue color and satin/latex sheen are preserved; specular highlights run along the stretched length. At each grip, the band wraps flush around the fingers with a small bend radius set by its thickness, showing flattened contact patches and slight indentations in the skin; no gaps, twists, or overlaps at the grips. Update lighting and shadows to match the new geometry so the band casts a thin, consistent shadow on the fingers and nearby areas under the existing overhead light. Keep the brick wall background and the person’s pose otherwise unchanged. Depict the final, stable hold with no motion blur, the tightened band running horizontally across the upper portion of the frame."
+      },
+      "image_path": "imgs/Mechanics/Deformation/pexels-pavel-danilyuk-6339612.jpg",
+      "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0700_deformation\\input.png",
+      "input_image_size": {
+        "width": 1024,
+        "height": 684
+      },
+      "edit_area": [
+        {
+          "height": 197.93577981651376,
+          "id": "ZdkhP9mi",
+          "order": 1,
+          "width": 1021.5432503276539,
+          "x": 2.4567496723460147,
+          "y": 148.16906946264743
+        }
+      ],
+      "annotated_qa_pairs": [
+        {
+          "answer": "Yes",
+          "box": {
+            "height": 215.06935123042504,
+            "width": 193.80313199105146,
+            "x": 0.0,
+            "y": 101.37383258316073
+          },
+          "question": "Is a hand gripping the left end of the blue resistance band?"
+        },
+        {
+          "answer": "Yes",
+          "box": {
+            "height": 196.5592841163311,
+            "width": 186.751677852349,
+            "x": 837.248322147651,
+            "y": 122.52819499926812
+          },
+          "question": "Is the hand gripping the right end of the blue resistance band?"
+        },
+        {
+          "answer": "Yes",
+          "box": {
+            "height": 197.93577981651376,
+            "width": 1021.5432503276539,
+            "x": 2.4567496723460147,
+            "y": 148.16906946264743
+          },
+          "question": "Does the band between the hands form a symmetric downward catenary curve?"
+        },
+        {
+          "answer": "Yes",
+          "box": {
+            "height": 197.93577981651376,
+            "width": 1021.5432503276539,
+            "x": 2.4567496723460147,
+            "y": 148.16906946264743
+          },
+          "question": "Does the band cast a shadow on both the fingers and the adjacent skin?"
+        },
+        {
+          "answer": "Yes",
+          "box": {
+            "height": 197.93577981651376,
+            "width": 1021.5432503276539,
+            "x": 2.4567496723460147,
+            "y": 148.16906946264743
+          },
+          "question": "Is the resistance band horizontal between the two hands?"
+        }
+      ]
+    },
+    {
+      "case_id": "picabench_0850_causality",
+      "dataset": "Andrew613/PICABench",
+      "config": "default",
+      "split": "picabench",
+      "row_idx": 850,
+      "physics_category": "Mechanics",
+      "physics_law": "Causality",
+      "edit_operation": "remove",
+      "instruction": "Erase the swing completely: remove both vertical ropes hanging near the center, the wooden seat at the lower center, and any rope segment tied to the thin branch in the upper-right. Inpaint the cleared areas with consistent sky, mountains, branches, and grass so no rope fragments or knots remain. Update the person so they are no longer in a seated, suspended pose: place them on the grassy ground in the same central foreground position, facing away, with both feet firmly touching the grass and legs naturally vertical under the dress. Let the dress hang straight under gravity (no seat-induced bunching), and lower the hands so they are no longer gripping anything. Preserve lighting and add the person’s soft shadow on the grass below in the existing light direction, and remove any shadows previously cast by the swing. Keep all other scene elements unchanged and ensure no human figure is left seated unsupported in mid-air.",
+      "prompt_field": "explicit_prompt",
+      "prompts": {
+        "superficial": "Remove the swing from the image.",
+        "intermediate": "Remove the swing (seat and all ropes) from the scene and account for real-world causality: with the support gone, the person must no longer be suspended. Apply gravity and let the figure settle into a stable pose on the ground; adjust clothing, hands, and shadows accordingly, and cleanly inpaint the background where ropes and seat were.",
+        "explicit": "Erase the swing completely: remove both vertical ropes hanging near the center, the wooden seat at the lower center, and any rope segment tied to the thin branch in the upper-right. Inpaint the cleared areas with consistent sky, mountains, branches, and grass so no rope fragments or knots remain. Update the person so they are no longer in a seated, suspended pose: place them on the grassy ground in the same central foreground position, facing away, with both feet firmly touching the grass and legs naturally vertical under the dress. Let the dress hang straight under gravity (no seat-induced bunching), and lower the hands so they are no longer gripping anything. Preserve lighting and add the person’s soft shadow on the grass below in the existing light direction, and remove any shadows previously cast by the swing. Keep all other scene elements unchanged and ensure no human figure is left seated unsupported in mid-air."
+      },
+      "image_path": "imgs/Mechanics/Causality/swing-6763642_1280.jpg",
+      "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0850_causality\\input.png",
+      "input_image_size": {
+        "width": 684,
+        "height": 1024
+      },
+      "edit_area": [
+        {
+          "height": 946.0472440944882,
+          "id": "3q2cin2P",
+          "order": 1,
+          "width": 462.99212598425197,
+          "x": 119.76377952755902,
+          "y": 4.6299212598425195
+        }
+      ],
+      "annotated_qa_pairs": [
+        {
+          "answer": "No",
+          "box": {
+            "height": 662.0657534246575,
+            "width": 448.1917808219178,
+            "x": 110.04109589041089,
+            "y": 53.46849315068493
+          },
+          "question": "Is a person seated on a swing?"
+        },
+        {
+          "answer": "Yes",
+          "box": {
+            "height": 935.6986301369864,
+            "width": 330.24657534246575,
+            "x": 166.65479452054788,
+            "y": 81.77534246575343
+          },
+          "question": "Do the person's feet touch the grass?"
+        },
+        {
+          "answer": "Yes",
+          "box": {
+            "height": 946.0472440944882,
+            "width": 462.99212598425197,
+            "x": 119.76377952755902,
+            "y": 4.6299212598425195
+          },
+          "question": "Are both of the person's hands at their sides?"
+        }
+      ]
+    }
+  ]
+}

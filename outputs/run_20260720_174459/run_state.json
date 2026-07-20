@@ -1,0 +1,27 @@
+{
+  "run_dir": "D:\\1Agent\\physical_image_editing_agent\\outputs\\run_20260720_174459",
+  "instruction": "Remove the red ball from the scene and also remove its shadow, keeping the floor and background physically consistent.",
+  "source_image": "D:\\1Agent\\physical_image_editing_agent\\data\\samples\\red_ball_shadow.png",
+  "final_image": "D:\\1Agent\\physical_image_editing_agent\\outputs\\run_20260720_174459\\step_00\\candidate.png",
+  "accepted": true,
+  "calls": {
+    "planner": 1,
+    "editor": 1,
+    "verifier": 1
+  },
+  "iterations": [
+    {
+      "step": 0,
+      "input_image": "D:\\1Agent\\physical_image_editing_agent\\data\\samples\\red_ball_shadow.png",
+      "candidate_image": "D:\\1Agent\\physical_image_editing_agent\\outputs\\run_20260720_174459\\step_00\\candidate.png",
+      "plan_path": "D:\\1Agent\\physical_image_editing_agent\\outputs\\run_20260720_174459\\step_00\\plan.json",
+      "verify_path": "D:\\1Agent\\physical_image_editing_agent\\outputs\\run_20260720_174459\\step_00\\verify.json",
+      "route": {
+        "route": "direct_edit",
+        "reason": "Use verified gpt-image-2 image edit endpoint."
+      },
+      "accepted": true
+    }
+  ],
+  "elapsed_seconds": 23.392
+}

@@ -1,0 +1,65 @@
+{
+  "case_id": "picabench_0300_global",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 300,
+  "physics_category": "State",
+  "physics_law": "Global",
+  "edit_operation": "weather",
+  "instruction": "Transform this misty conifer-forest roadway into a settled winter scene after a recent snowfall. Apply cold, overcast daylight with soft, diffuse shadows and a slightly bluish, desaturated palette. Lay a continuous 3–5 cm blanket of fresh snow across the entire view: the curved asphalt road in the center foreground is fully covered and remains covered into the distance, with its painted center line largely obscured. Replace the wet reflective asphalt look with a matte, granular snow surface and avoid slush, spray, or tire tracks. Build slightly thicker, rounded accumulations along the grassy verges and the soil banks. Add stable clumps of snow on the upward-facing sides of the evergreen branches and on the tops of roadside posts; tree trunks receive only a light dusting while vertical faces stay mostly dark. Under dense canopies the ground shows a thinner, patchier layer due to sheltering. Convert the existing fog to a cold white haze so distant trees fade more and overall visibility is mildly reduced. Adjust exposure and reflections to match the brighter, high-albedo snow environment, and present a static, fully settled result with no falling flakes.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Add snow to the scene.",
+    "intermediate": "Convert the outdoor forest road scene to snowy winter weather in a globally consistent manner. Use a cold, overcast lighting model and a snow-laden atmosphere; ensure snow deposition follows gravity and surface orientation/roughness across the road, vegetation, ground, and roadside posts. Update global illumination, color temperature, and contrast for a snow-covered environment, and adjust visibility to account for atmospheric scattering. Keep the result as a stable post-event state rather than a transient moment.",
+    "explicit": "Transform this misty conifer-forest roadway into a settled winter scene after a recent snowfall. Apply cold, overcast daylight with soft, diffuse shadows and a slightly bluish, desaturated palette. Lay a continuous 3–5 cm blanket of fresh snow across the entire view: the curved asphalt road in the center foreground is fully covered and remains covered into the distance, with its painted center line largely obscured. Replace the wet reflective asphalt look with a matte, granular snow surface and avoid slush, spray, or tire tracks. Build slightly thicker, rounded accumulations along the grassy verges and the soil banks. Add stable clumps of snow on the upward-facing sides of the evergreen branches and on the tops of roadside posts; tree trunks receive only a light dusting while vertical faces stay mostly dark. Under dense canopies the ground shows a thinner, patchier layer due to sheltering. Convert the existing fog to a cold white haze so distant trees fade more and overall visibility is mildly reduced. Adjust exposure and reflections to match the brighter, high-albedo snow environment, and present a static, fully settled result with no falling flakes."
+  },
+  "image_path": "imgs/State/Global/filip-zrnzevic-_EMkxLdko9k-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0300_global\\input.png",
+  "input_image_size": {
+    "width": 683,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 1025.6298200514138,
+      "id": "QUhAYQAv",
+      "order": 1,
+      "width": 678.2390745501285,
+      "x": 1.6285347043700753,
+      "y": 0.0
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 360.27985074626866,
+        "width": 370.98880597014926,
+        "x": 89.24343798250118,
+        "y": 665.9522603421354
+      },
+      "question": "Is any portion of the yellow centerline covered by snow?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 513.9237867452847,
+        "width": 440.22466110640903,
+        "x": 242.77533889359097,
+        "y": 0.0
+      },
+      "question": "Do the upper surfaces of the pine branches in the region have snow?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 1025.6298200514138,
+        "width": 678.2390745501285,
+        "x": 1.6285347043700753,
+        "y": 0.0
+      },
+      "question": "Exactly zero falling snowflakes are visible."
+    }
+  ]
+}

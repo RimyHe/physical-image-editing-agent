@@ -1,0 +1,65 @@
+{
+  "case_id": "picabench_0500_light_source_effects",
+  "dataset": "Andrew613/PICABench",
+  "config": "default",
+  "split": "picabench",
+  "row_idx": 500,
+  "physics_category": "Optics",
+  "physics_law": "Light_Source_Effects",
+  "edit_operation": "add",
+  "instruction": "Turn on the bulb inside the black conical floor lamp behind the sofa and render the scene after the lighting has settled. Treat the lamp as a warm (about 2700 K) directional spot light that emits through the opening of the shade, which faces left and slightly downward toward the beige curtain and the near arm of the sofa. Make the white interior of the shade and the bulb visibly glowing, with a subtle rim bloom. On the curtain to the left of the lamp head, add a bright, warm teardrop/oval pool of light with smooth inverse‑square falloff; brightest near the shade opening and fading outward. Light the top of the sofa armrest and the near part of the seat under the lamp with the same warm tone, producing soft-edged highlights on the fabric and deeper shadows in folds away from the lamp. Add a small warm specular highlight on the wooden tabletop closest to the sofa; the books and glasses case cast short, soft shadows pointing to the right and slightly forward (away from the lamp head). Recompute all scene shadows for two lights: the existing right-side sunlight keeps its long, cool-golden shadows, while the new lamp creates a second set of warmer, softer, shorter shadows; where both lights overlap, shadows lighten or separate into two edges. Keep dark regions under the table and in the far corners mostly dim; avoid overexposure while preserving the visible gradient in brightness and color temperature across surfaces.",
+  "prompt_field": "explicit_prompt",
+  "prompts": {
+    "superficial": "Turn on the lamp.",
+    "intermediate": "Switch on the bulb in the black conical floor lamp next to the sofa and treat it as an added warm, directional light source. Recalculate global illumination for the entire scene so that all surfaces, reflections, and shadows are updated for the presence of both the existing right-side daylight and this new lamp. Use realistic inverse-square falloff, appropriate color temperature mixing, soft penumbrae from the nearby lamp, and consistent shadow geometry across the curtain, sofa, floor, and tabletop. Adjust exposure to keep highlights within range and maintain clear contrast between lit and dark areas.",
+    "explicit": "Turn on the bulb inside the black conical floor lamp behind the sofa and render the scene after the lighting has settled. Treat the lamp as a warm (about 2700 K) directional spot light that emits through the opening of the shade, which faces left and slightly downward toward the beige curtain and the near arm of the sofa. Make the white interior of the shade and the bulb visibly glowing, with a subtle rim bloom. On the curtain to the left of the lamp head, add a bright, warm teardrop/oval pool of light with smooth inverse‑square falloff; brightest near the shade opening and fading outward. Light the top of the sofa armrest and the near part of the seat under the lamp with the same warm tone, producing soft-edged highlights on the fabric and deeper shadows in folds away from the lamp. Add a small warm specular highlight on the wooden tabletop closest to the sofa; the books and glasses case cast short, soft shadows pointing to the right and slightly forward (away from the lamp head). Recompute all scene shadows for two lights: the existing right-side sunlight keeps its long, cool-golden shadows, while the new lamp creates a second set of warmer, softer, shorter shadows; where both lights overlap, shadows lighten or separate into two edges. Keep dark regions under the table and in the far corners mostly dim; avoid overexposure while preserving the visible gradient in brightness and color temperature across surfaces."
+  },
+  "image_path": "imgs/Optics/Light_Source_Effects/add/mary-skrynnikova-DfcHoNUqOqY-unsplash.jpg",
+  "input_png": "D:\\1Agent\\physical_image_editing_agent\\data\\picabench_examples\\picabench_0500_light_source_effects\\input.png",
+  "input_image_size": {
+    "width": 768,
+    "height": 1024
+  },
+  "edit_area": [
+    {
+      "height": 797.2737789203085,
+      "id": "u5sjW7ib",
+      "order": 1,
+      "width": 558.2429305912597,
+      "x": 29.992287917737844,
+      "y": 157.33676092544988
+    }
+  ],
+  "annotated_qa_pairs": [
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 873.7660626029653,
+        "width": 635.5387149917627,
+        "x": 130.57001647446464,
+        "y": 104.01976935749587
+      },
+      "question": "Is the bulb inside the black conical floor lamp behind the sofa lit?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 321.5156507413509,
+        "width": 650.668863261944,
+        "x": 117.33113673805606,
+        "y": 703.5518945634267
+      },
+      "question": "Is there a specular highlight on the top surface of the wooden coffee table?"
+    },
+    {
+      "answer": "Yes",
+      "box": {
+        "height": 1025.0675453047775,
+        "width": 597.7133443163098,
+        "x": 0.0,
+        "y": 3.7825370675453045
+      },
+      "question": "Is there a localized pool of light on the beige curtain?"
+    }
+  ]
+}
