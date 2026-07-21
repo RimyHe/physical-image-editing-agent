@@ -1,0 +1,17 @@
+[
+  {
+    "case_id": "picabench_0500_light_source_effects",
+    "physics_category": "Optics",
+    "physics_law": "Light_Source_Effects",
+    "edit_operation": "add",
+    "accepted": true,
+    "final_image": "D:\\1Agent\\physical_image_editing_agent\\outputs\\picabench\\picabench_0500_light_source_effects\\run_20260720_195241\\step_00\\candidate.png",
+    "run_dir": "D:\\1Agent\\physical_image_editing_agent\\outputs\\picabench\\picabench_0500_light_source_effects\\run_20260720_195241",
+    "calls": {
+      "planner": 1,
+      "editor": 1,
+      "verifier": 1
+    },
+    "elapsed_seconds": 90.755
+  }
+]

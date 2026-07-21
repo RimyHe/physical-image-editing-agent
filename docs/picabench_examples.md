@@ -80,3 +80,6 @@ outputs/picabench/<case_id>/run_YYYYMMDD_HHMMSS/pica_eval/
 
 The top-level `summary.json` includes per-case metrics. `summary_metrics.json` reports the average
 accuracy and consistency, plus a breakdown by `physics_law`.
+
+The completed 50-case run is tabulated by task type in
+[`picabench_full_run_results.md`](picabench_full_run_results.md).
