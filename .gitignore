@@ -19,3 +19,6 @@ tmp/
 outputs/**/run_*/
 outputs/picabench_full_20260721_resumable/picabench_*/
 outputs/picabench_full_20260721_resumable/viewer*.log
+outputs/picabench_crop_*/picabench_*/
+outputs/picabench_crop_*/viewer*.log
+outputs/picabench_crop_*/*.log

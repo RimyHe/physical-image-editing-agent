@@ -16,7 +16,7 @@ if str(SRC) not in sys.path:
 from physical_agent.config import load_settings
 from physical_agent.openai_compat import OpenAICompatClient
 from physical_agent.orchestrator import run_agent
-from physical_agent.pica_eval import evaluate_picabench_case
+from physical_agent.pica_eval import evaluate_picabench_case, prepare_canonical_input, write_unpadded_output
 from run_picabench_examples import aggregate_metrics
 
 
@@ -81,14 +81,26 @@ def run_case_with_retry(
     for attempt in range(1, attempts + 1):
         try:
             case_output_root = output_root / case["case_id"]
-            state = run_agent(settings, Path(case["input_png"]), case["instruction"], case_output_root)
-            pica_eval = None
+            case_output_root.mkdir(parents=True, exist_ok=True)
+            canonical_input = case_output_root / "canonical_input.png"
+            transform_path = case_output_root / "coordinate_transform.json"
+            transform = prepare_canonical_input(Path(case["input_png"]), canonical_input, transform_path)
+            eval_case = dict(case)
+            eval_case["coordinate_transform"] = transform
+            eval_case["canonical_input_png"] = str(canonical_input)
+            state = run_agent(settings, canonical_input, case["instruction"], case_output_root, eval_case)
+            final_image_padded = state.final_image
+            final_image_unpadded = None
             if state.final_image:
+                final_image_unpadded = str(Path(state.run_dir) / "final_image_unpadded.png")
+                write_unpadded_output(Path(state.final_image), Path(final_image_unpadded), transform)
+            pica_eval = None
+            if final_image_unpadded:
                 pica_eval = evaluate_picabench_case(
                     eval_client,
                     settings.verifier_model,
                     Path(case["input_png"]),
-                    Path(state.final_image),
+                    Path(final_image_unpadded),
                     case,
                     Path(state.run_dir) / "pica_eval",
                 )
@@ -98,8 +110,12 @@ def run_case_with_retry(
                 "physics_law": case.get("physics_law"),
                 "edit_operation": case.get("edit_operation"),
                 "accepted": state.accepted,
-                "final_image": state.final_image,
+                "final_image": final_image_unpadded,
+                "final_image_padded": final_image_padded,
+                "final_image_unpadded": final_image_unpadded,
                 "run_dir": state.run_dir,
+                "canonical_input": str(canonical_input),
+                "coordinate_transform": str(transform_path),
                 "calls": state.calls,
                 "elapsed_seconds": state.elapsed_seconds,
                 "attempt": attempt,

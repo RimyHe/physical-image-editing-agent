@@ -26,7 +26,13 @@ class AgentRun:
     elapsed_seconds: float = 0.0
 
 
-def run_agent(settings: Settings, source_image: Path, instruction: str, output_root: Path) -> AgentRun:
+def run_agent(
+    settings: Settings,
+    source_image: Path,
+    instruction: str,
+    output_root: Path,
+    metadata: dict[str, Any] | None = None,
+) -> AgentRun:
     started = time.time()
     run_dir = output_root / time.strftime("run_%Y%m%d_%H%M%S")
     run_dir.mkdir(parents=True, exist_ok=False)
@@ -56,6 +62,8 @@ def run_agent(settings: Settings, source_image: Path, instruction: str, output_r
             candidate_path,
             instruction,
             plan,
+            route,
+            metadata,
         )
         state.calls["verifier"] += 1
         write_json(step_dir / "verify.json", verification)

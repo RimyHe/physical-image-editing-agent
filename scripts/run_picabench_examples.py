@@ -15,7 +15,7 @@ if str(SRC) not in sys.path:
 from physical_agent.config import load_settings
 from physical_agent.openai_compat import OpenAICompatClient
 from physical_agent.orchestrator import run_agent
-from physical_agent.pica_eval import evaluate_picabench_case
+from physical_agent.pica_eval import evaluate_picabench_case, prepare_canonical_input, write_unpadded_output
 
 
 def main() -> int:
@@ -57,14 +57,26 @@ def main() -> int:
     summary: list[dict[str, Any]] = []
     for case in cases:
         case_output_root = args.output_root / case["case_id"]
-        state = run_agent(settings, Path(case["input_png"]), case["instruction"], case_output_root)
+        case_output_root.mkdir(parents=True, exist_ok=True)
+        canonical_input = case_output_root / "canonical_input.png"
+        transform_path = case_output_root / "coordinate_transform.json"
+        transform = prepare_canonical_input(Path(case["input_png"]), canonical_input, transform_path)
+        eval_case = dict(case)
+        eval_case["coordinate_transform"] = transform
+        eval_case["canonical_input_png"] = str(canonical_input)
+        state = run_agent(settings, canonical_input, case["instruction"], case_output_root, eval_case)
+        final_image_padded = state.final_image
+        final_image_unpadded = None
+        if state.final_image:
+            final_image_unpadded = str(Path(state.run_dir) / "final_image_unpadded.png")
+            write_unpadded_output(Path(state.final_image), Path(final_image_unpadded), transform)
         pica_eval = None
-        if eval_client and state.final_image:
+        if eval_client and final_image_unpadded:
             pica_eval = evaluate_picabench_case(
                 eval_client,
                 settings.verifier_model,
                 Path(case["input_png"]),
-                Path(state.final_image),
+                Path(final_image_unpadded),
                 case,
                 Path(state.run_dir) / "pica_eval",
             )
@@ -74,8 +86,12 @@ def main() -> int:
             "physics_law": case.get("physics_law"),
             "edit_operation": case.get("edit_operation"),
             "accepted": state.accepted,
-            "final_image": state.final_image,
+            "final_image": final_image_unpadded,
+            "final_image_padded": final_image_padded,
+            "final_image_unpadded": final_image_unpadded,
             "run_dir": state.run_dir,
+            "canonical_input": str(canonical_input),
+            "coordinate_transform": str(transform_path),
             "calls": state.calls,
             "elapsed_seconds": state.elapsed_seconds,
         }

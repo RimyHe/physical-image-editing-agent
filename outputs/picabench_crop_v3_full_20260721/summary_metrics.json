@@ -1,0 +1,56 @@
+{
+  "evaluated_cases": 50,
+  "accuracy": 0.926952380952381,
+  "accuracy_percent": 92.6952380952381,
+  "consistency_psnr": 22.30372291666667,
+  "by_physics_law": {
+    "Causality": {
+      "count": 7,
+      "accuracy": 0.9510204081632653,
+      "accuracy_percent": 95.10204081632652,
+      "consistency_psnr": 25.496514285714287
+    },
+    "Deformation": {
+      "count": 6,
+      "accuracy": 0.85,
+      "accuracy_percent": 84.99999999999999,
+      "consistency_psnr": 21.014466666666667
+    },
+    "Global": {
+      "count": 7,
+      "accuracy": 0.9523809523809524,
+      "accuracy_percent": 95.23809523809526,
+      "consistency_psnr": 9.51936
+    },
+    "Light_Propagation": {
+      "count": 6,
+      "accuracy": 0.8928571428571429,
+      "accuracy_percent": 89.28571428571429,
+      "consistency_psnr": 25.928233333333328
+    },
+    "Light_Source_Effects": {
+      "count": 6,
+      "accuracy": 0.9027777777777777,
+      "accuracy_percent": 90.27777777777777,
+      "consistency_psnr": 21.4594
+    },
+    "Local": {
+      "count": 6,
+      "accuracy": 0.9583333333333334,
+      "accuracy_percent": 95.83333333333333,
+      "consistency_psnr": 26.445866666666664
+    },
+    "Reflection": {
+      "count": 6,
+      "accuracy": 1.0,
+      "accuracy_percent": 100.0,
+      "consistency_psnr": 23.734183333333334
+    },
+    "Refraction": {
+      "count": 6,
+      "accuracy": 0.9,
+      "accuracy_percent": 90.0,
+      "consistency_psnr": 22.168899999999997
+    }
+  }
+}
