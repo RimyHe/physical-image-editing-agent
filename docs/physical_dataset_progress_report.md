@@ -1,53 +1,23 @@
-# Physical Image Editing Agent 项目进展汇报
+﻿# Physical Image Editing Agent 进展汇报
 
-## 1. 当前工作定位
+## 条目 1：项目当前评测背景
 
-本项目面向“基于闭源图像编辑 API 的物理一致性图像编辑 Agent”任务，目标不是单纯调用图像编辑模型完成图片修改，而是在图像编辑前后显式引入物理约束分析、任务重写、结果验证和失败重试，使生成结果更符合真实世界中的光学、力学和状态变化规律。
+### 背景
 
-当前阶段已经完成一个可运行的 MVP 流程：
-
-```text
-input PNG + instruction
-  -> Planner: 分析编辑目标、保留内容和物理依赖
-  -> Router: 选择编辑路线
-  -> Executor: 调用闭源图像编辑 API 生成候选图
-  -> Verifier: 检查指令完成度、非编辑区域保持和物理一致性
-  -> retry/accept: 失败时带修复指令重试，成功时接受结果
-```
-
-目前 router 代码中虽然保留了 `direct_edit` 和 `local_edit` 的接口形式，但实际执行路线仍统一回退到 `direct_edit`。也就是说，当前版本主要依赖 planner 的物理依赖补全、explicit prompt 和 verifier 的闭环检查来提升物理一致性；尚未接入检测、分割、mask 局部编辑或局部回贴工具。
-
-## 2. 本地 PICABench 子集选择策略
-
-本地数据集位于：
+本项目目标是基于闭源图像编辑 API 构建物理一致性图像编辑 Agent。当前 MVP 流程：
 
 ```text
-physical_image_editing_agent/data/picabench_examples/manifest.json
+input image + instruction
+  -> Planner
+  -> Router，目前 fallback 到 direct_edit
+  -> Image Edit API
+  -> Verifier
+  -> retry / accept
 ```
 
-该子集来自 Hugging Face 数据集：
+本地评测集使用 `Andrew613/PICABench` 的 50 个样本，覆盖 8 个 physics law，使用 `explicit_prompt`。
 
-```text
-Andrew613/PICABench
-split: picabench
-```
-
-当前 manifest 中共保存 50 条样本。选择策略可以概括为：
-
-| 维度 | 当前设置 |
-|---|---|
-| 数据源 | `Andrew613/PICABench` |
-| split | `picabench` |
-| 本地样本数 | 50 |
-| 使用 prompt | `explicit_prompt` |
-| 选择目标 | 覆盖 PICABench 的 8 个物理 law，并尽量保持均衡 |
-| 运行用途 | 用作物理一致性图像编辑 Agent 的小规模验证集 |
-
-选择 `explicit_prompt` 的原因是：当前 MVP 还没有局部视觉工具链，直接使用最详细的物理结果描述可以降低闭源图像编辑 API 的任务歧义，使模型更明确地生成“编辑后的稳定物理状态”，而不是只执行表层语义替换。
-
-当前 50 条样本在 8 个物理 law 上的分布如下：
-
-| 大类 | 物理 law | 样本数 |
+| Category | Physics law | Cases |
 |---|---|---:|
 | Mechanics | Causality | 7 |
 | Mechanics | Deformation | 6 |
@@ -58,191 +28,219 @@ split: picabench
 | State | Global | 7 |
 | State | Local | 6 |
 
-按大类统计：
+### 问题
 
-| 大类 | 样本数 |
+当前版本主要验证闭环流程，不代表完整工具路由能力。Router 还没有真正接入 detection、segmentation、mask edit 或 local repaint。
+
+### 解决
+
+后续将 8 个 physics law 映射成 rule-based route 和 law-specific verifier checklist。
+
+---
+
+## 条目 2：输出尺寸固定导致 box 错位
+
+### 背景
+
+PICABench 的 `box` 和 `edit_area` 基于原图坐标，但图像编辑 API 倾向输出固定 `1024x1024`。
+
+### 问题
+
+如果直接用原始 box 或简单宽高缩放，会导致 QA crop 和 non-edit PSNR 的区域错位。
+
+### 解决
+
+当前采用 canonical canvas：
+
+```text
+原图
+  -> contain 到 1024x1024
+  -> 保存 coordinate_transform
+  -> 调用 image edit API
+  -> source box -> canonical box -> output box
+```
+
+后续需要补充坐标映射单元测试。
+
+---
+
+## 条目 3：padding 黑边影响结果展示与评测
+
+### 背景
+
+为保持原图比例，非正方形图片会被 contain 到 `1024x1024`，因此出现上下或左右 padding 黑边。
+
+### 问题
+
+黑边可能被模型或 verifier 当作真实图像内容；同时展示时也不符合原始数据集画幅。
+
+### 解决
+
+当前同时保留两种输出：
+
+| 输出 | 用途 |
+|---|---|
+| padded candidate | 保留 API 原始 `1024x1024` 结果，便于审计 |
+| unpadded final image | 去掉 padding，并恢复到原图尺寸，用于主展示和 PICABench 评分 |
+
+Gradio 页面同时展示两者。
+
+---
+
+## 条目 4：局部 crop 丢失全局语境
+
+### 背景
+
+PICABench QA 有些问题询问全局位置，例如 upper/lower/left/right/corner/center。
+
+### 问题
+
+如果只给局部 crop，目标会出现在裁剪图中央，VLM 会基于局部画布回答，而不是完整图片位置。
+
+### 解决
+
+当前按问题类型选择评测视图：
+
+| question_type | evaluation_view |
+|---|---|
+| global_position | full_image |
+| local_appearance | crop |
+| mixed | full_image + crop |
+| unknown | crop，并标记 context_risk |
+
+后续继续改进问题分类规则。
+
+---
+
+## 条目 5：QA 批量回答缺项
+
+### 背景
+
+为减少单图耗时，当前按 evaluation_view 将多个 QA 合并成批量 VLM 请求。
+
+### 问题
+
+VLM 有时不会返回所有 question index，导致某些 `predicted_answer` 为空。
+
+### 解决
+
+已加入 fallback：批量响应缺失某题答案时，对该题单独补问。
+
+后续记录 fallback 次数，用于判断评测稳定性。
+
+---
+
+## 条目 6：API 不稳定导致批跑中断
+
+### 背景
+
+批量运行 50 个 PICABench case 时，外部 API 会出现 timeout、429 cooldown、DeploymentNotFound 等问题。
+
+### 问题
+
+普通批跑脚本遇到单个 case 异常会整体退出，导致无法稳定完成全量评测。
+
+### 解决
+
+新增 `run_picabench_resumable.py`：
+
+| 能力 | 说明 |
+|---|---|
+| resume | 跳过已完成 case |
+| attempts | 控制每个 case 最大尝试次数 |
+| retry-sleep | 控制失败后等待时间 |
+| checkpoint summary | 每完成一个 case 立即写 `summary.json` |
+
+---
+
+## 条目 7：新 crop 流程 50 case 结果
+
+### 背景
+
+新 crop 流程已完成，并重新跑完 50 个样本。
+
+输出目录：
+
+```text
+outputs/picabench_crop_v3_full_20260721/
+```
+
+运行设置：
+
+```text
+API_TIMEOUT_SECONDS=90
+MAX_AGENT_RETRIES=0
+attempts=1，失败样本后续 resume 补跑 attempts=2
+```
+
+### 问题
+
+新流程的 PSNR 与旧流程不可直接比较，因为旧流程存在尺寸和坐标映射问题。
+
+### 解决
+
+当前只将新结果作为 crop 修正后的主结果：
+
+| 指标 | 数值 |
 |---|---:|
-| Optics | 24 |
-| Mechanics | 13 |
-| State | 13 |
+| records | 50 |
+| evaluated | 50 |
+| failed | 0 |
+| accepted | 48 |
+| QA accuracy | 92.70% |
+| non-edit PSNR | 22.3037 |
 
-这个选择方式适合作为项目早期评估集：样本数不大，便于快速跑通闭环；同时覆盖 PICABench 的主要物理 taxonomy，能暴露 agent 在光学、力学、状态转移三类问题上的不同失败模式。
-
-## 3. PICABench 原始物理问题分类
-
-PICABench 将物理一致性图像编辑问题分为 3 大类、8 个子维度。
-
-### 3.1 Optics 光学问题
-
-光学类问题检查编辑后图像是否符合光的传播、反射、折射和光源作用规律。它们通常不是主体语义是否正确的问题，而是编辑目标和环境之间的视觉依赖是否同步更新的问题。
-
-| 子类 | 核心检查点 | 典型失败 | 对应解决策略 |
-|---|---|---|---|
-| Light Propagation | 阴影方向、长度、软硬、遮挡是否符合主光源 | 删除物体后阴影残留；新增物体没有投影；阴影方向错误 | 先估计主光源方向和遮挡关系；编辑目标时同步生成或删除 cast shadow、contact shadow 和局部遮挡 |
-| Reflection | 镜面反射和高光是否随视角、表面曲率、物体位置变化 | 物体被删除但镜中仍存在；反射漂浮；高光不随表面变化 | 识别镜面、玻璃、金属、水面等反射区域；将目标物和其反射/高光作为联动编辑对象 |
-| Refraction | 透明介质中的背景扭曲是否连续、合理 | 玻璃被移除但背景仍弯曲；水位变化后物体仍有折射断裂 | 识别玻璃、水等透明介质及其后方背景；移除或改变介质时重建未折射背景，保持边缘连续 |
-| Light Source Effects | 新增或改变光源后，色温、亮度衰减、阴影和环境光是否一致 | 灯亮了但周围不变亮；色温不匹配；阴影过硬或方向不对 | 将光源视为全局/半全局影响项；同步更新邻近表面亮度、色偏、阴影、反射和 falloff |
-
-对 agent 的启发：光学类任务不能只把编辑主体送给图像模型，而要在 planner 中显式列出依赖项，例如 `shadow/reflection/refraction/highlight/caustic`。Verifier 也应针对这些依赖项逐项检查，而不是只问“目标物是否被编辑”。
-
-### 3.2 Mechanics 力学问题
-
-力学类问题检查物体是否保持合理形变、支撑、接触和因果关系。它们通常要求模型理解“编辑操作之后的最终稳定状态”。
-
-| 子类 | 核心检查点 | 典型失败 | 对应解决策略 |
-|---|---|---|---|
-| Deformation | 形状变化是否符合材料属性和几何连续性 | 刚体像橡胶一样弯曲；纹理撕裂或重复；局部变形不连续 | 先判断材料类型：刚体、弹性体、软体、液体；刚体保持结构，软体连续变形，纹理随几何一起变形 |
-| Causality | 支撑、重力、接触、稳定性是否合理 | 删除支撑后物体仍悬空；物体相互穿插；重心不稳定但没有倒塌 | 建立支撑关系和接触点；删除/添加支撑后生成新的稳定姿态，并同步更新阴影、遮挡和接触痕迹 |
-
-对 agent 的启发：力学类任务最重要的是避免“表层编辑”。例如删除支架、桌脚、卡片支撑时，不应只擦除目标，还要推理受力变化后的稳定结果，如倾倒、下落、旋转、塌陷或重新接触地面。
-
-### 3.3 State Transition 状态转移问题
-
-状态转移类问题检查物体或场景状态变化是否在空间范围、时间结果和材料表现上自洽。它分为全局状态变化和局部状态变化。
-
-| 子类 | 核心检查点 | 典型失败 | 对应解决策略 |
-|---|---|---|---|
-| Global State Transition | 昼夜、天气、季节、全局湿/干等变化是否影响整个场景 | 夜晚天空却保留白天阴影；下雪但地面/树木/远景不变 | 将编辑视为全图级联更新；同步修改天空、光照、阴影、植被、地面材质、空气氛围 |
-| Local State Transition | 局部融化、燃烧、结冰、变湿、破裂等是否有边界和因果 | 局部烧焦没有热源或烟痕；融化跨越不该变化的材料边界 | 限定局部编辑区域，同时补充触发原因和邻近影响；保持材料边界、湿痕、烟雾、反射等一致 |
-
-对 agent 的启发：状态转移任务首先要判断影响范围。如果是 global，需要大范围重写画面条件；如果是 local，需要严格控制区域边界，同时补上局部状态变化的因果线索。
-
-## 4. 当前 Agent 策略与数据集分类的对应关系
-
-当前实现中的关键模块如下：
-
-| 模块 | 当前作用 | 与物理问题分类的关系 |
-|---|---|---|
-| Planner | 根据图像和指令生成结构化计划，列出物理依赖和编辑 prompt | 对不同 physics law 显式补充 shadow、reflection、occlusion、contact、lighting、perspective 等依赖 |
-| Router | 读取 plan 中的 route 字段 | 当前实际只走 `direct_edit`；未来应按 law 分流到局部编辑、检测分割、重绘或多步编辑 |
-| Executor | 调用闭源图像编辑 API 生成候选图 | 目前承担主要编辑能力，受 prompt 质量影响较大 |
-| Verifier | 对候选图做物理一致性检查并给出 repair instruction | 对 PICABench 样本可结合 QA、物理 law 和非编辑区域一致性进行验收 |
-| Retry Loop | 失败时把 verifier 的修复意见传回 planner | 用闭环方式弥补单次图像编辑 API 的不稳定性 |
-
-因此，目前项目的技术路线可以表述为：
+Gradio 展示入口：
 
 ```text
-使用 PICABench 均衡子集作为评测入口；
-使用 explicit physical prompt 降低闭源编辑模型的任务歧义；
-用 planner 显式枚举物理依赖；
-用 verifier 检查指令完成度、区域保持和物理一致性；
-通过 retry loop 将失败反馈重新注入编辑过程。
+http://127.0.0.1:7861
 ```
 
-## 5. 当前阶段的主要结论
+---
 
-1. 本地 50 条 PICABench 子集已经覆盖原 benchmark 的 8 个物理 law，适合作为 MVP 的小规模物理一致性验证集。
+## 条目 8：0816 QA 语义歧义
 
-2. 当前 agent 主要验证的是“规划-编辑-验证-重试”闭环是否能够提升闭源图像编辑 API 的物理表现，而不是验证复杂工具路由能力。
+### 背景
 
-3. 使用 `explicit_prompt` 是当前阶段的合理选择，因为它把隐含物理后果直接写入编辑目标，能减少模型只做表层语义编辑的概率。
+`picabench_0816_light_propagation` 要求将郁金香上移，并重投影墙上的影子。该 case 的部分 QA 参考答案如下：
 
-4. 不同物理类别需要不同解法：光学类重在同步更新视觉依赖，力学类重在推理最终稳定状态，状态转移类重在判断影响范围并保持材料与环境一致。
+| QA | Reference |
+|---|---|
+| Do the tulip's cast shadow edges have distinct boundaries? | No |
+| Is the tulip's cast shadow located in the upper third of the wall? | No |
+| Is the tulip's cast shadow identical in shape to the tulip's silhouette? | No |
 
-5. 后续若要体现 agent 相比普通 prompt engineering 的贡献，需要把 PICABench taxonomy 转化为可执行的 routing policy 和 verifier checklist，而不是所有任务都使用同一条 `direct_edit` 路线。
+### 问题
 
-## 6. 评测坐标与全局语境问题
+这些参考答案和 prompt/直觉存在张力：
 
-### 6.1 问题发现
+| QA | 疑点 |
+|---|---|
+| shadow edges distinct | prompt 要求 shadow sharp and complete，但 reference 是 No |
+| shadow in upper third | 可能指完整影子不全在上三分之一，但问题措辞不清 |
+| identical silhouette | 物理上 No 合理，但和 prompt 的 shape matches 容易混淆 |
 
-当前 PICABench 评测同时存在“输出尺寸变化”和“局部裁剪丢失全局语境”两个问题。
+### 解决
 
-1. 原始图片尺寸不统一，而当前图像编辑 API 默认输出固定的 `1024x1024`。
-2. PICABench 的 `box` 和 `edit_area` 使用原图坐标。
-3. 当前评测器将坐标按宽高比例映射到候选图，并直接裁剪该区域交给 VLM。
-4. 对于位置、构图和上下左右关系问题，裁剪后可能失去完整画布的参照系。
 
-因此，即使模型在完整候选图中的目标位置是正确的，局部裁剪图也可能让目标看起来位于裁剪区域中央，从而使 VLM 对全局位置产生歧义。
+---
 
-### 6.2 0816 case 具体证据
+## 条目 9：后续计划
 
-`picabench_0816_light_propagation` 的编辑指令要求：
+### 背景
 
-```text
-将整株郁金香向上移动，使花朵位于画面顶部边缘下方、左侧三分之一处。
-```
+当前系统已能跑通闭环、批量评测和 Gradio 展示。
 
-该 case 的标注问题之一是：
+### 问题
 
-```text
-Is the tulip in the lower-left corner?
-```
+系统还没有真正体现复杂 agent 工具路由能力。
 
-metadata 中预先保存的参考答案是：
-
-```json
-{
-  "answer": "No"
-}
-```
-
-对应的评测框为：
-
-```json
-{
-  "x": 3.845,
-  "y": 0,
-  "width": 346.817,
-  "height": 1024
-}
-```
-
-这实际上是原图左侧的一条竖向区域，而不是保留完整水平语境的全图。裁剪后，郁金香在局部图中接近水平中央。当前评测器因此让 VLM 在一个不完整的画布中回答全局位置问题。
-
-该 case 最终记录为：
-
-```text
-reference answer: No
-predicted answer: No
-```
-
-虽然字符串匹配被计为正确，但模型给出的理由是“郁金香位于画面中央”，这说明它回答的可能是裁剪区域中的相对位置，而不是完整候选图中的真实位置。因此，这个分数属于“结果匹配但评测证据不足”，不能视为完全可靠的全局位置判断。
-
-### 6.3 参考答案的性质
-
-PICABench 的参考答案已经随数据集写入每个样例的 `annotated_qa_pairs`，并不是当前评测器根据候选图裁剪区域动态生成的。当前评测流程只是：
-
-```text
-读取数据集 reference answer
-  -> 将候选图按 box 裁剪
-  -> 让 VLM 生成 predicted answer
-  -> 比较 Yes/No 是否一致
-```
-
-因此，参考答案通常对应数据集标注者预期的最终场景状态，而候选图裁剪只是当前实现的输入策略。两者之间并不保证始终具有足够的全局语境。
-
-### 6.4 暂定解决方案
-
-该问题暂不立即实施，先作为评测协议修正项记录。计划采用分层方案：
-
-| 问题类型 | 推荐评测输入 | 进一步方案 |
-|---|---|---|
-| 全局位置、上下左右、角落、画面分区 | 完整候选图 | 使用目标检测/分割计算目标中心点和画布相对位置 |
-| 阴影、反射、接触、材质、局部外观 | 局部 crop | 保留原有区域 QA，但扩大上下文边界 |
-| 混合型问题 | 完整图 + 标注区域提示 | 同时提供全局图和局部放大图 |
-| 输出尺寸与原图不一致 | 先统一到 canonical 坐标系 | 保存缩放、padding、offset 和裁剪参数后再映射 box |
-
-具体实现顺序建议为：
-
-1. 为每道 QA 增加 `question_type` 和 `evaluation_view` 字段。
-2. 将位置类问题标记为 `global_position`，评测时使用完整候选图。
-3. 将局部物理属性问题标记为 `local_appearance`，继续使用 crop。
-4. 在运行状态中保存输入尺寸、输出尺寸和坐标变换参数。
-5. 将候选图还原到原图坐标系后，再计算 QA crop 和 non-edit PSNR。
-6. 对缺少全局语境或无法确定几何映射的 QA 标记为 `context_risk`，单独统计，不直接混入严格准确率。
-
-在该修正完成前，当前 50 个 case 的 QA accuracy 应理解为初步结果；其中位置和构图类问题可能包含由裁剪语境造成的偶然正确或错误。
-
-## 7. 下一步工作建议
-
-下一阶段可以围绕以下方向推进：
+### 解决
 
 | 方向 | 目标 |
 |---|---|
-| 分类路由 | 根据 `physics_law` 自动选择不同编辑策略，例如光学依赖补全、力学稳定态推理、全局状态重写、局部状态编辑 |
-| 局部工具链 | 引入检测、分割、mask、局部重绘和回贴，减少全图编辑对非目标区域的破坏 |
-| Verifier checklist | 为 8 个 law 分别设计可复用检查项，而不是只使用通用物理一致性评分 |
-| PICAEval 对齐 | 利用 PICABench 的 annotated QA pairs 做更细粒度评估，区分全局位置 QA 与局部物理属性 QA，并输出每类 law 的准确率和失败案例 |
-| 消融实验 | 比较 raw prompt、explicit prompt、planner reformulation、verifier retry、分类 router 的增益 |
-
-一个可落地的短期目标是：先把 8 个物理 law 映射成 rule-based routing 和 law-specific verifier focus。这样即使底层仍是闭源编辑 API，也能让系统表现出明确的 agent 决策过程，并支持后续消融分析。
+| 分类 router | 根据 physics_law 选择不同编辑策略 |
+| law-specific verifier | 为 8 个 law 设计检查项 |
+| QA 可信度标记 | 标注 global/crop/mixed、context_risk、benchmark ambiguity |
+| 局部工具链 | 引入 detection / segmentation / mask edit / local repaint |
+| 消融实验 | 比较 raw prompt、explicit prompt、planner、verifier retry、router 的增益 |
