@@ -14,3 +14,8 @@ venv/
 .ruff_cache/
 *.log
 tmp/
+
+# Large local run artifacts
+outputs/**/run_*/
+outputs/picabench_full_20260721_resumable/picabench_*/
+outputs/picabench_full_20260721_resumable/viewer*.log

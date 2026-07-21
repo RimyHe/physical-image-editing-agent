@@ -88,6 +88,40 @@ VERIFIER_MODEL=gpt-4o
 IMAGE_EDIT_MODEL=gpt-image-2
 ```
 
+### 功能角色与 API 职责
+
+`references/工作流.png` 中的方框是逻辑职责，不要求每个方框对应一个独立模型。第一版最小实现只需要两类能力：
+
+1. 一个支持图像输入的多模态 LLM/VLM，用于规划和验证。
+2. 一个支持图像编辑的生成模型/API，用于产出候选图。
+
+当前推荐映射如下：
+
+| 角色 | 模型与 endpoint | 当前职责 |
+| --- | --- | --- |
+| Planner / Verifier | `gpt-4o`，`POST /v1/chat/completions` | 读取图像并输出结构化计划或验证结果 |
+| Image Executor | `gpt-image-2`，`POST /v1/images/edits` | 根据原图和编辑 prompt 生成候选图 |
+| Tool Selection / Retry Control | Python 状态机 | 路由、重试、保存中间产物、控制停止条件 |
+
+推荐的 MVP 调用链：
+
+```text
+User image + instruction
+  -> Planner call: gpt-4o
+  -> Tool selection: Python router
+  -> Tool executor: gpt-image-2 /images/edits
+  -> Verification call: gpt-4o
+       -> pass: 返回候选图
+       -> fail: 生成 repair instruction 后重试
+```
+
+设计边界：
+
+- `Tool Retrieval` 在首版仍跳过，后续可用于检索历史成功轨迹或工具说明。
+- 检测、分割、mask、阴影/反射几何检查属于第二阶段本地 CV 工具，不由 LLM 直接承担。
+- `/v1/models` 不能提供完整计费、并发和上传限制信息，运行时仍需处理 `429`、超时和图片参数错误。
+- 输入图在进入 API 前统一规范化为 RGB PNG；候选图通过 `b64_json` 解码后写入 `outputs/`。
+
 ### 基准
 
 - PICABench：评估编辑后物理真实感，覆盖光学、力学和状态变化等维度；用于挑选测试样例和定义评价问题。
