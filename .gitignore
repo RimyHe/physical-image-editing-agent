@@ -22,3 +22,5 @@ outputs/picabench_full_20260721_resumable/viewer*.log
 outputs/picabench_crop_*/picabench_*/
 outputs/picabench_crop_*/viewer*.log
 outputs/picabench_crop_*/*.log
+outputs/*_test_*/
+outputs/*_smoke/
