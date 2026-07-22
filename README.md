@@ -69,3 +69,4 @@ python physical_image_editing_agent\run_agent.py --image physical_image_editing_
 | 时间 | Commit | 内容 |
 |---|---|---|
 | 2026-07-21 19:54:25 +08:00 | `bbb06e8` | 新 crop 坐标协议、去黑边 final image、保留 padded candidate、QA full/crop/mixed 分流、Gradio 新数据展示、50-case 新评分摘要、progress report 结构调整。 |
+| 2026-07-22 19:15:45 +08:00 | `c8608c4` | 更新 0721 crop v3 的 PICABench full-run 结果；补充 prompt 层级与官方评测口径说明；将 PhysicalIntentExpander 设为开发计划 P0 第一优先级，并改为待办事项管理。 |
