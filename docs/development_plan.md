@@ -2,9 +2,10 @@
 
 ## 当前开发重点
 
-下一阶段重点不是直接堆叠更多外部视觉工具，而是先把评测协议、坐标映射和 QA 视图选择固定下来，再在同一套 TaskProfile 上开发 Planner、Router、Executor、Verifier 的路线化能力。当前优先级应按“评测可复现 -> 规划可结构化 -> 路由可解释 -> 执行可控 -> 验证可阻断 -> 失败可回流”推进。
+当前第一优先级是实现 `PhysicalIntentExpander`：接收 PICABench 的短 `superficial_prompt` 和图像，生成结构化的最终稳定状态与物理视觉后果，再交给 Planner、Router、Executor 和 Verifier 使用。评测协议和坐标协议已经完成，后续任务都应围绕这个结构化任务画像推进。
 
 参考调研笔记：[`tool_router_physics_tool_research.md`](tool_router_physics_tool_research.md)
+
 ## 目标架构
 
 ```text
@@ -17,11 +18,59 @@ User image + instruction
        -> fail: 生成 repair instruction，并带历史反馈重新 route/edit
 ```
 
-## 重新安排后的开发顺序
+## 工作流图对应的当前代码实现
 
-前面原有的五个阶段已经不再适合作为当前路线图：它们过早把 Router 和外部工具放在第一位，但从现有实验和尺寸问题暴露出的风险看，真正的优先级应先稳定评测协议和坐标协议，再逐步让 Planner、Router、Executor、Verifier 消费同一套结构化任务表示。新的开发顺序按“评测可复现 -> 决策可解释 -> 执行可控 -> 验证可阻断 -> 失败可回流”的闭环安排。
+本节根据 `references/工作流.png` 的组件顺序，记录当前代码实际已经采用的实现方法。它描述的是当前 baseline，不等同于后续计划方案；后续优化应以本节为代码事实基础，避免把未实现的 route/tool/mask 能力误写成当前能力。
 
-### 阶段 0：固定评测协议与坐标协议
+| 工作流组件 | 当前代码位置 | 当前实现方法 | 当前输入 | 当前输出/产物 | 主要局限 |
+|---|---|---|---|---|---|
+| User Image + Instruction | `scripts/run_picabench_examples.py`、`scripts/run_picabench_resumable.py` | 从 PICABench manifest 读取 `input_png`、`instruction`、`physics_category`、`physics_law`、`edit_operation`、`edit_area`、`annotated_qa_pairs`；运行前把原图标准化成 canonical input | 原始 PNG、编辑指令、PICABench 标签和 QA 元数据 | `canonical_input.png`、`coordinate_transform.json`、传入 agent 的 `eval_case` metadata | 目前主要面向 PICABench manifest；普通用户输入没有自动标签推断和人工确认流程 |
+| 图像标准化/坐标协议 | `src/physical_agent/pica_eval.py` | 使用 `prepare_canonical_input()` 把原图按 `1024x1024 contain + padding` 渲染到统一画布；用 `contain_transform()` 保存 scale/padding；评测时通过 `source_box -> canonical_box -> output_box` 映射 crop | 原始图、目标 canonical size、PICABench edit/crop box | canonical 图、坐标变换 JSON、mapped crop、去 padding 的 final image | 只支持 contain/identity 协议；不能自动修正生成模型导致的构图漂移 |
+| MLLM Analyzer / Planning | `src/physical_agent/planner.py` | `plan_edit()` 调用兼容 OpenAI chat completions 的 VLM，要求返回严格 JSON；system prompt 指定字段 `target`、`operation`、`preserve`、`physics_dependencies`、`route`、`edit_prompt`、`verifier_focus`；失败重试时把上一轮 verifier failure 拼入 prompt | 当前图像、用户指令、上一轮失败说明 | `plan.json` 中的自由结构 JSON 和 `edit_prompt` | 还没有 `LabelPolicyCompiler`、TaskProfile schema、规则校验器；PICABench 三类标签没有在 Planner 规则层稳定注入 |
+| Tool Selection / Router | `src/physical_agent/router.py` | `select_route(plan)` 读取 plan 中的 `route` 字段，只接受 `direct_edit` 或 `local_edit`；若请求 `local_edit`，由于没有 mask/local CV 工具，直接回退到 `direct_edit` | Planner 输出的 plan | `{"route": "direct_edit", "reason": ...}` | 尚无 `RouteSpec`、`ToolSpec`、capability matching、risk scoring；Reflection/Light_Propagation/Causality 没有真正分流 |
+| Tool Retrieval | 当前没有独立模块 | 工作流图中的工具检索节点尚未实现；当前系统没有工具库检索、工具注册表或动态工具选择，只在 Router 中硬编码回退原因 | 无 | 无 | 缺少可查询的 tool inventory；无法按任务检索 detector、segmenter、mask editor、inpainting、physics verifier 等工具 |
+| Tool Executor / Generation/Edit | `src/physical_agent/editor.py`、`src/physical_agent/openai_compat.py` | `execute_edit()` 校验输入 PNG 后调用 `OpenAICompatClient.edit_image()`；底层向 `/images/edits` 发 multipart 请求，默认 `size="1024x1024"`，取 `data[0].b64_json` 写为 `candidate.png` | canonical input、Planner 生成的 `edit_prompt`、image edit model | 每轮 `step_xx/candidate.png` | 只做单次 whole-image edit；没有 mask edit、局部回贴、两阶段执行、best-of-N、execution trace |
+| Verification Agent | `src/physical_agent/verifier.py` | `verify_edit()` 同时看 original/candidate 两张图，结合 instruction、plan、route、metadata 生成 task profile 和 required checks；VLM 输出 `pass`、三项分数、`check_results`、`blocking_failures`、`route_hints`；`normalize_verification_result()` 将 required/blocking failure 作为硬门槛 | 原图、候选图、指令、plan、route、metadata | `verify.json`、`required_checks`、`blocking_failures`、`repair_instruction`、`route_hints` | checklist 主要是规则生成 + VLM 判断，缺少确定性视觉工具验证；route-aware 能力受限于 Router 当前只有 `direct_edit` |
+| Pass / Fail Control | `src/physical_agent/orchestrator.py` | `run_agent()` 组织 Planner -> Router -> Editor -> Verifier 循环；若 `verification["pass"]` 为真则接受并停止；否则把 `repair_instruction` 或 `issues` 作为 `previous_failure` 进入下一轮；最大轮数由 `Settings.max_retries` 控制 | 每轮 verification 结果、settings | `run_state.json`、`iterations`、`accepted`、`final_image`、调用次数统计 | retry 只把失败文本回灌给 Planner；不会根据 route hints 切换工具链、扩大 mask 或调整候选预算 |
+| PICABench QA / Dataset Evaluation | `src/physical_agent/pica_eval.py`、运行脚本 | agent 完成后，`evaluate_picabench_case()` 对 `annotated_qa_pairs` 做 yes/no VLM 评测；`classify_question()` 用关键词把问题分成 `global_position`、`local_appearance`、`mixed`、`unknown`，并选择 full image/crop/mixed 视图；同时计算 non-edit PSNR | 去 padding 的 final image、原图、QA pairs、edit_area、metadata | `pica_eval.json`、逐题 QA 结果、accuracy、non-edit PSNR | QA 类型是启发式关键词分类；PICAEval 独立于 agent pass gate，当前主要用于离线评估和汇总 |
+| 实验汇总与可视化 | `scripts/run_picabench_examples.py`、`scripts/run_picabench_resumable.py`、`scripts/view_picabench_results.py` | 批量脚本写 `summary.json` 和 `summary_metrics.json`；resumable 脚本支持按 case 重试和 resume；Gradio viewer 支持按 physics law/category/operation 过滤并查看原图、结果图、QA 表和 crop gallery | run outputs、manifest、pica_eval.json | summary、metrics、可视化界面 | 汇总维度仍以 law 为主；尚未完整按 route、question_type、context_risk、blocking_failure 做联动分析 |
+| 配置与 API 适配 | `src/physical_agent/config.py`、`src/physical_agent/openai_compat.py`、`src/physical_agent/image_io.py` | 从 `.env` 或环境变量读取 base URL、API key 和模型名；用 urllib 实现 chat JSON、image edit multipart、重试；图像 I/O 只接受有效 PNG，并用 data URL 发送给 VLM | `.env`、环境变量、PNG 文件 | `Settings`、API JSON、base64 图像文件 | 依赖 OpenAI-compatible endpoint；没有 provider fallback；image edit size 默认固定为 `1024x1024` |
+
+当前代码的整体执行链可以概括为：
+
+```text
+PICABench case
+  -> canonicalize image and save coordinate transform
+  -> run_agent()
+      -> plan_edit(): VLM JSON plan
+      -> select_route(): direct_edit fallback
+      -> execute_edit(): whole-image edit API
+      -> verify_edit(): VLM route-aware checklist gate
+      -> retry with previous_failure when verifier fails
+  -> write unpadded output
+  -> evaluate_picabench_case(): mapped QA crops/full-image QA + non-edit PSNR
+  -> summary.json / summary_metrics.json / Gradio viewer
+```
+
+因此，当前系统已经实现了工作流图中的主循环骨架、VLM planner、基础 router、图像编辑 executor、route-aware verifier、失败重试和 PICABench 离线评测；尚未实现的是独立工具检索、真实工具库、mask/local edit 工具链、基于三类物理标签的规则 planner/router、以及结构化 route hints 驱动的重试策略。
+
+## 开发待办事项
+
+状态约定：`[ ]` 待办，`[x]` 已完成，`[-]` 暂缓或依赖前置任务。
+
+### P0：PhysicalIntentExpander（当前第一优先级）
+
+- [ ] 定义 `TaskProfile` schema：`final_state`、`affected_objects`、`physical_dependencies`、`dependent_regions`、`preserve_scope`、`reference_cues`、`uncertainties`。
+- [ ] 实现 `LabelPolicyCompiler`，把 `physics_category`、`physics_law`、`edit_operation` 编译为规则骨架。
+- [ ] 实现 `PhysicalIntentExpander`，输入 `superficial_prompt + image + policy scaffold`。
+- [ ] 使用 `explicit_prompt` 作为弱监督/教师信号，先做 prompt 对齐和结构化字段抽取，不直接把 explicit 文本视为绝对真值。
+- [ ] 实现 `PlanValidator`，检查物理依赖、最终稳定状态、保持区域和不确定字段。
+- [ ] 实现 prompt renderer，把结构化 TaskProfile 渲染为 Executor 可用的详细编辑指令。
+- [ ] 增加三组对照实验：superficial baseline、explicit upper bound、superficial + expander。
+- [ ] 在固定 50-case regression set 上记录 QA accuracy、non-edit PSNR、Verifier pass rate 和扩展失败类型。
+- [ ] 只有当 expander 的收益在固定评测协议下稳定后，才考虑监督微调或强化学习。
+
+### P1：固定评测协议与坐标协议（已完成）
 
 目标：先保证后续优化的收益可以被稳定测到，避免 route 或工具改动被尺寸、crop、QA 视图选择等评测噪声掩盖。
 
@@ -32,21 +81,62 @@ User image + instruction
 4. 在 `pica_eval.json` 中记录 `evaluation_view`、`source_box`、`mapped_box`、`output_size`、`context_risk`。
 5. 将 non-edit PSNR、QA accuracy、accepted/pass 等指标都绑定到同一套坐标协议上。
 
-完成标准：同一个 case 在不改 agent 行为时重复评测应得到稳定结果；低分 case 能区分是编辑失败、物理失败、尺寸映射失败，还是 QA 视图选择不当。
+完成状态：已完成当前开发阶段所需的评测协议实现和最小验收。阶段 0 的目标是冻结一套可运行、可复现的坐标和评测流程，不要求在本阶段解决 VLM 判断本身的随机性或所有物理失败。
 
-### 阶段 1：Planner 生成结构化 TaskProfile
+完成内容：
+1. 已统一生成 `canonical_input.png`，并保存 `coordinate_transform.json`。
+2. 已实现 `source box -> canonical box -> output box` 显式映射。
+3. 已实现 `global_position`、`local_appearance`、`mixed`、`unknown` 四类 QA 视图分流。
+4. 已在 `pica_eval.json` 中记录评测视图、坐标框、输出尺寸和 `context_risk`。
+5. 已统一 non-edit PSNR、QA accuracy 和 agent accepted/pass 的结果记录流程。
+6. 已完成 50-case 主运行，结果记录在 `docs/picabench_full_run_results.md`。
+
+完成过程与验证记录：
+
+```text
+1. 检查 pica_eval.py、run_picabench_examples.py 和
+   run_picabench_resumable.py，确认 canonical、坐标映射、去 padding、
+   QA 分流和 PSNR 链路已经串通。
+2. 运行 python -m compileall -q src scripts，检查实现可导入。
+3. 运行 python scripts/run_picabench_examples.py --limit 1 --dry-run，
+   确认 PICABench case 能被正确读取。
+4. 对竖图 contain 场景执行坐标映射 smoke check，验证 padding、
+   source/canonical/output box 映射和四类 QA view 分类均通过。
+```
+
+阶段 0 的后续改进（不阻塞阶段完成）：
+
+- 用少量人工标注校正关键词 QA 分类。
+- 增加更多尺寸和边界框组合的单元测试。
+- 对 Global 任务单独解释 PSNR。
+- 后续将 PICAEval 结果进一步接入 Verifier gate。
+
+### P0 的实现细节：Planner 生成结构化 TaskProfile
 
 目标：让 Planner 不只是生成自然语言 `edit_prompt`，而是生成 Router、Executor、Verifier 都能消费的结构化任务画像。
 
+建议在 Planner 前增加一个 `PhysicalIntentExpander`：
+
+```text
+superficial_prompt + image + PICABench labels
+  -> PhysicalIntentExpander
+  -> final_state / affected_objects / physical_dependencies / preserve_scope
+  -> prompt renderer
+  -> Planner / Router / Executor
+```
+
+`explicit_prompt` 适合作为训练或提示阶段的教师信号，但不应直接当作绝对真值。它可能包含过度具体、视觉上不可证实或标注有争议的描述。训练目标应优先约束结构化字段的正确性，再生成自然语言 prompt。
+
 开发内容：
 1. 实现 `LabelPolicyCompiler`：把 PICABench 的 `physics_category`、`physics_law`、`edit_operation` 编译成规则骨架，包括物理依赖、候选 route、must-pass checks、默认风险等级。
-2. 实现 `VisionPlanner`：让 LLM/VLM 读取图像和指令，在规则骨架约束下补全 `target_objects`、`affected_objects`、`dependent_regions`、`reference_cues`、`edit_prompt`。
-3. 实现 `PlanValidator`：校验字段完整性，禁止缺失关键物理依赖，补全默认 preserve scope 和 verifier focus。
-4. 固定 TaskProfile schema，使后续组件不再解析自由文本。
+2. 实现 `PhysicalIntentExpander`：让模型读取图像、短 prompt 和规则骨架，补全 `final_state`、`affected_objects`、`dependent_regions`、`reference_cues`、`preserve_scope`，并标记不确定字段。
+3. 实现 `VisionPlanner`：将结构化物理意图渲染为 executor 可用的 `edit_prompt`，而不是直接自由发挥。
+4. 实现 `PlanValidator`：校验字段完整性，禁止缺失关键物理依赖，补全默认 preserve scope 和 verifier focus。
+5. 固定 TaskProfile schema，使后续组件不再解析自由文本。
 
 选择原因：PICABench 标签是确定输入，不应交给 LLM 重新猜测；但图像中的对象、接触点、反射面、阴影承接面等细节必须由视觉模型补全。因此 Planner 应采用“规则骨架 + LLM/VLM 视觉填充 + 规则校验”的混合方案。
 
-### 阶段 2：Router 与 ToolSpec/RouteSpec
+### P2：Router 与 ToolSpec/RouteSpec
 
 目标：把 TaskProfile 转换成明确的执行路线，而不是让所有任务都退化成 whole-image direct edit。
 
@@ -59,7 +149,7 @@ User image + instruction
 
 选择原因：Router 的作用不是“聪明地写 prompt”，而是把物理标签和 TaskProfile 转成可审计的工具链选择。尤其是 Reflection、Light_Propagation、Causality 这类低分类型，需要通过 route 明确要求反射、阴影、支撑关系等依赖区域同步更新。
 
-### 阶段 3：Executor 路线化执行
+### P3：Executor 路线化执行
 
 目标：让执行层真正体现 route 差异，逐步从单一 API direct edit 过渡到局部、两阶段和候选生成策略。
 
@@ -73,7 +163,7 @@ User image + instruction
 
 选择原因：当前失败样本中，“摩托车放倒”“卡牌取走”这类任务不是单纯局部纹理编辑失败，而是执行层没有显式模拟干预后的物理后果。Executor 必须把 route 中的物理依赖变成执行约束。
 
-### 阶段 4：Route-aware Verifier 与 PICAEval Gate
+### P4：Route-aware Verifier 与 PICAEval Gate
 
 目标：让 Verifier 不再只给通用分数，而是按 route 检查必须满足的物理条件，并能阻断明显物理错误的候选。
 
@@ -86,7 +176,7 @@ User image + instruction
 
 选择原因：低分样本往往不是“整体看起来不好”，而是违反了某条关键物理关系，例如反射缺失、阴影方向不一致、支撑物移除后主体仍悬空。Verifier 必须能把这些失败显式化。
 
-### 阶段 5：Retry Loop 与实验闭环
+### P5：Retry Loop 与实验闭环
 
 目标：让失败信息不只是自然语言 repair prompt，而是能回流到 Planner/Router/Executor 的结构化修复信号。
 
@@ -99,7 +189,7 @@ User image + instruction
 
 选择原因：如果 retry 只是把错误描述拼回 prompt，agent 很难稳定改正路线级错误。失败必须结构化，才能判断下一轮是补 mask、换 route、扩大 crop、增加完整图验证，还是直接拒绝当前候选。
 
-### 阶段 6：真实视觉工具接入与路线扩展
+### P6：真实视觉工具接入与路线扩展
 
 目标：在评测协议、Planner/Router/Verifier 都稳定后，再接入 detector、segmenter、mask editor、inpainting 等更重的工具。
 
@@ -145,10 +235,12 @@ User image + instruction
 
 短期执行顺序：
 
-1. 先固定评测协议：canonical input、坐标映射、QA 视图分流、PSNR 坐标统一。
-2. 再重跑重点 regression cases，尤其是 `picabench_0816_light_propagation`、`picabench_0387_reflection`、`picabench_0294_causality`。
-3. 如果低分仍集中在 Reflection 和 Light_Propagation，再开发 route-specific planner/verifier。
-4. 最后接入 mask/detection/segmentation 等工具，避免在评测协议未稳定前优化错误目标。
+1. 实现 `PhysicalIntentExpander` 的最小版本：短 prompt + 图像 -> 结构化 TaskProfile。
+2. 用 `explicit_prompt` 做弱监督，先验证 `final_state`、`affected_objects` 和 `physical_dependencies` 的覆盖率。
+3. 在 `0816`、`0387`、`0294` 等重点 regression cases 上比较 superficial baseline、explicit upper bound 和 expander。
+4. 将 expander 输出接入现有 Planner，并记录扩展结果、失败类型和 verifier feedback。
+5. 确认 expander 稳定有效后，再开发 route-specific planner/verifier。
+6. 最后接入 mask/detection/segmentation 等工具，避免在任务画像和评测协议未稳定前优化错误目标。
 
 ## PICABench 三类标签在模块中的作用
 

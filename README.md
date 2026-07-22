@@ -61,3 +61,11 @@ python physical_image_editing_agent\run_agent.py --image physical_image_editing_
 - `step_XX/verify.json`：Verifier 评分、问题列表和修复指令。
 
 当前版本只做整图编辑，不做 mask、检测、分割或局部回贴；这些属于下一阶段的物理保持模块。
+
+## 推送记录
+
+约定：之后每次推送到 GitHub 前，都在本节补充推送时间和内容说明。
+
+| 时间 | Commit | 内容 |
+|---|---|---|
+| 2026-07-21 19:54:25 +08:00 | `bbb06e8` | 新 crop 坐标协议、去黑边 final image、保留 padded candidate、QA full/crop/mixed 分流、Gradio 新数据展示、50-case 新评分摘要、progress report 结构调整。 |
