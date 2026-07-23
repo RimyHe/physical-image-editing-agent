@@ -34,10 +34,10 @@ references/projects/    只读参考项目
 
 ```text
 input PNG + instruction
-  -> Planner: gpt-4o, 输出结构化计划
+  -> Planner: gpt-5.4-mini, 输出结构化计划
   -> Router: Python 规则，首版走 direct_edit
   -> Executor: gpt-image-2 /images/edits, 输出 candidate.png
-  -> Verifier: gpt-4o, 输出结构化验收结果
+  -> Verifier: gpt-5.4-mini, 输出结构化验收结果
   -> pass: 接受；fail: 带 repair_instruction 重试
 ```
 

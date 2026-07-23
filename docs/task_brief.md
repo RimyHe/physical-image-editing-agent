@@ -58,10 +58,10 @@ User Image + Instruction
 这里的方框表示**功能角色**，不是一格对应一个模型。MVP 的推荐实现是：
 
 ```text
-Planner/VLM：`gpt-4o`，读取图像并输出受 schema 约束的 JSON
+Planner/VLM：`gpt-5.4-mini`，读取图像并输出受 schema 约束的 JSON
 Router：Python 规则，根据目标尺度、编辑类型和物理依赖选执行路线
 Executor：`gpt-image-2`，调用 `/images/edits` 并将 `b64_json` 解码为候选图
-Verifier/VLM：复用 `gpt-4o`，以独立评审 prompt 检查结果
+Verifier/VLM：复用 `gpt-5.4-mini`，以独立评审 prompt 检查结果
 State machine：Python 控制重试次数、候选记录、停止与回退
 ```
 
@@ -72,7 +72,7 @@ State machine：Python 控制重试次数、候选记录、停止与回退
 ### 已验证的 API 能力
 
 - 服务为 OpenAI-compatible 格式，`base_url` 为 `https://api.nuwaapi.com/v1`；密钥只从本地 `.env` 或环境变量读取。旧的已暴露密钥必须撤销，不得复用。
-- `gpt-4o` 已通过 `POST /v1/chat/completions` 的标准 RGB PNG data URL 测试，可读取图像并适合作为 Planner/Verifier。请求别名为 `gpt-4o`，服务返回的实际快照为 `gpt-4o-2024-11-20`。
+- `gpt-5.4-mini` 是当前固定的 Planner/Verifier 模型，使用 `POST /v1/chat/completions` 读取标准 RGB PNG data URL 并输出结构化结果。
 - `gpt-image-2` 已通过 `POST /v1/images/generations` 和 `POST /v1/images/edits` 测试，既可生成图片，也可编辑上传图片，作为 MVP 的 Executor。
 - `gpt-image-2` 的结果为 `data[0].b64_json`，而非 URL；`editor_client` 负责 Base64 解码、保存候选图并将其路径写入运行状态。
 - 编辑 endpoint 拒绝过 1x1 测试图，但接受 64x64、24-bit RGB PNG。首版统一将输入规范化为 RGB PNG，并在调用前校验文件有效性和最小尺寸。
@@ -83,8 +83,8 @@ State machine：Python 控制重试次数、候选记录、停止与回退
 ```dotenv
 OPENAI_COMPAT_BASE_URL=https://api.nuwaapi.com/v1
 OPENAI_COMPAT_API_KEY=<local-secret>
-PLANNER_MODEL=gpt-4o
-VERIFIER_MODEL=gpt-4o
+PLANNER_MODEL=gpt-5.4-mini
+VERIFIER_MODEL=gpt-5.4-mini
 IMAGE_EDIT_MODEL=gpt-image-2
 ```
 
@@ -99,7 +99,7 @@ IMAGE_EDIT_MODEL=gpt-image-2
 
 | 角色 | 模型与 endpoint | 当前职责 |
 | --- | --- | --- |
-| Planner / Verifier | `gpt-4o`，`POST /v1/chat/completions` | 读取图像并输出结构化计划或验证结果 |
+| Planner / Verifier | `gpt-5.4-mini`，`POST /v1/chat/completions` | 读取图像并输出结构化计划或验证结果 |
 | Image Executor | `gpt-image-2`，`POST /v1/images/edits` | 根据原图和编辑 prompt 生成候选图 |
 | Tool Selection / Retry Control | Python 状态机 | 路由、重试、保存中间产物、控制停止条件 |
 
@@ -107,10 +107,10 @@ IMAGE_EDIT_MODEL=gpt-image-2
 
 ```text
 User image + instruction
-  -> Planner call: gpt-4o
+  -> Planner call: gpt-5.4-mini
   -> Tool selection: Python router
   -> Tool executor: gpt-image-2 /images/edits
-  -> Verification call: gpt-4o
+  -> Verification call: gpt-5.4-mini
        -> pass: 返回候选图
        -> fail: 生成 repair instruction 后重试
 ```

@@ -47,7 +47,7 @@
 
 ## 推荐实施顺序
 
-1. 使用既有 Chat Completions endpoint 上的 `gpt-4o` 与 PydanticAI 起步。将 `EditPlan` 和 `VerificationReport` 定义为 Pydantic 输出模型；对格式错误或字段缺失的输出拒绝并重试。
+1. 使用既有 Chat Completions endpoint 上的 `gpt-5.4-mini` 与 PydanticAI 起步。将 `EditPlan` 和 `VerificationReport` 定义为 Pydantic 输出模型；对格式错误或字段缺失的输出拒绝并重试。
 2. 将 `gpt-image-2` 保持在聊天 Agent 抽象之外。实现一个小型 `editor_client`：把输入规范化为 RGB PNG，调用 `/images/edits`，解码 `data[0].b64_json`，并保存候选图产物。
 3. 实现显式 Python 状态机：`plan -> edit -> verify -> accept | repair -> retry`。每轮持久化输入、计划、候选图、验证报告、耗时和请求标识，最多重试两次。
 4. 请求 VLM Verifier 前先运行确定性的物理检查。将失败证据写入 `repair_instruction`，而不是依赖无约束的多 Agent 对话辩论。
@@ -55,13 +55,13 @@
 
 ## 框架接入前的兼容性检查
 
-- 在选定框架中测试 `gpt-4o` 的图片输入、JSON schema 输出和函数调用。当前 API 探测只确认了图片输入；尚未验证框架构造请求时的兼容性。
+- 当前固定模型为 `gpt-5.4-mini`；需要持续验证其图片输入、JSON schema 输出和函数调用兼容性。
 - 不要因为代理兼容 Chat Completions 就假设它支持 Responses API 特性、托管工具、服务端会话或 tracing。除非该服务另行证明兼容 Responses API，否则框架应配置为 Chat Completions。
 - 将成本和限流信息作为独立配置记录；`/models` endpoint 不提供这些信息。
 
 ## Codex 认证边界
 
-当前项目的 `https://api.nuwaapi.com/v1` key 是第三方 OpenAI-compatible 模型网关凭据，可供本项目调用 `gpt-4o` 和 `gpt-image-2`，但不是 OpenAI Platform API key，也不是 ChatGPT 账号凭据。因此它不能用于登录 Codex，也不应写入全局 `~/.codex/.env` 或作为 Codex 的 `OPENAI_API_KEY`。
+当前项目的 `https://api.nuwaapi.com/v1` key 是第三方 OpenAI-compatible 模型网关凭据，本项目固定使用 `gpt-5.4-mini` 和 `gpt-image-2`；它不是 OpenAI Platform API key，也不是 ChatGPT 账号凭据。因此它不能用于登录 Codex，也不应写入全局 `~/.codex/.env` 或作为 Codex 的 `OPENAI_API_KEY`。
 
 Codex 的官方登录路径是 ChatGPT 账号授权或 OpenAI Platform API key；官方还单独支持 Amazon Bedrock 凭据和其 Responses API 实现。第三方 Chat Completions-compatible endpoint 的模型列表与 Codex 可登录、可使用的模型是两个独立的授权与兼容性边界。
 
