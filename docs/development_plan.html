@@ -1,0 +1,1968 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>development_plan.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> or <div class="page"></div> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="physical-agent-开发计划">Physical Agent 开发计划</h1>
+<h2 id="当前开发重点">当前开发重点</h2>
+<p>下一阶段重点不是直接堆叠更多外部视觉工具，而是先把评测协议、坐标映射和 QA 视图选择固定下来，再在同一套 TaskProfile 上开发 Planner、Router、Executor、Verifier 的路线化能力。当前优先级应按“评测可复现 -&gt; 规划可结构化 -&gt; 路由可解释 -&gt; 执行可控 -&gt; 验证可阻断 -&gt; 失败可回流”推进。</p>
+<p>参考调研笔记：<a href="tool_router_physics_tool_research.md"><code>tool_router_physics_tool_research.md</code></a></p>
+<h2 id="目标架构">目标架构</h2>
+<pre class="hljs"><code><div>User image + instruction
+  -&gt; Planner: 生成 task profile 和初始 edit prompt
+  -&gt; Router: 根据编辑动作、物理依赖、空间范围选择 route/toolchain
+  -&gt; Tool Executor: direct edit / mask edit / detection / segmentation / inpainting / QA
+  -&gt; Verifier: VLM 分项评分 + PICABench QA + deterministic guardrails
+       -&gt; pass: accept
+       -&gt; fail: 生成 repair instruction，并带历史反馈重新 route/edit
+</div></code></pre>
+<h2 id="工作流图对应的当前代码实现">工作流图对应的当前代码实现</h2>
+<p>本节根据 <code>references/工作流.png</code> 的组件顺序，记录当前代码实际已经采用的实现方法。它描述的是当前 baseline，不等同于后续计划方案；后续优化应以本节为代码事实基础，避免把未实现的 route/tool/mask 能力误写成当前能力。</p>
+<table>
+<thead>
+<tr>
+<th>工作流组件</th>
+<th>当前代码位置</th>
+<th>当前实现方法</th>
+<th>当前输入</th>
+<th>当前输出/产物</th>
+<th>主要局限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>User Image + Instruction</td>
+<td><code>scripts/run_picabench_examples.py</code>、<code>scripts/run_picabench_resumable.py</code></td>
+<td>从 PICABench manifest 读取 <code>input_png</code>、<code>instruction</code>、<code>physics_category</code>、<code>physics_law</code>、<code>edit_operation</code>、<code>edit_area</code>、<code>annotated_qa_pairs</code>；运行前把原图标准化成 canonical input</td>
+<td>原始 PNG、编辑指令、PICABench 标签和 QA 元数据</td>
+<td><code>canonical_input.png</code>、<code>coordinate_transform.json</code>、传入 agent 的 <code>eval_case</code> metadata</td>
+<td>目前主要面向 PICABench manifest；普通用户输入没有自动标签推断和人工确认流程</td>
+</tr>
+<tr>
+<td>图像标准化/坐标协议</td>
+<td><code>src/physical_agent/pica_eval.py</code></td>
+<td>使用 <code>prepare_canonical_input()</code> 把原图按 <code>1024x1024 contain + padding</code> 渲染到统一画布；用 <code>contain_transform()</code> 保存 scale/padding；评测时通过 <code>source_box -&gt; canonical_box -&gt; output_box</code> 映射 crop</td>
+<td>原始图、目标 canonical size、PICABench edit/crop box</td>
+<td>canonical 图、坐标变换 JSON、mapped crop、去 padding 的 final image</td>
+<td>只支持 contain/identity 协议；不能自动修正生成模型导致的构图漂移</td>
+</tr>
+<tr>
+<td>MLLM Analyzer / Planning</td>
+<td><code>src/physical_agent/planner.py</code></td>
+<td><code>plan_edit()</code> 调用兼容 OpenAI chat completions 的 VLM，要求返回严格 JSON；system prompt 指定字段 <code>target</code>、<code>operation</code>、<code>preserve</code>、<code>physics_dependencies</code>、<code>route</code>、<code>edit_prompt</code>、<code>verifier_focus</code>；失败重试时把上一轮 verifier failure 拼入 prompt</td>
+<td>当前图像、用户指令、上一轮失败说明</td>
+<td><code>plan.json</code> 中的自由结构 JSON 和 <code>edit_prompt</code></td>
+<td>还没有 <code>LabelPolicyCompiler</code>、TaskProfile schema、规则校验器；PICABench 三类标签没有在 Planner 规则层稳定注入</td>
+</tr>
+<tr>
+<td>Tool Selection / Router</td>
+<td><code>src/physical_agent/router.py</code></td>
+<td><code>select_route(plan)</code> 读取 plan 中的 <code>route</code> 字段，只接受 <code>direct_edit</code> 或 <code>local_edit</code>；若请求 <code>local_edit</code>，由于没有 mask/local CV 工具，直接回退到 <code>direct_edit</code></td>
+<td>Planner 输出的 plan</td>
+<td><code>{&quot;route&quot;: &quot;direct_edit&quot;, &quot;reason&quot;: ...}</code></td>
+<td>尚无 <code>RouteSpec</code>、<code>ToolSpec</code>、capability matching、risk scoring；Reflection/Light_Propagation/Causality 没有真正分流</td>
+</tr>
+<tr>
+<td>Tool Retrieval</td>
+<td>当前没有独立模块</td>
+<td>工作流图中的工具检索节点尚未实现；当前系统没有工具库检索、工具注册表或动态工具选择，只在 Router 中硬编码回退原因</td>
+<td>无</td>
+<td>无</td>
+<td>缺少可查询的 tool inventory；无法按任务检索 detector、segmenter、mask editor、inpainting、physics verifier 等工具</td>
+</tr>
+<tr>
+<td>Tool Executor / Generation/Edit</td>
+<td><code>src/physical_agent/editor.py</code>、<code>src/physical_agent/openai_compat.py</code></td>
+<td><code>execute_edit()</code> 校验输入 PNG 后调用 <code>OpenAICompatClient.edit_image()</code>；底层向 <code>/images/edits</code> 发 multipart 请求，默认 <code>size=&quot;1024x1024&quot;</code>，取 <code>data[0].b64_json</code> 写为 <code>candidate.png</code></td>
+<td>canonical input、Planner 生成的 <code>edit_prompt</code>、image edit model</td>
+<td>每轮 <code>step_xx/candidate.png</code></td>
+<td>只做单次 whole-image edit；没有 mask edit、局部回贴、两阶段执行、best-of-N、execution trace</td>
+</tr>
+<tr>
+<td>Verification Agent</td>
+<td><code>src/physical_agent/verifier.py</code></td>
+<td><code>verify_edit()</code> 同时看 original/candidate 两张图，结合 instruction、plan、route、metadata 生成 task profile 和 required checks；VLM 输出 <code>pass</code>、三项分数、<code>check_results</code>、<code>blocking_failures</code>、<code>route_hints</code>；<code>normalize_verification_result()</code> 将 required/blocking failure 作为硬门槛</td>
+<td>原图、候选图、指令、plan、route、metadata</td>
+<td><code>verify.json</code>、<code>required_checks</code>、<code>blocking_failures</code>、<code>repair_instruction</code>、<code>route_hints</code></td>
+<td>checklist 主要是规则生成 + VLM 判断，缺少确定性视觉工具验证；route-aware 能力受限于 Router 当前只有 <code>direct_edit</code></td>
+</tr>
+<tr>
+<td>Pass / Fail Control</td>
+<td><code>src/physical_agent/orchestrator.py</code></td>
+<td><code>run_agent()</code> 组织 Planner -&gt; Router -&gt; Editor -&gt; Verifier 循环；若 <code>verification[&quot;pass&quot;]</code> 为真则接受并停止；否则把 <code>repair_instruction</code> 或 <code>issues</code> 作为 <code>previous_failure</code> 进入下一轮；最大轮数由 <code>Settings.max_retries</code> 控制</td>
+<td>每轮 verification 结果、settings</td>
+<td><code>run_state.json</code>、<code>iterations</code>、<code>accepted</code>、<code>final_image</code>、调用次数统计</td>
+<td>retry 只把失败文本回灌给 Planner；不会根据 route hints 切换工具链、扩大 mask 或调整候选预算</td>
+</tr>
+<tr>
+<td>PICABench QA / Dataset Evaluation</td>
+<td><code>src/physical_agent/pica_eval.py</code>、运行脚本</td>
+<td>agent 完成后，<code>evaluate_picabench_case()</code> 对 <code>annotated_qa_pairs</code> 做 yes/no VLM 评测；<code>classify_question()</code> 用关键词把问题分成 <code>global_position</code>、<code>local_appearance</code>、<code>mixed</code>、<code>unknown</code>，并选择 full image/crop/mixed 视图；同时计算 non-edit PSNR</td>
+<td>去 padding 的 final image、原图、QA pairs、edit_area、metadata</td>
+<td><code>pica_eval.json</code>、逐题 QA 结果、accuracy、non-edit PSNR</td>
+<td>QA 类型是启发式关键词分类；PICAEval 独立于 agent pass gate，当前主要用于离线评估和汇总</td>
+</tr>
+<tr>
+<td>实验汇总与可视化</td>
+<td><code>scripts/run_picabench_examples.py</code>、<code>scripts/run_picabench_resumable.py</code>、<code>scripts/view_picabench_results.py</code></td>
+<td>批量脚本写 <code>summary.json</code> 和 <code>summary_metrics.json</code>；resumable 脚本支持按 case 重试和 resume；Gradio viewer 支持按 physics law/category/operation 过滤并查看原图、结果图、QA 表和 crop gallery</td>
+<td>run outputs、manifest、pica_eval.json</td>
+<td>summary、metrics、可视化界面</td>
+<td>汇总维度仍以 law 为主；尚未完整按 route、question_type、context_risk、blocking_failure 做联动分析</td>
+</tr>
+<tr>
+<td>配置与 API 适配</td>
+<td><code>src/physical_agent/config.py</code>、<code>src/physical_agent/openai_compat.py</code>、<code>src/physical_agent/image_io.py</code></td>
+<td>从 <code>.env</code> 或环境变量读取 base URL、API key 和模型名；用 urllib 实现 chat JSON、image edit multipart、重试；图像 I/O 只接受有效 PNG，并用 data URL 发送给 VLM</td>
+<td><code>.env</code>、环境变量、PNG 文件</td>
+<td><code>Settings</code>、API JSON、base64 图像文件</td>
+<td>依赖 OpenAI-compatible endpoint；没有 provider fallback；image edit size 默认固定为 <code>1024x1024</code></td>
+</tr>
+</tbody>
+</table>
+<p>当前代码的整体执行链可以概括为：</p>
+<pre class="hljs"><code><div>PICABench case
+  -&gt; canonicalize image and save coordinate transform
+  -&gt; run_agent()
+      -&gt; plan_edit(): VLM JSON plan
+      -&gt; select_route(): direct_edit fallback
+      -&gt; execute_edit(): whole-image edit API
+      -&gt; verify_edit(): VLM route-aware checklist gate
+      -&gt; retry with previous_failure when verifier fails
+  -&gt; write unpadded output
+  -&gt; evaluate_picabench_case(): mapped QA crops/full-image QA + non-edit PSNR
+  -&gt; summary.json / summary_metrics.json / Gradio viewer
+</div></code></pre>
+<p>因此，当前系统已经实现了工作流图中的主循环骨架、VLM planner、基础 router、图像编辑 executor、route-aware verifier、失败重试和 PICABench 离线评测；尚未实现的是独立工具检索、真实工具库、mask/local edit 工具链、基于三类物理标签的规则 planner/router、以及结构化 route hints 驱动的重试策略。</p>
+<h2 id="重新安排后的开发顺序">重新安排后的开发顺序</h2>
+<p>前面原有的五个阶段已经不再适合作为当前路线图：它们过早把 Router 和外部工具放在第一位，但从现有实验和尺寸问题暴露出的风险看，真正的优先级应先稳定评测协议和坐标协议，再逐步让 Planner、Router、Executor、Verifier 消费同一套结构化任务表示。新的开发顺序按“评测可复现 -&gt; 决策可解释 -&gt; 执行可控 -&gt; 验证可阻断 -&gt; 失败可回流”的闭环安排。</p>
+<h3 id="阶段-0固定评测协议与坐标协议">阶段 0：固定评测协议与坐标协议</h3>
+<p>目标：先保证后续优化的收益可以被稳定测到，避免 route 或工具改动被尺寸、crop、QA 视图选择等评测噪声掩盖。</p>
+<p>当前应优先完成和保持的内容：</p>
+<ol>
+<li>统一生成 <code>canonical_input.png</code>，并记录 <code>coordinate_transform.json</code>。</li>
+<li>评测时使用 <code>source box -&gt; canonical box -&gt; output box</code> 的显式映射，而不是假设输出图与原图同尺寸。</li>
+<li>对 PICABench QA 按问题类型分流：全局位置关系使用完整图，局部外观/物理细节使用 mapped crop，混合问题同时提供完整图和 crop。</li>
+<li>在 <code>pica_eval.json</code> 中记录 <code>evaluation_view</code>、<code>source_box</code>、<code>mapped_box</code>、<code>output_size</code>、<code>context_risk</code>。</li>
+<li>将 non-edit PSNR、QA accuracy、accepted/pass 等指标都绑定到同一套坐标协议上。</li>
+</ol>
+<p>完成标准：同一个 case 在不改 agent 行为时重复评测应得到稳定结果；低分 case 能区分是编辑失败、物理失败、尺寸映射失败，还是 QA 视图选择不当。</p>
+<h3 id="阶段-1planner-生成结构化-taskprofile">阶段 1：Planner 生成结构化 TaskProfile</h3>
+<p>目标：让 Planner 不只是生成自然语言 <code>edit_prompt</code>，而是生成 Router、Executor、Verifier 都能消费的结构化任务画像。</p>
+<p>开发内容：</p>
+<ol>
+<li>实现 <code>LabelPolicyCompiler</code>：把 PICABench 的 <code>physics_category</code>、<code>physics_law</code>、<code>edit_operation</code> 编译成规则骨架，包括物理依赖、候选 route、must-pass checks、默认风险等级。</li>
+<li>实现 <code>VisionPlanner</code>：让 LLM/VLM 读取图像和指令，在规则骨架约束下补全 <code>target_objects</code>、<code>affected_objects</code>、<code>dependent_regions</code>、<code>reference_cues</code>、<code>edit_prompt</code>。</li>
+<li>实现 <code>PlanValidator</code>：校验字段完整性，禁止缺失关键物理依赖，补全默认 preserve scope 和 verifier focus。</li>
+<li>固定 TaskProfile schema，使后续组件不再解析自由文本。</li>
+</ol>
+<p>选择原因：PICABench 标签是确定输入，不应交给 LLM 重新猜测；但图像中的对象、接触点、反射面、阴影承接面等细节必须由视觉模型补全。因此 Planner 应采用“规则骨架 + LLM/VLM 视觉填充 + 规则校验”的混合方案。</p>
+<h3 id="阶段-2router-与-toolspecroutespec">阶段 2：Router 与 ToolSpec/RouteSpec</h3>
+<p>目标：把 TaskProfile 转换成明确的执行路线，而不是让所有任务都退化成 whole-image direct edit。</p>
+<p>开发内容：</p>
+<ol>
+<li>建立 <code>RoutePolicy</code>：根据 <code>physics_category</code> 做一级分流，根据 <code>physics_law</code> 选择机制路线，根据 <code>edit_operation</code> 决定路线内部顺序。</li>
+<li>建立 <code>RouteDecision</code> 输出：包含 <code>route</code>、<code>confidence</code>、<code>required_tools</code>、<code>optional_tools</code>、<code>requires_mask</code>、<code>mask_type</code>、<code>fallback_route</code>、<code>verification_focus</code>。</li>
+<li>定义 <code>ToolSpec</code>：记录工具输入、输出、适用 law/operation、成本、风险和失败模式。</li>
+<li>定义 <code>RouteSpec</code>：记录每条 route 的适用任务、工具链、必检项、fallback 和 retry hints。</li>
+<li>优先实现规则路由：<code>reflection_route</code>、<code>shadow_projection_route</code>、<code>causal_settle_route</code>、<code>direct_global_edit</code>、<code>localized_inpaint</code>、<code>qa_eval_only</code>。</li>
+</ol>
+<p>选择原因：Router 的作用不是“聪明地写 prompt”，而是把物理标签和 TaskProfile 转成可审计的工具链选择。尤其是 Reflection、Light_Propagation、Causality 这类低分类型，需要通过 route 明确要求反射、阴影、支撑关系等依赖区域同步更新。</p>
+<h3 id="阶段-3executor-路线化执行">阶段 3：Executor 路线化执行</h3>
+<p>目标：让执行层真正体现 route 差异，逐步从单一 API direct edit 过渡到局部、两阶段和候选生成策略。</p>
+<p>开发内容：</p>
+<ol>
+<li>为每条 route 准备 route-specific prompt template，而不是复用同一个通用编辑 prompt。</li>
+<li>对低风险任务保留 <code>one_pass_direct_edit</code>。</li>
+<li>对 Reflection、Light_Propagation 等依赖效果任务支持 <code>two_stage_edit</code>：先完成主对象变化，再补齐反射/阴影/光照效果。</li>
+<li>对 Causality 支持 <code>causal_settle_route</code>：先识别被移除/移动对象是否是支撑或约束，再要求受影响对象进入稳定姿态。</li>
+<li>对高风险任务预留 <code>best_of_n</code>，但应在 verifier 稳定后再扩大候选数。</li>
+<li>记录 <code>execution_trace</code>：实际 route、工具调用、输入输出路径、fallback、候选数量和失败原因。</li>
+</ol>
+<p>选择原因：当前失败样本中，“摩托车放倒”“卡牌取走”这类任务不是单纯局部纹理编辑失败，而是执行层没有显式模拟干预后的物理后果。Executor 必须把 route 中的物理依赖变成执行约束。</p>
+<h3 id="阶段-4route-aware-verifier-与-picaeval-gate">阶段 4：Route-aware Verifier 与 PICAEval Gate</h3>
+<p>目标：让 Verifier 不再只给通用分数，而是按 route 检查必须满足的物理条件，并能阻断明显物理错误的候选。</p>
+<p>开发内容：</p>
+<ol>
+<li>Verifier 输入 <code>route</code>、TaskProfile、metadata 和 PICABench QA 信息。</li>
+<li>根据 <code>physics_law + edit_operation + route</code> 生成 law-specific checklist。</li>
+<li>把检查项分成 <code>must_pass</code> 与 <code>soft_score</code>，must-pass 失败时即使总分较高也不能 accept。</li>
+<li>对涉及全局位置关系的问题使用完整图，对局部物理细节使用 mapped crop，对混合问题同时使用两种视图。</li>
+<li>输出 <code>check_results</code>、<code>blocking_failures</code>、<code>route_hints</code>、<code>required_checks</code>，供 retry loop 消费。</li>
+</ol>
+<p>选择原因：低分样本往往不是“整体看起来不好”，而是违反了某条关键物理关系，例如反射缺失、阴影方向不一致、支撑物移除后主体仍悬空。Verifier 必须能把这些失败显式化。</p>
+<h3 id="阶段-5retry-loop-与实验闭环">阶段 5：Retry Loop 与实验闭环</h3>
+<p>目标：让失败信息不只是自然语言 repair prompt，而是能回流到 Planner/Router/Executor 的结构化修复信号。</p>
+<p>开发内容：</p>
+<ol>
+<li>将 <code>blocking_failures</code> 转换成 <code>route_hints</code>，例如 <code>missing_reflection</code>、<code>shadow_not_reprojected</code>、<code>support_removed_without_settle</code>。</li>
+<li>Retry 时允许 Router 根据失败类型切换 route 或升级工具链。</li>
+<li>对高风险任务在 verifier 稳定后启用 <code>best_of_n</code>。</li>
+<li>实验汇总按 <code>physics_category</code>、<code>physics_law</code>、<code>edit_operation</code>、<code>route</code>、<code>question_type</code>、<code>context_risk</code> 分组。</li>
+<li>固定 regression set，优先追踪 Reflection、Light_Propagation、Causality 中表现最差的组合。</li>
+</ol>
+<p>选择原因：如果 retry 只是把错误描述拼回 prompt，agent 很难稳定改正路线级错误。失败必须结构化，才能判断下一轮是补 mask、换 route、扩大 crop、增加完整图验证，还是直接拒绝当前候选。</p>
+<h3 id="阶段-6真实视觉工具接入与路线扩展">阶段 6：真实视觉工具接入与路线扩展</h3>
+<p>目标：在评测协议、Planner/Router/Verifier 都稳定后，再接入 detector、segmenter、mask editor、inpainting 等更重的工具。</p>
+<p>开发内容：</p>
+<ol>
+<li>先接轻量工具：coordinate mapper、law-specific verifier、mask generator stub、dependency region expander。</li>
+<li>再接真实视觉工具：object detector、segmenter、local mask editor、inpainting。</li>
+<li>对每个新工具补齐 <code>ToolSpec</code>、输入输出文件约定、失败模式和 fallback。</li>
+<li>每接入一个工具，都必须用固定 regression cases 验证它是否提升对应 route，而不是只看单例视觉效果。</li>
+</ol>
+<p>选择原因：重工具会引入新的误检、mask 漂移、成本和运行不稳定问题。只有在前面的决策、执行和验证协议固定后，工具收益才能被准确归因。</p>
+<h2 id="开发原则">开发原则</h2>
+<ul>
+<li>每个新工具必须有 <code>ToolSpec</code>，不能只在代码里硬编码调用。</li>
+<li>每个 route 必须说明适用物理类型、输入要求、失败模式和 fallback。</li>
+<li>VLM 判断必须尽量拆成可解释分项；重要失败不能只藏在 <code>rationale</code>。</li>
+<li>PICABench 样例优先作为 regression cases。</li>
+<li>API key 仍只从本地 <code>.env</code> 或环境变量读取，不写入源码、文档或日志。</li>
+</ul>
+<h2 id="待确认">待确认</h2>
+<ul>
+<li>是否允许安装或运行 GroundingDINO、SAM/SAM2、LaMa 等本地模型。</li>
+<li>是否优先使用闭源 API 的 mask edit 能力，还是先实现本地 mask/inpaint 接口。</li>
+<li>PICABench 评测是否只做定性展示，还是需要批量表格和可量化分数。</li>
+<li>当前 <code>gpt-image-2</code> 输出尺寸默认 <code>1024x1024</code>，需要决定是请求原图比例、后处理回原尺寸，还是在 verifier 中判失败。</li>
+</ul>
+<h2 id="模块实际方案与计划方案对照">模块实际方案与计划方案对照</h2>
+<p>本节用于把当前已经落地的实现和下一步计划开发的方案放在同一张表里，便于汇报时区分“已经完成的 MVP 能力”和“后续需要研发的 agent 能力”。该内容适合放在开发计划文档中，而不是 full run results 或 progress report 中：full run results 主要记录实验数据，progress report 主要记录阶段性结论，development plan 则负责维护模块路线图。</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>当前实际方案</th>
+<th>当前局限</th>
+<th>计划开发方案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据集输入</td>
+<td>使用 <code>physical_image_editing_agent/data/picabench_examples/manifest.json</code> 中的 50 条 PICABench 子集，运行时读取 <code>explicit_prompt</code>、<code>input_png</code>、<code>edit_area</code> 和 <code>annotated_qa_pairs</code></td>
+<td>样本规模较小；主要用于 MVP 验证；输入原图尺寸不统一</td>
+<td>保持 50-case 子集作为 regression set，同时支持扩展到更多 stratified samples；记录每次实验的 manifest、prompt level 和 coordinate transform</td>
+</tr>
+<tr>
+<td>图像标准化</td>
+<td>新增 <code>canonical_input.png</code> 预处理：将原图按 <code>1024x1024 contain + padding</code> 标准化，并保存 <code>coordinate_transform.json</code></td>
+<td>padding 可能改变视觉边界；旧实验结果没有 transform 元数据</td>
+<td>将 canonical transform 作为所有评测和后续工具路由的统一坐标协议；后续可支持不同 canonical size，但必须显式记录</td>
+</tr>
+<tr>
+<td>Planner</td>
+<td>调用 VLM 根据图像和 instruction 生成 JSON，包括 <code>target</code>、<code>operation</code>、<code>preserve</code>、<code>physics_dependencies</code>、<code>route</code>、<code>edit_prompt</code>、<code>verifier_focus</code></td>
+<td><code>physics_dependencies</code> 仍是自由文本；route 基本不被真正执行；缺少可被工具消费的目标/依赖区域结构</td>
+<td>升级为“规则骨架 + LLM 视觉填充 + 规则校验”的 TaskProfile：规则注入 <code>physics_law</code>、<code>physical_operation</code>、<code>must_pass_checks</code>，LLM 填充 <code>target_objects</code>、<code>dependent_regions</code>、<code>reference_cues</code>、<code>edit_prompt</code></td>
+</tr>
+<tr>
+<td>Router</td>
+<td>当前 <code>select_route(plan)</code> 只接受 <code>direct_edit/local_edit</code>，但 <code>local_edit</code> 会回退到 <code>direct_edit</code></td>
+<td>所有任务实际走同一条 whole-image edit 路线，无法体现不同物理 law 的差异</td>
+<td>实现 rule-based routing：<code>reflection_route</code>、<code>shadow_projection_route</code>、<code>causal_settle_route</code>、<code>direct_global_edit</code>、<code>localized_inpaint</code>、<code>qa_eval_only</code>；每个 route 定义输入、工具链、失败模式和 fallback</td>
+</tr>
+<tr>
+<td>Executor</td>
+<td>使用闭源 image edit API 对整图进行编辑，输出 <code>candidate.png</code></td>
+<td>缺少 mask、检测、分割、局部回贴；小目标和几何精确位置不稳定</td>
+<td>接入局部工具链：detection/segmentation/mask edit/inpainting；对高风险任务支持两阶段编辑和 best-of-N candidate selection</td>
+</tr>
+<tr>
+<td>Verifier</td>
+<td>使用 VLM 检查 instruction、preservation、physics，并输出 pass、分数、issues 和 repair instruction</td>
+<td>通用 verifier 容易漏检 law-specific 失败；已有 case 出现 agent accepted 但 PICAEval 低分</td>
+<td>建立 law-specific checklist；将 PICABench QA、尺寸/格式 guardrail、非编辑区一致性和 VLM 分项评分合并为 accept gate</td>
+</tr>
+<tr>
+<td>PICAEval QA</td>
+<td>已从单一 crop 评测升级为按 <code>question_type</code> 分流：全局位置用完整图，局部物理用 mapped crop，混合问题用完整图 + crop</td>
+<td>QA 类型目前由启发式关键词分类，可能误分；mixed 问题成本更高</td>
+<td>为 QA 增加稳定分类字段；统计 <code>context_risk</code>；后续可用少量人工标注或 LLM classifier 校正问题类型</td>
+</tr>
+<tr>
+<td>坐标映射</td>
+<td>新增 <code>source box -&gt; canonical box -&gt; output box</code> 显式映射；<code>pica_eval.json</code> 记录 <code>source_box</code>、<code>mapped_box</code>、<code>output_size</code>、<code>evaluation_view</code></td>
+<td>只能处理 contain/identity 协议；无法自动纠正生成模型内部构图漂移</td>
+<td>将 transform 写入 run state；若后续 API 或工具产生 crop/resize/paste，需要把每一步 transform 组合成可追踪链路</td>
+</tr>
+<tr>
+<td>Non-edit PSNR</td>
+<td>使用同一套坐标协议把 <code>edit_area</code> 映射到输出图，基于 canonical/source canvas 计算非编辑区 PSNR</td>
+<td>对全局状态转移任务，低 PSNR 不一定代表失败；padding 区域可能影响解释</td>
+<td>按任务类型解释 PSNR：global state 单独统计；local/object edit 作为保真约束；后续引入 SSIM/LPIPS 或 mask-aware preservation</td>
+</tr>
+<tr>
+<td>Retry Loop</td>
+<td>当前失败后把 verifier 的 <code>repair_instruction</code> 传回 planner，再重新编辑</td>
+<td>重试只是自然语言修复，route 不会根据失败类型调整；高风险任务没有更高候选预算</td>
+<td>将失败项转为 route hints；对 Reflection add/move、Light_Propagation move、Causality support-removal 设置更高重试或 best-of-N</td>
+</tr>
+<tr>
+<td>实验汇总</td>
+<td><code>summary.json</code> 和 <code>summary_metrics.json</code> 记录每个 case 的 accuracy、PSNR、accepted、attempts</td>
+<td>旧汇总未记录 QA 视图、坐标映射、context risk；难以区分真实失败和评测噪声</td>
+<td>新实验汇总加入 transform 路径、canonical input、question type 分布、context-risk accuracy，并按 law/route/operation 联合分析</td>
+</tr>
+</tbody>
+</table>
+<p>短期执行顺序：</p>
+<ol>
+<li>先固定评测协议：canonical input、坐标映射、QA 视图分流、PSNR 坐标统一。</li>
+<li>再重跑重点 regression cases，尤其是 <code>picabench_0816_light_propagation</code>、<code>picabench_0387_reflection</code>、<code>picabench_0294_causality</code>。</li>
+<li>如果低分仍集中在 Reflection 和 Light_Propagation，再开发 route-specific planner/verifier。</li>
+<li>最后接入 mask/detection/segmentation 等工具，避免在评测协议未稳定前优化错误目标。</li>
+</ol>
+<h2 id="picabench-三类标签在模块中的作用">PICABench 三类标签在模块中的作用</h2>
+<p>PICABench 每个样本提供 <code>physics_category</code>、<code>physics_law</code>、<code>edit_operation</code> 三类标签。它们不应只作为统计字段，而应分别承担不同粒度的 agent 决策作用。</p>
+<table>
+<thead>
+<tr>
+<th>标签</th>
+<th>粒度</th>
+<th>主要作用</th>
+<th>适合驱动的模块</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>physics_category</code></td>
+<td>粗粒度物理域</td>
+<td>判断任务属于 Optics、Mechanics 还是 State，决定整体问题范式</td>
+<td>Planner 总体分析、Router 一级分流、报告统计</td>
+</tr>
+<tr>
+<td><code>physics_law</code></td>
+<td>中粒度物理机制</td>
+<td>判断具体依赖机制，例如 Reflection、Light_Propagation、Causality、Global、Local</td>
+<td>route 选择、law-specific checklist、dependent region 规划</td>
+</tr>
+<tr>
+<td><code>edit_operation</code></td>
+<td>动作类型</td>
+<td>判断用户要求是 add/remove/move/replace/weather/time/wet 等哪种编辑动作</td>
+<td>prompt 改写、工具链选择、失败模式预测、重试策略</td>
+</tr>
+</tbody>
+</table>
+<p>三者组合后才能形成真正可执行的 agent policy。例如：</p>
+<pre class="hljs"><code><div>physics_category = Optics
+physics_law = Reflection
+edit_operation = add
+
+=&gt; 不是普通 add_object，而是 reflection_add_route：
+   add target object + add reflection + align waterline/mirror plane + verify scale and contact.
+</div></code></pre>
+<p>再例如：</p>
+<pre class="hljs"><code><div>physics_category = Mechanics
+physics_law = Causality
+edit_operation = remove
+
+=&gt; 不是普通 remove_object，而是 causal_settle_route：
+   remove support + infer affected object final pose + update contact/shadow/occlusion.
+</div></code></pre>
+<p>模块使用方式如下。</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>使用 <code>physics_category</code></th>
+<th>使用 <code>physics_law</code></th>
+<th>使用 <code>edit_operation</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Planner</td>
+<td>决定解释框架：光学依赖、力学因果或状态转移</td>
+<td>展开具体依赖项，如 shadow/reflection/refraction/contact/material state</td>
+<td>把普通动作改写成物理动作，如 <code>remove_support_and_settle</code>、<code>move_and_reproject_shadow</code></td>
+</tr>
+<tr>
+<td>Router</td>
+<td>一级分流到 Optics/Mechanics/State 路线族</td>
+<td>选择具体 route，如 <code>reflection_route</code>、<code>shadow_projection_route</code>、<code>causal_settle_route</code></td>
+<td>决定 route 内部工具顺序，如 add 先插入主体再补效应，remove 先删主体再修依赖</td>
+</tr>
+<tr>
+<td>Executor</td>
+<td>控制编辑范围：全局状态任务可整图编辑，局部/对象任务优先局部编辑</td>
+<td>决定是否需要依赖区域，如反射面、阴影承接面、支撑点</td>
+<td>决定调用 direct edit、mask edit、inpaint、move/deform 或二阶段编辑</td>
+</tr>
+<tr>
+<td>Verifier</td>
+<td>选择评分侧重点：光学、力学、状态一致性</td>
+<td>使用 law-specific checklist；不同 law 的 pass 条件不同</td>
+<td>检查动作是否完成，以及动作后果是否同步出现</td>
+</tr>
+<tr>
+<td>PICAEval</td>
+<td>按 category/law 汇总指标</td>
+<td>按 law 定位薄弱类型，如 Reflection 和 Light_Propagation</td>
+<td>按 operation 找失败组合，如 Reflection+add、Light_Propagation+move</td>
+</tr>
+<tr>
+<td>Retry</td>
+<td>粗粒度决定是否允许大范围重写</td>
+<td>根据 law 生成 repair focus</td>
+<td>根据 operation 调整下一轮策略，例如 add 失败先保证目标可见，move 失败先保证位置正确</td>
+</tr>
+</tbody>
+</table>
+<p>这套标签设计与物理推理研究中的常见分解是一致的：物理任务通常不能只按视觉语义分类，而要同时表示物理机制、动作干预和可观测后果。对于本项目，<code>physics_law</code> 负责机制，<code>edit_operation</code> 负责干预，<code>physics_category</code> 负责高层问题域；三者合起来才能定义 route、plan 和 verifier。</p>
+<h3 id="组件级使用细则">组件级使用细则</h3>
+<p>下面进一步把三类标签落实到每个 agent 组件的输入、决策和输出中。</p>
+<h4 id="planner">Planner</h4>
+<p>Planner 的目标输出通过混合方案得到：规则先给出不可漏的物理骨架，LLM/VLM 再根据图像填充具体对象和空间细节，最后由规则校验器补全和规范化。也就是说，目标输出主要由 LLM 生成具体内容，但必须由规则模板驱动和校验；PICABench 的三类标签是规则层的确定输入。</p>
+<pre class="hljs"><code><div>LabelPolicyCompiler(category, law, operation)
+  -&gt; policy scaffold
+VisionPlanner(image, instruction, policy scaffold)
+  -&gt; draft task profile
+PlanValidator(draft, policy scaffold)
+  -&gt; final task profile
+</div></code></pre>
+<table>
+<thead>
+<tr>
+<th>标签</th>
+<th>Planner 中的具体用法</th>
+<th>输出字段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>physics_category</code></td>
+<td>规则选择推理模板：Optics 关注光路和视觉依赖，Mechanics 关注支撑/接触/形变，State 关注状态范围和材料变化</td>
+<td><code>reasoning_template</code>、<code>edit_scope</code></td>
+</tr>
+<tr>
+<td><code>physics_law</code></td>
+<td>规则展开必须同步处理的物理依赖。例如 Reflection 展开 reflection surface / reflected object / waterline；Causality 展开 support / affected object / final stable pose</td>
+<td><code>dependent_effects</code>、<code>dependent_regions</code>、<code>must_pass_checks</code></td>
+</tr>
+<tr>
+<td><code>edit_operation</code></td>
+<td>规则把普通编辑动作改写成带物理后果的动作。例如 <code>remove</code> + Causality 改写成 <code>remove_support_and_settle</code></td>
+<td><code>physical_operation</code>、<code>expected_stable_outcome</code></td>
+</tr>
+</tbody>
+</table>
+<p>LLM/VLM 负责填充：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>LLM/VLM 任务</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>target_objects</code></td>
+<td>从图像和指令识别具体目标</td>
+</tr>
+<tr>
+<td><code>affected_objects</code></td>
+<td>找出受物理后果影响的对象</td>
+</tr>
+<tr>
+<td><code>dependent_regions</code></td>
+<td>描述阴影、反射、支撑点、接触面、状态变化边界等区域</td>
+</tr>
+<tr>
+<td><code>reference_cues</code></td>
+<td>找已有参考线索，如参考阴影、光源方向、地面平面、水线、材质边界</td>
+</tr>
+<tr>
+<td><code>edit_prompt</code></td>
+<td>把规则骨架和图像细节合成可执行编辑指令</td>
+</tr>
+</tbody>
+</table>
+<p>规则 validator 负责检查：</p>
+<table>
+<thead>
+<tr>
+<th>检查</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>必备字段不为空</td>
+<td><code>Reflection</code> 必须有 reflected region 或 reflective surface</td>
+</tr>
+<tr>
+<td>物理动作一致</td>
+<td><code>Causality + remove</code> 必须生成 <code>remove_support_and_settle</code></td>
+</tr>
+<tr>
+<td>checklist 完整</td>
+<td><code>Light_Propagation</code> 必须检查 shadow direction、visibility、softness</td>
+</tr>
+<tr>
+<td>route 合法</td>
+<td>禁止 LLM 随意输出未注册 route</td>
+</tr>
+<tr>
+<td>prompt 包含关键后果</td>
+<td>支撑移除不能只写 remove target，必须写 final stable outcome</td>
+</tr>
+</tbody>
+</table>
+<p>Planner 目标输出示例：</p>
+<pre class="hljs"><code><div><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;operation&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;remove&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;physical_operation&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;remove_support_and_settle&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;physics_category&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Mechanics&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;physics_law&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Causality&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;edit_scope&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;object_plus_dependent_regions&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;target_objects&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;motorcycle kickstand&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;dependent_effects&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;motorcycle final pose&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;left-side contact shadow&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;road contact area&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;reference_cues&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;gravity direction&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;road plane&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;existing low backlight&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;expected_stable_outcome&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;motorcycle rests on its left side after kickstand removal&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;must_pass_checks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+    <span class="hljs-string">&quot;kickstand absent&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;motorcycle not upright&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;new contact area visible&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-string">&quot;continuous contact shadow present&quot;</span>
+  <span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</div></code></pre>
+<h4 id="router">Router</h4>
+<p>Router 的下一步优化目标是：从当前的 <code>direct_edit</code> fallback 变成“标签组合 + TaskProfile + 工具能力表”的确定性路由器。Router 可以参考 LLM 生成的 plan，但不能盲信 Planner 自报的 <code>route</code> 字段；最终 route 应由规则和工具可用性共同决定。</p>
+<p>推荐流程：</p>
+<pre class="hljs"><code><div>TaskProfile
+  -&gt; RoutePolicy: 根据 category/law/operation 生成候选 routes
+  -&gt; CapabilityMatcher: 检查当前工具是否满足 route 输入要求
+  -&gt; RiskScorer: 根据任务风险、历史失败和操作类型设置 retry/candidate budget
+  -&gt; RouteValidator: 确认 fallback、verification_focus、required_inputs 完整
+  -&gt; RouteDecision
+</div></code></pre>
+<p>Router 输出不应只是 route 名字，而应是完整决策对象：</p>
+<pre class="hljs"><code><div><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;route&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;shadow_projection_route&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;route_family&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Optics&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Light_Propagation tasks require target movement plus shadow reprojection.&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;required_inputs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;target_object&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;reference_shadow&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;receiving_surface&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;available_tools&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;direct_edit&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;pica_eval&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;vlm_verifier&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;missing_tools&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;shadow_detector&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;mask_editor&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;toolchain&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;direct_edit&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;shadow_specific_verifier&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;fallback_route&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;direct_edit_with_shadow_constraints&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;retry_budget&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;verification_focus&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;target position&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;old shadow removal&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;new shadow direction&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;shadow softness&quot;</span><span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</div></code></pre>
+<p>标签组合到 route 的初始规则：</p>
+<table>
+<thead>
+<tr>
+<th>条件组合</th>
+<th>推荐 route</th>
+<th>初始工具链</th>
+<th>缺少工具时的 fallback</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Optics + Reflection + add/move</code></td>
+<td><code>reflection_add_or_move_route</code></td>
+<td>two-pass edit: add/move主体 -&gt; 补反射/水面接触</td>
+<td><code>direct_edit_with_reflection_constraints</code></td>
+</tr>
+<tr>
+<td><code>Optics + Reflection + remove</code></td>
+<td><code>reflection_remove_route</code></td>
+<td>删除主体 + 删除镜像/高光/扰动</td>
+<td><code>direct_edit_with_reflection_cleanup</code></td>
+</tr>
+<tr>
+<td><code>Optics + Light_Propagation + move/add/remove</code></td>
+<td><code>shadow_projection_route</code></td>
+<td>编辑主体 -&gt; 重投影 cast/contact shadow -&gt; shadow verifier</td>
+<td><code>direct_edit_with_shadow_constraints</code></td>
+</tr>
+<tr>
+<td><code>Optics + Refraction + remove/replace</code></td>
+<td><code>refraction_reconstruction_route</code></td>
+<td>移除/改变介质 -&gt; 重建未折射背景</td>
+<td><code>direct_edit_with_refraction_reconstruction</code></td>
+</tr>
+<tr>
+<td><code>Optics + Light_Source_Effects + add/replace</code></td>
+<td><code>light_source_route</code></td>
+<td>添加/替换光源 -&gt; 局部亮度、色温、阴影、反射更新</td>
+<td><code>direct_edit_with_light_falloff_constraints</code></td>
+</tr>
+<tr>
+<td><code>Mechanics + Causality + remove</code></td>
+<td><code>causal_settle_route</code></td>
+<td>删除支撑 -&gt; 生成最终稳定态 -&gt; 接触/阴影更新</td>
+<td><code>direct_edit_with_stable_outcome_constraints</code></td>
+</tr>
+<tr>
+<td><code>Mechanics + Deformation + move/others</code></td>
+<td><code>deformation_route</code></td>
+<td>形变/姿态编辑 -&gt; 材料和纹理连续性检查</td>
+<td><code>direct_edit_with_material_constraints</code></td>
+</tr>
+<tr>
+<td><code>State + Global + weather/time/season</code></td>
+<td><code>direct_global_edit</code></td>
+<td>整图编辑 -&gt; 全局状态 verifier</td>
+<td>无需局部 fallback</td>
+</tr>
+<tr>
+<td><code>State + Local + wet/frozen/burn/melt</code></td>
+<td><code>localized_state_route</code></td>
+<td>局部状态编辑 -&gt; 边界/材料 verifier</td>
+<td><code>direct_edit_with_locality_constraints</code></td>
+</tr>
+</tbody>
+</table>
+<p>Router 的决策顺序：</p>
+<ol>
+<li>读取 <code>physics_category</code>，选择 route family：<code>Optics</code>、<code>Mechanics</code>、<code>State</code>。</li>
+<li>读取 <code>physics_law</code>，选择具体物理机制 route。</li>
+<li>读取 <code>edit_operation</code>，决定 route 内工具顺序。例如 <code>add</code> 先保证目标出现，<code>remove</code> 先清除目标及依赖效果，<code>move</code> 必须清理旧位置并生成新位置依赖。</li>
+<li>检查 TaskProfile 的 <code>dependent_effects</code>、<code>dependent_regions</code>、<code>reference_cues</code> 是否满足 route 的 <code>required_inputs</code>。</li>
+<li>检查工具能力表。如果缺少 mask/detector/segmenter，则选择明确的 direct-edit fallback，而不是假装走局部 route。</li>
+<li>设置风险等级和预算。Reflection add/move、Light_Propagation move、Causality support-removal 属于高风险，应提高 retry 或 best-of-N。</li>
+<li>输出 <code>RouteDecision</code>，供 Executor 和 Verifier 使用。</li>
+</ol>
+<p>工具能力表初始结构：</p>
+<pre class="hljs"><code><div><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;direct_edit&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;available&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;provides&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;whole_image_edit&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;risks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;layout drift&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;non_edit_region_change&quot;</span><span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;mask_editor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;available&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;provides&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;localized_edit&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;required_inputs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;mask&quot;</span><span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;detector&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;available&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;provides&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;object_box&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;required_inputs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;text_query&quot;</span><span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;pica_eval&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;available&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;provides&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;region_grounded_qa&quot;</span><span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</div></code></pre>
+<p>Router 初期实现应是规则优先，不急于使用 LLM 选择工具。LLM 可以给 route hints，但 route 的最终选择必须可复现、可解释，并记录触发规则。这样做的原因是：当前 full run 的主要失败集中在 Reflection 和 Light_Propagation，问题不是模型完全不知道物理规则，而是通用 <code>direct_edit</code> 没有把物理依赖转化为强执行约束。Router 的价值就是把标签和 TaskProfile 变成不同执行路线、不同 verifier focus 和不同重试预算。</p>
+<p>Router 的核心作用可以概括为三点：</p>
+<ol>
+<li>把“任务是什么”转成“应该怎么执行”。Planner 负责理解图像和生成 task profile，Router 负责决定执行路线。</li>
+<li>把 <code>physics_category</code>、<code>physics_law</code>、<code>edit_operation</code> 三类标签组合成可执行策略，而不是把所有任务都交给 <code>direct_edit</code>。</li>
+<li>把后续 Verifier 的关注点一起确定下来。不同 route 失败模式不同，因此验收 checklist 也必须不同。</li>
+</ol>
+<p>三类标签在 Router 中的决策过程：</p>
+<pre class="hljs"><code><div>physics_category: 先判断大方向
+  Optics    -&gt; 重点处理光、影、反射、折射、光源
+  Mechanics -&gt; 重点处理支撑、接触、重力、形变、稳定态
+  State     -&gt; 重点处理全局/局部状态范围和材料变化
+
+physics_law: 再判断具体机制
+  Reflection        -&gt; 需要主体和镜像/水面反射联动
+  Light_Propagation -&gt; 需要阴影投射和遮挡关系重算
+  Causality         -&gt; 需要干预后的物理后果
+  Global            -&gt; 需要全图一致状态变化
+  Local             -&gt; 需要局部状态改变且边界受控
+
+edit_operation: 最后判断干预动作
+  add    -&gt; 先保证新对象出现，再补物理效应
+  remove -&gt; 删除目标，同时删除或更新依赖效应
+  move   -&gt; 清理旧位置，在新位置重建依赖效应
+  replace -&gt; 保留结构位置，但重算材质、光照或反射
+</div></code></pre>
+<p>具体例子：</p>
+<pre class="hljs"><code><div>Optics + Reflection + add
+</div></code></pre>
+<p>这不是普通“添加一艘船”。Router 应选择 <code>reflection_add_or_move_route</code>，原因是水面/镜面任务的成功条件包括：船本体可见、倒影在正确位置、倒影尺度与方向合理、水线接触成立、微波纹或接触暗带存在。若只走 <code>direct_edit</code>，模型可能加了船但没有反射，或反射与水线脱节。</p>
+<pre class="hljs"><code><div>Optics + Light_Propagation + move
+</div></code></pre>
+<p>这不是普通“移动花盆”。Router 应选择 <code>shadow_projection_route</code>，原因是移动物体后旧阴影应消失，新阴影应根据主光源、承接面和参考阴影重投影。若只走 <code>direct_edit</code>，常见失败是目标移动了，但阴影仍在旧位置，或新阴影方向/软硬不符合场景。</p>
+<pre class="hljs"><code><div>Mechanics + Causality + remove
+</div></code></pre>
+<p>这不是普通“删除支架”。Router 应选择 <code>causal_settle_route</code>，原因是删除支撑物会改变受力结构。成功结果不是支撑物消失，而是受影响物体进入最终稳定态，例如倾倒、下落、旋转或形成新的接触面。</p>
+<pre class="hljs"><code><div>State + Global + weather
+</div></code></pre>
+<p>这类任务适合 <code>direct_global_edit</code>，因为天气/季节/昼夜变化天然影响整张图：天空、地面、植被、光照、阴影、空气能见度都应一致改变。强行 mask 反而可能导致局部真实、全局不一致。</p>
+<h3 id="route-对象特点与是否需要-mask">Route 对象特点与是否需要 mask</h3>
+<p>不同 route 的根本差异不是名字，而是它面对的对象类型、依赖区域和空间控制要求不同。</p>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>适用对象特点</th>
+<th>典型例子</th>
+<th>是否需要 mask</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>direct_global_edit</code></td>
+<td>整个场景状态都应变化；没有单一小目标</td>
+<td>白天变夜晚、晴天变雨天、夏季变冬季</td>
+<td>通常不需要</td>
+<td>全局状态需要整图一致变化，mask 会限制必要传播</td>
+</tr>
+<tr>
+<td><code>localized_inpaint</code></td>
+<td>小目标、局部删除/替换，背景需要强保持</td>
+<td>删除桌上的杯子、去掉墙上一盏小灯、移除地面小物体</td>
+<td>需要</td>
+<td>目标小且背景应连续，mask 能减少非编辑区漂移</td>
+</tr>
+<tr>
+<td><code>reflection_add_or_move_route</code></td>
+<td>主体与反射面强绑定；常在水面、镜面、金属面上</td>
+<td>湖面加船、移动水边小船、镜中新增物体</td>
+<td>最好需要，至少需要区域约束</td>
+<td>需要同时控制主体区域和反射区域；没有 mask 时主体可能不在标注区或倒影错位</td>
+</tr>
+<tr>
+<td><code>reflection_remove_route</code></td>
+<td>被删对象在反射面中也有对应痕迹</td>
+<td>删除镜前的人、移除桌上反射在玻璃面上的杯子</td>
+<td>需要或强烈建议</td>
+<td>只 mask 主体不够，还要扩展到反射、高光和接触扰动</td>
+</tr>
+<tr>
+<td><code>shadow_projection_route</code></td>
+<td>目标和阴影承接面强绑定</td>
+<td>移动花盆后重投影墙上阴影、删除物体及其地面影子</td>
+<td>需要依赖区域 mask 或 expanded mask</td>
+<td>阴影常不在主体 mask 内，必须覆盖 cast shadow/contact shadow</td>
+</tr>
+<tr>
+<td><code>light_source_route</code></td>
+<td>新光源影响周围表面、阴影和色温</td>
+<td>加台灯、点燃蜡烛、替换发光屏幕</td>
+<td>局部到半全局，视任务而定</td>
+<td>光源影响范围超过目标本体；mask 过小会漏掉光照 falloff</td>
+</tr>
+<tr>
+<td><code>refraction_reconstruction_route</code></td>
+<td>透明介质遮挡并扭曲背景</td>
+<td>移除玻璃杯、水位变化、去掉透明瓶</td>
+<td>需要</td>
+<td>需要重建被折射区域和介质边界，普通目标 mask 往往不覆盖全部扭曲背景</td>
+</tr>
+<tr>
+<td><code>causal_settle_route</code></td>
+<td>一个动作会改变支撑/接触/稳定状态</td>
+<td>删除摩托车脚撑、移除桌脚、拿掉承重卡片</td>
+<td>需要对象和受影响区域，通常不止一个 mask</td>
+<td>既要删支撑物，又要编辑受影响主体姿态和新接触阴影</td>
+</tr>
+<tr>
+<td><code>deformation_route</code></td>
+<td>形状变化受材料属性约束</td>
+<td>弯曲软管、压扁垫子、拉伸布料、改变椅子高度</td>
+<td>通常需要</td>
+<td>需要控制形变边界，避免刚体错误弯曲或纹理撕裂</td>
+</tr>
+<tr>
+<td><code>localized_state_route</code></td>
+<td>局部材料状态变化，边界需要受控</td>
+<td>局部打湿、结冰、融化、烧焦、破裂</td>
+<td>需要</td>
+<td>状态变化应限制在局部区域，同时保留周边材质和构图</td>
+</tr>
+</tbody>
+</table>
+<p>判断是否需要 mask 的实用规则：</p>
+<pre class="hljs"><code><div>如果编辑目标小、背景需要保持、或物理依赖区域不应扩散 -&gt; 需要 mask。
+如果任务影响整图语义和环境状态 -&gt; 通常不需要 mask。
+如果物理依赖区域不等于目标本体，例如阴影、反射、折射、接触痕迹 -&gt; 需要 expanded mask 或多 mask。
+</div></code></pre>
+<p>三种常见 mask：</p>
+<table>
+<thead>
+<tr>
+<th>Mask 类型</th>
+<th>覆盖对象</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>target_mask</code></td>
+<td>被添加/删除/移动的主体</td>
+<td>控制主体编辑范围</td>
+</tr>
+<tr>
+<td><code>dependency_mask</code></td>
+<td>阴影、反射、折射区域、接触痕迹、受影响对象</td>
+<td>让物理后果同步更新</td>
+</tr>
+<tr>
+<td><code>preserve_mask</code></td>
+<td>不应被改动的背景、人物、关键结构</td>
+<td>保护非编辑区域</td>
+</tr>
+</tbody>
+</table>
+<p>因此，Router 不只是决定“用不用 mask”，而是决定“需要哪几种 mask”。例如删除玻璃杯时，<code>target_mask</code> 覆盖玻璃杯本体，<code>dependency_mask</code> 覆盖桌面阴影、caustic、反射和杯后被折射的人脸/背景，<code>preserve_mask</code> 保护人物其他区域和桌面边缘。这个区分是物理一致性编辑区别于普通局部修图的关键。</p>
+<h3 id="router-相关工具优化">Router 相关工具优化</h3>
+<p>Router 的优化不能只停留在“多几个 route 名字”，还必须同步优化工具抽象。否则 route 即使选对，也无法稳定执行。下一步工具优化的目标是建立一个轻量但可扩展的 tool inventory，让 Router 能根据任务标签和 TaskProfile 判断哪些工具可用、缺哪些输入、需要 fallback 到什么路线。</p>
+<p>工具优化分为三层：</p>
+<pre class="hljs"><code><div>ToolSpec: 描述每个工具能做什么、需要什么输入、有什么风险
+CapabilityMatcher: 判断某个 route 的 required_inputs 当前是否满足
+RouteToolchain: 为每个 route 组合工具顺序和 fallback
+</div></code></pre>
+<h4 id="toolspec-设计">ToolSpec 设计</h4>
+<p>每个工具都应有结构化描述，避免在代码里只用字符串硬编码。</p>
+<pre class="hljs"><code><div><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;mask_editor&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;capabilities&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;localized_edit&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;inpaint&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;required_inputs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;image&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;mask&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;edit_prompt&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;provided_outputs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;candidate_image&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;physics_tags&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;Local&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;Reflection&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;Refraction&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;Light_Propagation&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;cost&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;medium&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;risk&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;mask_boundary_artifact&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;missed_dependency_region&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;fallback&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;direct_edit&quot;</span>
+<span class="hljs-punctuation">}</span>
+</div></code></pre>
+<p>Router 用这些字段判断：该 route 想用的工具是否可用，Planner 是否提供了足够输入，缺少输入时是否需要先调用 detector/segmenter，或者直接回退到 prompt-only direct edit。</p>
+<h4 id="优先建设的工具">优先建设的工具</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align:right">优先级</th>
+<th>工具</th>
+<th>当前可实现方式</th>
+<th>服务的 route</th>
+<th>为什么优先</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right">1</td>
+<td><code>coordinate_mapper</code></td>
+<td>已实现 source/canonical/output box 映射</td>
+<td><code>qa_eval_only</code>、所有评测 route</td>
+<td>先保证评测和 crop 不错位，否则后续优化目标不可靠</td>
+</tr>
+<tr>
+<td style="text-align:right">2</td>
+<td><code>law_specific_verifier</code></td>
+<td>VLM + checklist + PICABench QA</td>
+<td>Reflection、Light_Propagation、Causality</td>
+<td>当前主要问题是 accepted 但 PICAEval 低分，需要先提高验收门槛</td>
+</tr>
+<tr>
+<td style="text-align:right">3</td>
+<td><code>mask_generator_stub</code></td>
+<td>先用 PICABench <code>edit_area</code> 和 QA box 生成候选 mask，不依赖外部模型</td>
+<td>localized/reflection/shadow/refraction/causal routes</td>
+<td>能先验证多 mask 协议，再决定是否接 SAM/GroundingDINO</td>
+</tr>
+<tr>
+<td style="text-align:right">4</td>
+<td><code>dependency_region_expander</code></td>
+<td>规则扩展 box：目标周围、下方阴影区、镜像区、水线区</td>
+<td>shadow、reflection、refraction、causality</td>
+<td>物理依赖区域常不等于目标本体，必须有 expanded mask</td>
+</tr>
+<tr>
+<td style="text-align:right">5</td>
+<td><code>object_detector</code></td>
+<td>后续接 GroundingDINO 或闭源 VLM box 输出</td>
+<td>需要 target localization 的 routes</td>
+<td>当前先不依赖外部模型，避免工具安装成本阻塞路线设计</td>
+</tr>
+<tr>
+<td style="text-align:right">6</td>
+<td><code>segmenter</code></td>
+<td>后续接 SAM/SAM2 或 API mask</td>
+<td>local edit、remove、reflection cleanup</td>
+<td>精细 mask 能减少非编辑区漂移，但需要 detector/point/box 输入</td>
+</tr>
+<tr>
+<td style="text-align:right">7</td>
+<td><code>local_inpainter_or_mask_edit</code></td>
+<td>API mask edit 或本地 inpainting</td>
+<td>localized_inpaint、refraction reconstruction</td>
+<td>真正执行局部编辑的核心工具，依赖前面 mask 质量</td>
+</tr>
+<tr>
+<td style="text-align:right">8</td>
+<td><code>candidate_ranker</code></td>
+<td>best-of-N + verifier score</td>
+<td>高风险 route</td>
+<td>解决生成随机性，尤其是 Reflection add/move 和 Causality settle</td>
+</tr>
+</tbody>
+</table>
+<h4 id="各-route-的工具需求">各 route 的工具需求</h4>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>必需工具</th>
+<th>可选增强工具</th>
+<th>暂时 fallback</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>direct_global_edit</code></td>
+<td><code>direct_edit</code>、<code>global_state_verifier</code></td>
+<td><code>candidate_ranker</code></td>
+<td>无，直接整图编辑</td>
+</tr>
+<tr>
+<td><code>localized_inpaint</code></td>
+<td><code>mask_generator</code>、<code>mask_editor</code>、<code>preservation_checker</code></td>
+<td><code>segmenter</code>、<code>object_detector</code></td>
+<td><code>direct_edit_with_locality_constraints</code></td>
+</tr>
+<tr>
+<td><code>reflection_add_or_move_route</code></td>
+<td><code>direct_edit</code>、<code>reflection_verifier</code>、<code>coordinate_mapper</code></td>
+<td><code>reflection_region_estimator</code>、<code>mask_editor</code>、<code>candidate_ranker</code></td>
+<td><code>direct_edit_with_reflection_constraints</code></td>
+</tr>
+<tr>
+<td><code>reflection_remove_route</code></td>
+<td><code>target_mask</code>、<code>dependency_mask</code>、<code>mask_editor</code>、<code>reflection_verifier</code></td>
+<td><code>detector</code>、<code>segmenter</code></td>
+<td><code>direct_edit_with_reflection_cleanup</code></td>
+</tr>
+<tr>
+<td><code>shadow_projection_route</code></td>
+<td><code>shadow_verifier</code>、<code>dependency_region_expander</code></td>
+<td><code>shadow_detector</code>、<code>mask_editor</code>、<code>reference_shadow_estimator</code></td>
+<td><code>direct_edit_with_shadow_constraints</code></td>
+</tr>
+<tr>
+<td><code>refraction_reconstruction_route</code></td>
+<td><code>dependency_mask</code>、<code>refraction_verifier</code></td>
+<td><code>transparent_object_detector</code>、<code>background_reconstruction</code></td>
+<td><code>direct_edit_with_refraction_reconstruction</code></td>
+</tr>
+<tr>
+<td><code>causal_settle_route</code></td>
+<td><code>causal_decomposition_planner</code>、<code>causal_verifier</code></td>
+<td><code>support_detector</code>、<code>contact_region_mask</code>、<code>candidate_ranker</code></td>
+<td><code>direct_edit_with_stable_outcome_constraints</code></td>
+</tr>
+<tr>
+<td><code>localized_state_route</code></td>
+<td><code>target_mask</code>、<code>local_state_verifier</code></td>
+<td><code>segmenter</code>、<code>material_boundary_detector</code></td>
+<td><code>direct_edit_with_locality_constraints</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="先不用重工具的原因">先不用重工具的原因</h4>
+<p>短期不建议一开始就接 GroundingDINO、SAM2、LaMa 等完整本地工具链。原因是当前最紧迫的问题是 route 语义和评测协议：如果 verifier 仍然会接受明显失败样本，或者 crop 坐标仍然不可靠，加入更重的视觉工具也会优化错目标。</p>
+<p>更稳妥的顺序是：</p>
+<pre class="hljs"><code><div>1. 先把 ToolSpec 和 route-toolchain 协议写清楚。
+2. 用 PICABench 标注框、edit_area 和规则扩展模拟 mask/dependency region。
+3. 用 law-specific verifier 判断 route 是否真的解决低分类型。
+4. 确认 route 有收益后，再替换成真实 detector/segmenter/inpainter。
+</div></code></pre>
+<h4 id="mask-工具的优化重点">mask 工具的优化重点</h4>
+<p>对物理一致性编辑来说，mask 不是单一的“目标区域”。Router 应要求 mask 工具输出多种区域：</p>
+<pre class="hljs"><code><div><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;target_mask&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;object to add/remove/move/change&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;dependency_mask&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;shadow/reflection/refraction/contact/affected object region&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;preserve_mask&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;regions that should remain unchanged&quot;</span>
+<span class="hljs-punctuation">}</span>
+</div></code></pre>
+<p>不同物理 law 的 dependency mask 规则：</p>
+<table>
+<thead>
+<tr>
+<th>Law</th>
+<th>dependency mask 应覆盖</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Light_Propagation</td>
+<td>cast shadow、contact shadow、受光/遮挡承接面</td>
+</tr>
+<tr>
+<td>Reflection</td>
+<td>倒影、高光、水线/镜面接触带、被主体遮挡的背景反射</td>
+</tr>
+<tr>
+<td>Refraction</td>
+<td>透明介质内部、被扭曲背景、caustic、边界高光</td>
+</tr>
+<tr>
+<td>Causality</td>
+<td>支撑点、受影响主体、新接触区域、可能倒落区域</td>
+</tr>
+<tr>
+<td>Deformation</td>
+<td>形变边界、纹理连续区域、相邻刚性结构</td>
+</tr>
+<tr>
+<td>Local State</td>
+<td>状态变化区域、材料边界、邻近湿痕/烟痕/结冰边缘</td>
+</tr>
+</tbody>
+</table>
+<p>这也是 Router 和 Tool 的接口重点：Router 不应只问“有没有 mask”，而应要求工具返回与 physics law 对齐的 mask 类型，并把这些 mask 传给 Executor 和 Verifier。</p>
+<h3 id="causality-专项clevrer-style-因果分解">Causality 专项：CLEVRER-style 因果分解</h3>
+<p>从 full run 结果看，<code>Causality + remove</code> 中的支撑移除任务表现不稳定。例如 <code>picabench_0294_causality</code> 中，系统删除了摩托车 kickstand，但 PICAEval 判断摩托车没有真正倒伏，也没有形成左侧连续接触阴影；移除承重卡牌时，模型也容易只删除目标卡牌，而没有充分表现玻璃桌面和其他卡牌在重力下重新稳定的结果。</p>
+<p>这类失败的本质不是“没听懂要删什么”，而是没有把编辑动作解释成物理干预，也没有推理干预后的稳定状态。因此，<code>causal_settle_route</code> 应引入 CLEVRER-style causal decomposition，用于 Mechanics/Causality-heavy tasks。</p>
+<p>适用范围：</p>
+<table>
+<thead>
+<tr>
+<th>适用</th>
+<th>不优先适用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>删除支撑物、移除接触点、改变承重关系、让物体倒下/滑落/倾斜、因刺激改变主体行为</td>
+<td>纯反射、纯折射、普通阴影重投影、全局天气/季节变化</td>
+</tr>
+</tbody>
+</table>
+<p>分解流程：</p>
+<pre class="hljs"><code><div>descriptive
+  -&gt; 当前有哪些物体、支撑、接触、遮挡和稳定关系？
+
+explanatory
+  -&gt; 当前状态为什么稳定？哪个物体提供支撑或约束？
+
+counterfactual / intervention
+  -&gt; 用户的 edit_operation 删除/移动/添加了哪个因果因素？
+
+predictive
+  -&gt; 干预后系统应达到什么最终稳定状态？
+
+visual realization
+  -&gt; 最终状态在图像中应表现为哪些姿态、接触、阴影、遮挡和背景修复？
+
+verification
+  -&gt; 检查干预对象是否消失/改变，且反事实后果是否出现。
+</div></code></pre>
+<p>对 Planner 的要求：</p>
+<pre class="hljs"><code><div><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;route&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;causal_settle_route&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;reasoning_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;descriptive&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;explanatory&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;counterfactual&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;predictive&quot;</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;physical_operation&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;remove_support_and_settle&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;current_state&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;support_relations&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;contact_points&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;stable_reason&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;intervention&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;operation&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;remove&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;removed_causal_factor&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;predicted_outcome&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;final_pose&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;new_contact_points&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;secondary_object_changes&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;visual_effects&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;must_pass_checks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</div></code></pre>
+<p>摩托车 kickstand 例子：</p>
+<pre class="hljs"><code><div>descriptive: 白色摩托车当前直立，侧脚撑脚垫接触地面。
+explanatory: 侧脚撑提供侧向支撑，使摩托车不会向左倒下。
+counterfactual: 如果移除侧脚撑，原来的支撑关系消失。
+predictive: 摩托车应在重力下倒向左侧，最终左侧车身/发动机区域接触路面。
+visual realization: 删除脚撑和旧接触痕迹，修复路面；生成倒伏姿态、轮胎角度变化、左侧连续接触阴影。
+verification: kickstand absent；motorcycle not upright；left-side ground contact visible；continuous contact shadow present。
+</div></code></pre>
+<p>卡牌支撑玻璃桌例子：</p>
+<pre class="hljs"><code><div>descriptive: 玻璃桌角由竖直卡牌支撑，卡牌与桌面/地面形成接触。
+explanatory: 竖直卡牌承担局部载荷，维持玻璃桌面近似水平。
+counterfactual: 如果移除前左侧支撑卡牌，该角点失去支撑。
+predictive: 玻璃桌应向失去支撑的一侧下沉或倾斜，附近卡牌可能倒下并在地面形成新接触。
+visual realization: 被删卡牌消失，玻璃角下沉，至少一个受影响卡牌倒伏，阴影/反射/遮挡随新姿态更新。
+verification: removed card absent；visible support gap；glass tilted toward removed support；fallen card grounded；new shadows/reflections consistent。
+</div></code></pre>
+<p>对 Router 的要求：</p>
+<pre class="hljs"><code><div>if physics_law == &quot;Causality&quot;
+   and edit_operation in {&quot;remove&quot;, &quot;move&quot;}
+   and task profile mentions support/contact/load/balance:
+       route = &quot;causal_settle_route&quot;
+       retry_budget = high
+       verifier_focus = intervention + predicted_outcome
+</div></code></pre>
+<p>对 Verifier 的要求：</p>
+<p><code>causal_settle_route</code> 的 pass 条件必须同时包含两部分：</p>
+<ol>
+<li>干预对象是否完成：例如 kickstand/card 是否真的被删除。</li>
+<li>反事实后果是否完成：例如摩托车是否倒伏、玻璃是否倾斜、是否有新的接触阴影。</li>
+</ol>
+<p>只完成第一部分不能 pass。这一点用于修正当前 MVP 中“支撑物被删了，但受影响主体仍保持原状态也被接受”的问题。</p>
+<p>实现优先级：</p>
+<ol>
+<li>先在 Planner prompt 中加入 causal decomposition scaffold。</li>
+<li>再让 Router 对 <code>Causality + remove/move + support/contact</code> 强制选择 <code>causal_settle_route</code>。</li>
+<li>然后为该 route 增加专项 verifier checklist。</li>
+<li>最后才考虑接入检测/分割工具，用于定位支撑点、接触区域和受影响物体。</li>
+</ol>
+<h4 id="executor">Executor</h4>
+<p>Executor 的职责是执行 Router 给出的 <code>RouteDecision</code>，把 TaskProfile 中的目标、依赖区域和 must-pass checks 转成一次或多次图像编辑调用。它不应自行重新判断物理类型；物理策略来自 Planner/Router，Executor 负责可靠执行、保存中间产物和把失败信息交回 Retry。</p>
+<p>输入与输出：</p>
+<pre class="hljs"><code><div><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;inputs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;canonical_image&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;canonical_input.png&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;task_profile&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;route_decision&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;coordinate_transform&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;available_tools&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;outputs&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;candidate_images&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;execution_trace&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;intermediate_artifacts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;tool_errors&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;selected_candidate&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</div></code></pre>
+<p>Executor 的核心优化方向：</p>
+<table>
+<thead>
+<tr>
+<th>优化点</th>
+<th>当前 MVP</th>
+<th>下一步方案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>执行粒度</td>
+<td>单次 whole-image edit</td>
+<td>支持 route-specific one-pass / two-pass / local-edit / best-of-N</td>
+</tr>
+<tr>
+<td>工具输入</td>
+<td>只使用 image + prompt</td>
+<td>使用 canonical image、target/dependency/preserve masks、reference cues</td>
+</tr>
+<tr>
+<td>中间状态</td>
+<td>只保存 <code>candidate.png</code></td>
+<td>保存每步输入图、mask、prompt、tool response、候选图和失败原因</td>
+</tr>
+<tr>
+<td>失败处理</td>
+<td>Verifier 失败后重跑同一路线</td>
+<td>根据失败类型切换 route hint、扩大 mask、提高候选数或回退</td>
+</tr>
+<tr>
+<td>非编辑区保护</td>
+<td>依赖模型自觉保持</td>
+<td>使用 preserve mask、局部编辑、PSNR/SSIM guardrail</td>
+</tr>
+</tbody>
+</table>
+<p>按 route 的执行策略：</p>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>Executor 执行方式</th>
+<th>为什么这样执行</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>direct_global_edit</code></td>
+<td>单次整图编辑；允许大范围风格/状态变化；重点保存结构身份</td>
+<td>天气、季节、昼夜变化必须全图一致，局部编辑会破坏整体状态</td>
+</tr>
+<tr>
+<td><code>localized_inpaint</code></td>
+<td>用 <code>target_mask</code> 做局部删除/替换，再检查背景连续性</td>
+<td>小目标任务需要减少非编辑区漂移</td>
+</tr>
+<tr>
+<td><code>reflection_add_or_move_route</code></td>
+<td>两阶段优先：先保证主体在目标区域可见，再补反射、水线、微波纹；高风险时 best-of-N</td>
+<td>反射任务失败常来自主体位置不准或倒影缺失，分阶段更容易定位失败</td>
+</tr>
+<tr>
+<td><code>reflection_remove_route</code></td>
+<td>同时编辑 <code>target_mask</code> 和 <code>dependency_mask</code>；删除主体、倒影、高光和水面/镜面扰动</td>
+<td>只删主体会留下镜像或高光残影</td>
+</tr>
+<tr>
+<td><code>shadow_projection_route</code></td>
+<td>编辑主体后重建 cast shadow/contact shadow；必要时第二步专门修阴影</td>
+<td>阴影常位于主体外部，单次 prompt 容易漏掉或方向错误</td>
+</tr>
+<tr>
+<td><code>light_source_route</code></td>
+<td>添加/替换光源后，第二步调整周围受光面、色温、阴影和反射</td>
+<td>光源影响范围超过灯本体，通常是半全局效应</td>
+</tr>
+<tr>
+<td><code>refraction_reconstruction_route</code></td>
+<td>用 dependency region 重建透明介质后的背景，同时清理 caustic、边缘高光、扭曲纹理</td>
+<td>折射问题的关键是被介质扭曲的背景，不是透明物本体</td>
+</tr>
+<tr>
+<td><code>causal_settle_route</code></td>
+<td>先执行干预对象变化，再执行 predicted stable outcome；若无法局部控制则一次 prompt 强制描述最终稳定态</td>
+<td>删除支撑物后必须改变受影响主体的姿态和接触关系</td>
+</tr>
+<tr>
+<td><code>deformation_route</code></td>
+<td>对形变区域做局部编辑，保护刚性连接和纹理连续区域</td>
+<td>形变需要边界受控，避免整图结构漂移</td>
+</tr>
+<tr>
+<td><code>localized_state_route</code></td>
+<td>用局部 mask 改变材料状态，并保留周围上下文；边界不清时扩大一点 dependency mask</td>
+<td>湿、冻、烧、融化等局部状态变化需要范围可控</td>
+</tr>
+</tbody>
+</table>
+<p>Executor 需要支持三种执行模式：</p>
+<pre class="hljs"><code><div>one_pass:
+  route 低风险或全局任务，直接调用 image edit API。
+
+two_pass:
+  第一步完成主体编辑，第二步补物理依赖，如 reflection/shadow/light spill。
+
+best_of_n:
+  对高风险 route 生成多个候选，用 verifier/candidate_ranker 选分数最高者。
+</div></code></pre>
+<p>route 到执行模式的默认映射：</p>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>默认模式</th>
+<th>高风险时</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>direct_global_edit</code></td>
+<td><code>one_pass</code></td>
+<td><code>best_of_n=2</code></td>
+</tr>
+<tr>
+<td><code>localized_inpaint</code></td>
+<td><code>one_pass_local</code></td>
+<td>扩大 mask 后重试</td>
+</tr>
+<tr>
+<td><code>reflection_add_or_move_route</code></td>
+<td><code>two_pass</code></td>
+<td><code>best_of_n=3</code></td>
+</tr>
+<tr>
+<td><code>shadow_projection_route</code></td>
+<td><code>two_pass</code></td>
+<td>第二步专门修阴影</td>
+</tr>
+<tr>
+<td><code>causal_settle_route</code></td>
+<td><code>one_pass_with_strong_final_state</code></td>
+<td><code>best_of_n=3</code> 或 two-pass</td>
+</tr>
+<tr>
+<td><code>localized_state_route</code></td>
+<td><code>one_pass_local</code></td>
+<td>mask 边界调整后重试</td>
+</tr>
+</tbody>
+</table>
+<p>当前闭源 API 仍以 whole-image edit 为主，因此短期实现时可以先模拟 route-specific execution：</p>
+<pre class="hljs"><code><div>route-specific prompt template
+  + canonical input
+  + route-specific verifier focus
+  + saved execution trace
+</div></code></pre>
+<p>等 mask/local edit 工具接入后，再把相同 route 切换到真正的局部执行。这样可以先验证 route 策略是否提升低分类型，再增加工具复杂度。</p>
+<p>Executor 必须保存执行 trace，方便科研汇报和失败复盘：</p>
+<pre class="hljs"><code><div><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;step&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;route&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;causal_settle_route&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;mode&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;one_pass_with_strong_final_state&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;input_image&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;canonical_input.png&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;prompt&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;...&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;masks&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;target_mask&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;dependency_mask&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;preserve_mask&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">null</span></span>
+  <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;candidate_image&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;candidate.png&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;known_limitations&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;no local mask tool available&quot;</span><span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</div></code></pre>
+<p>Executor 的短期开发顺序：</p>
+<ol>
+<li>先把 <code>execute_edit</code> 包装为 route-aware executor，保存 <code>execution_trace.json</code>。</li>
+<li>为 Reflection、Light_Propagation、Causality 三类低分 route 写 route-specific prompt template。</li>
+<li>为高风险 route 加 <code>best_of_n</code> 接口，但默认 <code>n=1</code>，避免成本失控。</li>
+<li>接入 mask 协议后，先支持 <code>target_mask</code> 和 <code>dependency_mask</code> 的本地文件输入。</li>
+<li>最后再接真实 detector/segmenter/inpainter。</li>
+</ol>
+<h4 id="verifier">Verifier</h4>
+<p>Verifier 的优化目标是从“通用 VLM 总分判断”升级为“route-aware gate”。它应同时使用完整图、必要的 crop/局部证据、TaskProfile 的 <code>must_pass_checks</code>、Router 的 <code>verification_focus</code> 和 PICABench 的 QA 视图分流结果。</p>
+<p>输入：</p>
+<pre class="hljs"><code><div><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;original_image&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;canonical_input.png&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;candidate_image&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;candidate.png&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;task_profile&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;route_decision&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;mapped_qa_views&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;coordinate_transform&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</div></code></pre>
+<p>输出：</p>
+<pre class="hljs"><code><div><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;pass&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;instruction_score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;preservation_score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;physics_score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;check_results&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;blocking_failures&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;issues&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;repair_instruction&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;route_hints&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span>
+<span class="hljs-punctuation">}</span>
+</div></code></pre>
+<p>三类标签在 Verifier 中的作用：</p>
+<table>
+<thead>
+<tr>
+<th>标签</th>
+<th>Verifier 检查方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>physics_category</code></td>
+<td>选择大类评分口径：Optics 检查光照依赖，Mechanics 检查接触/稳定，State 检查状态范围</td>
+</tr>
+<tr>
+<td><code>physics_law</code></td>
+<td>选择 law-specific checklist，例如 Reflection 检查主体和反射是否同时存在、尺度是否一致</td>
+</tr>
+<tr>
+<td><code>edit_operation</code></td>
+<td>检查动作是否真的发生，例如 add 后目标可见，remove 后目标消失，move 后旧位置清理且新位置正确</td>
+</tr>
+</tbody>
+</table>
+<p>新 crop 协议在 Verifier 中的用法：</p>
+<table>
+<thead>
+<tr>
+<th>问题类型</th>
+<th>评估视图</th>
+<th>Verifier 用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>global_position</code></td>
+<td>完整候选图</td>
+<td>判断目标在画布中的真实方位、透视、前后景、左右上下关系</td>
+</tr>
+<tr>
+<td><code>local_appearance</code></td>
+<td>mapped crop</td>
+<td>判断阴影、反射、接触、材质、纹理、折射等局部物理证据</td>
+</tr>
+<tr>
+<td><code>mixed</code></td>
+<td>完整图 + mapped crop</td>
+<td>完整图判断位置，crop 判断局部物理细节</td>
+</tr>
+<tr>
+<td><code>unknown</code></td>
+<td>mapped crop + <code>context_risk</code></td>
+<td>结果单独标记风险，不作为强结论直接解释</td>
+</tr>
+</tbody>
+</table>
+<p>示例 checklist：</p>
+<table>
+<thead>
+<tr>
+<th>Law</th>
+<th>Operation</th>
+<th>必要检查</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reflection</td>
+<td>add</td>
+<td>主体可见；反射可见；反射位于镜面/水面正确区域；尺度/方向合理；接触线或微波纹存在</td>
+</tr>
+<tr>
+<td>Light_Propagation</td>
+<td>move</td>
+<td>目标新位置正确；旧阴影不存在；新阴影方向与参考阴影一致；阴影软硬与场景匹配</td>
+</tr>
+<tr>
+<td>Causality</td>
+<td>remove</td>
+<td>被删支撑不存在；受影响物体不悬空；最终姿态稳定；新接触阴影存在</td>
+</tr>
+<tr>
+<td>Local</td>
+<td>wet</td>
+<td>局部区域变湿；边界不越界；材质变暗/反光；周围未被全局改写</td>
+</tr>
+</tbody>
+</table>
+<p>Verifier 的 pass 不应只依赖总分，而应要求：</p>
+<pre class="hljs"><code><div>pass = no blocking_failures
+  and instruction_score &gt;= threshold
+  and preservation_score &gt;= threshold
+  and physics_score &gt;= threshold
+  and required must_pass_checks all pass
+</div></code></pre>
+<p>对低分类型的专项要求：</p>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>Verifier 必须阻断的失败</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reflection_add_or_move_route</code></td>
+<td>主体不可见；反射不可见；反射没有与主体/水线对齐；只有主体没有倒影</td>
+</tr>
+<tr>
+<td><code>shadow_projection_route</code></td>
+<td>移动物体后没有新阴影；旧阴影残留；阴影方向与参考阴影明显冲突</td>
+</tr>
+<tr>
+<td><code>causal_settle_route</code></td>
+<td>只删除支撑物但受影响主体仍保持原稳定状态；没有新接触点或接触阴影</td>
+</tr>
+<tr>
+<td><code>localized_state_route</code></td>
+<td>局部状态扩散到无关区域；材料边界不合理</td>
+</tr>
+</tbody>
+</table>
+<p>因此，新 Verifier 的核心不是“给更严格的自然语言评价”，而是把 <code>must_pass_checks</code> 变成可解释的 blocking gate。只要 blocking check 失败，即使 VLM 给出较高总分，也不能 pass。</p>
+<h4 id="picaeval">PICAEval</h4>
+<p>PICAEval 使用三类标签做两件事：评估输入选择和结果归因。</p>
+<table>
+<thead>
+<tr>
+<th>标签</th>
+<th>PICAEval 用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>physics_category</code></td>
+<td>按 Optics/Mechanics/State 汇总，观察大类能力</td>
+</tr>
+<tr>
+<td><code>physics_law</code></td>
+<td>按具体 law 汇总，定位最低分机制，例如 Reflection、Light_Propagation</td>
+</tr>
+<tr>
+<td><code>edit_operation</code></td>
+<td>与 law 交叉统计，找出最难组合，例如 <code>Reflection + add</code>、<code>Light_Propagation + move</code></td>
+</tr>
+</tbody>
+</table>
+<p>当前已经实现的 QA 视图分流也应与标签结合：</p>
+<pre class="hljs"><code><div>位置/构图类 QA -&gt; full image
+局部物理属性 QA -&gt; mapped crop
+混合 QA -&gt; full image + mapped crop
+</div></code></pre>
+<p>后续汇总指标建议增加：</p>
+<pre class="hljs"><code><div>accuracy_by_category
+accuracy_by_law
+accuracy_by_operation
+accuracy_by_law_operation
+context_risk_accuracy
+</div></code></pre>
+<h4 id="retry-loop">Retry Loop</h4>
+<p>Retry 不应只把自然语言 <code>repair_instruction</code> 拼回 prompt，而应根据三类标签把失败转成下一轮 route hints。</p>
+<table>
+<thead>
+<tr>
+<th>失败类型</th>
+<th>标签组合</th>
+<th>下一轮策略</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>目标没出现</td>
+<td><code>add</code></td>
+<td>提高目标可见性约束，先执行主体插入，再补物理效应</td>
+</tr>
+<tr>
+<td>反射缺失</td>
+<td><code>Reflection + add/move</code></td>
+<td>强制进入 reflection route，补 reflected region</td>
+</tr>
+<tr>
+<td>阴影方向错误</td>
+<td><code>Light_Propagation</code></td>
+<td>选择参考阴影，重写 shadow projection prompt</td>
+</tr>
+<tr>
+<td>支撑移除后物体没倒</td>
+<td><code>Causality + remove</code></td>
+<td>将操作改写为 <code>remove_support_and_settle</code>，要求最终稳定态</td>
+</tr>
+<tr>
+<td>局部状态扩散过大</td>
+<td><code>Local</code></td>
+<td>缩小 edit scope，优先 mask/local route</td>
+</tr>
+</tbody>
+</table>
+<p>因此，三类标签在 retry 中的作用是把失败从“自然语言建议”升级为“下一轮路由和工具选择的结构化条件”。</p>
+<h2 id="标签驱动规划与路由的参考工作">标签驱动规划与路由的参考工作</h2>
+<p>以下论文/项目可作为本项目利用 <code>physics_category</code>、<code>physics_law</code>、<code>edit_operation</code> 进行 Planner、Router、Verifier 设计的参考。</p>
+<table>
+<thead>
+<tr>
+<th>参考工作</th>
+<th>可借鉴点</th>
+<th>对本项目的对应关系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PICABench / PICAEval</td>
+<td>用物理 taxonomy 和 region-grounded QA 评估物理一致性</td>
+<td>直接对应 <code>physics_category</code>、<code>physics_law</code> 和 law-specific verifier checklist</td>
+</tr>
+<tr>
+<td>PHYRE</td>
+<td>用目标状态、动作干预和物理模拟结果定义任务</td>
+<td>对应 <code>edit_operation</code> 作为干预，<code>expected_stable_outcome</code> 作为编辑后目标状态</td>
+</tr>
+<tr>
+<td>Forward Prediction for Physical Reasoning</td>
+<td>将 forward prediction model 接入 physical-reasoning agent，说明预测模块可提升复杂物理任务表现</td>
+<td>支持在 Causality/Deformation route 中加入“后果预测”或稳定态推理模块</td>
+</tr>
+<tr>
+<td>Physion</td>
+<td>强调 object-centric、物理有意义的场景表示，而不只是像素预测</td>
+<td>支持 Planner 输出 <code>target_objects</code>、<code>affected_objects</code>、<code>dependent_regions</code></td>
+</tr>
+<tr>
+<td>CLEVRER</td>
+<td>将动态场景问题拆成描述、解释、预测、反事实</td>
+<td>支持把 <code>edit_operation</code> 看作干预，把 <code>physics_law</code> 看作因果机制，把 verifier 看作后果检查</td>
+</tr>
+<tr>
+<td>IntPhys</td>
+<td>用违反预期原则检查 object permanence、continuity、solidity 等物理一致性</td>
+<td>支持把每个 law 转成 must-pass violation checks</td>
+</tr>
+<tr>
+<td>Chameleon</td>
+<td>LLM planner 根据任务约束组合工具模块</td>
+<td>支持 Router 不由 LLM 自由决定，而由任务约束和工具 inventory 共同决定</td>
+</tr>
+<tr>
+<td>HuggingGPT</td>
+<td>将复杂任务拆成 task planning、model selection、execution、response generation</td>
+<td>对应本项目 Planner -&gt; Router -&gt; Executor -&gt; Verifier 的模块化结构</td>
+</tr>
+<tr>
+<td>ViperGPT</td>
+<td>用 LLM 生成程序组合视觉模块，提升可解释性和可执行性</td>
+<td>支持将 route 表达成可执行工具链，而不是纯自然语言计划</td>
+</tr>
+<tr>
+<td>Visual ChatGPT</td>
+<td>用 ChatGPT 管理视觉基础模型和多步视觉编辑反馈</td>
+<td>支持图像编辑 agent 中的工具描述、视觉反馈和多轮修复流程</td>
+</tr>
+</tbody>
+</table>
+<p>需要注意的是，这些工作没有一个可以直接照搬到物理一致性图像编辑中。最接近任务本身的是 PICABench；PHYRE、Physion、CLEVRER、IntPhys 提供物理任务分解和评估思想；Chameleon、HuggingGPT、ViperGPT、Visual ChatGPT 提供 planner/router/tool-use 的工程形态。对本项目最合理的融合方式是：用 PICABench 的三类标签定义物理任务语义，用物理推理 benchmark 的机制/干预/后果分解指导 TaskProfile，用 tool-use agent 的模块化思想实现 route 和 verifier。</p>
+
+</body>
+</html>
