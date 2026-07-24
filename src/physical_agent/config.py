@@ -50,8 +50,8 @@ def load_settings() -> Settings:
     return Settings(
         base_url=base_url,
         api_key=api_key,
-        planner_model=_env_or_default("PLANNER_MODEL", "gpt-4o"),
-        verifier_model=_env_or_default("VERIFIER_MODEL", "gpt-4o"),
+        planner_model=_env_or_default("PLANNER_MODEL", "gpt-5.4-mini"),
+        verifier_model=_env_or_default("VERIFIER_MODEL", "gpt-5.4-mini"),
         image_edit_model=_env_or_default("IMAGE_EDIT_MODEL", "gpt-image-2"),
         timeout_seconds=int(os.getenv("API_TIMEOUT_SECONDS", "120")),
         max_retries=int(os.getenv("MAX_AGENT_RETRIES", "1")),

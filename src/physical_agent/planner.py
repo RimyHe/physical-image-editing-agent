@@ -3,13 +3,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from .openai_compat import OpenAICompatClient, vision_user_message
-
-
-PLANNER_SYSTEM = """You are the Planner in a physical-consistency image editing agent.
-Return strict JSON only. Plan the edit, identify physical dependencies, and write an executable image-edit prompt.
-JSON keys: target, operation, preserve, physics_dependencies, route, edit_prompt, verifier_focus.
-Use route "direct_edit" unless a local mask/tool is required."""
+from .openai_compat import OpenAICompatClient
+from .physical_intent import PhysicalIntentExpander, render_edit_prompt
 
 
 def plan_edit(
@@ -19,16 +14,20 @@ def plan_edit(
     instruction: str,
     previous_failure: str | None = None,
 ) -> dict[str, Any]:
-    repair_context = f"\nPrevious verifier failure to address: {previous_failure}" if previous_failure else ""
-    user_text = (
-        "Create a concise plan for this image edit.\n"
-        f"User instruction: {instruction}{repair_context}\n"
-        "The edit prompt must explicitly mention physical consistency such as shadows, reflections, occlusion, contact, lighting, and perspective when relevant."
+    """Expand the user request and expose a backward-compatible planner result."""
+    expander = PhysicalIntentExpander(client, model)
+    task_profile = expander.expand(
+        image_path=image_path,
+        instruction=instruction,
+        previous_failure=previous_failure,
     )
-    return client.chat_json(
-        model,
-        [
-            {"role": "system", "content": PLANNER_SYSTEM},
-            vision_user_message(user_text, [image_path]),
-        ],
-    )
+    return {
+        "target": task_profile.get("affected_objects", []),
+        "operation": task_profile.get("physical_operation", ""),
+        "preserve": task_profile.get("preserve_scope", []),
+        "physics_dependencies": task_profile.get("physical_dependencies", []),
+        "route": "direct_edit",
+        "edit_prompt": render_edit_prompt(task_profile, instruction),
+        "verifier_focus": task_profile.get("must_pass_checks", []),
+        "task_profile": task_profile,
+    }
