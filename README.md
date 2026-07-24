@@ -1,6 +1,45 @@
 # Physical Image Editing Agent
 
 本目录用于完成“基于闭源图像编辑 API 的物理一致性图像编辑 Agent”任务。
+## 开发环境（虚拟环境与依赖）
+
+为保证在不同机器上可复现的依赖环境，项目使用局部虚拟环境 `.venv`。建议每次运行测试、脚本或安装包前激活该虚拟环境，或直接使用其 Python 可执行文件。
+快速入门（PowerShell）：
+
+```powershell
+# 在项目根创建虚拟环境（只需执行一次）
+python -m venv .venv
+
+# 激活虚拟环境（当前终端会话）
+. .venv\Scripts\Activate.ps1
+
+# 安装运行时依赖
+python -m pip install -r requirements-viewer.txt
+# 安装开发依赖（测试、lint 等）
+python -m pip install -r requirements-dev.txt
+
+# 运行单元测试
+python -m pytest -q
+```
+
+不想激活也可以直接调用 venv 的解释器：
+```powershell
+.venv\Scripts\python -m pytest -q
+.venv\Scripts\python -m pip install -r requirements-viewer.txt
+```
+我已经在仓库中创建并安装了 `.venv`，并导出了当前完整依赖为 `requirements-full.txt`，便于他人复现。
+
+VS Code 推荐设置：打开命令面板（Ctrl+Shift+P）→ `Python: Select Interpreter` → 选择项目下的 `.venv\Scripts\python`，或在工作区中添加 `.vscode/settings.json`：
+```json
+{
+  "python.pythonPath": ".venv\\Scripts\\python",
+  "python.defaultInterpreterPath": ".venv\\Scripts\\python"
+}
+```
+项目特殊说明：
+- 本项目对输入 PNG 的最小合法尺寸为 1024x1024（1k×1k）。测试与编辑流水线均以该尺寸作为默认规范，请在准备样本时遵守。
+- `.env` 应放在项目根并包含必要的 API Key（参考 `.env.example`）；不要将 `.env` 提交到版本库。
+
 
 ## 目录
 
