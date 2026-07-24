@@ -127,6 +127,18 @@ InPhyRe 研究发现，大型多模态模型在未见过的物理环境中进行
 
 ## 3. 物理 prompt 扩写的核心表示
 
+### 3.0 Prompt 长度策略
+
+PhysicalIntent 不应把“长 prompt”本身作为目标。更合理的设计是保留较完整的内部 `TaskProfile`，但将最终交给 image executor 的 prompt 压缩成高密度、可执行的自然语言。
+
+当前建议：
+
+- 简单局部编辑：约 60-120 words。
+- 单一物理依赖编辑，例如阴影、反射、折射或简单接触变化：约 120-220 words。
+- 多物体因果/支撑重排，例如 `0000`：约 220-450 words，必要时可以临时更长，但应通过区域级 route 拆分来降低单条 prompt 负担。
+
+长度控制的目标不是直接省文本 token 成本，而是降低模型注意力被无关细节稀释、保护区域被误改、以及约束互相冲突的概率。内部字段可以长，executor prompt 应只保留 target、intervention、final_state、dependent_regions、preserve_scope 和 must-pass/failure checks。
+
 ### 3.1 推荐的 TaskProfile
 
 ```json

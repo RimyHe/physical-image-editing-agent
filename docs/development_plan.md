@@ -1,983 +1,258 @@
 # Physical Agent 开发计划
 
-## 当前开发重点
+本文档只维护后续开发路线、模块职责、优先级和验收标准。已经完成的实验记录、阶段性问题和人工观察放在 [`physical_dataset_progress_report.md`](physical_dataset_progress_report.md)；完整运行结果放在 [`picabench_full_run_results.md`](picabench_full_run_results.md)；PICABench 数据说明放在 [`picabench_examples.md`](picabench_examples.md)。
 
-当前第一优先级是实现 `PhysicalIntentExpander`：接收 PICABench 的短 `superficial_prompt` 和图像，生成结构化的最终稳定状态与物理视觉后果，再交给 Planner、Router、Executor 和 Verifier 使用。评测协议和坐标协议已经完成，后续任务都应围绕这个结构化任务画像推进。
+## 当前重点
 
-参考调研笔记：[`tool_router_physics_tool_research.md`](tool_router_physics_tool_research.md)
+P0 `PhysicalIntentExpander` 已达到当前阶段的收尾标准：能够从短 `superficial_prompt` 和图像证据中生成结构化 `TaskProfile`，补全关键最终稳定状态，输出 diagnostics，并将详细任务画像压缩成更适合 image executor 的 prompt。下一阶段第一优先级转向 P2/P3：把 `TaskProfile` 真正接入 route/toolchain，尤其是 `causal_settle_route` 和局部 executor 控制。
+
+2026-07-24 的 5-case 人工检查表明，早期瓶颈不是 prompt 不够长，而是 `PhysicalIntentExpander` 经常没有预测下一个稳定状态。例如移除支撑牌后没有预测玻璃桌面倾斜，移除摩托车脚撑后没有预测摩托车倒伏。当前 P0 已通过 `StableStatePredictor` 和 `PromptCompressor` 修复这一类核心缺口。后续学习 `explicit_prompt` 时，只抽取终态约束结构，不直接模仿长文本。
+
+```text
+explicit_prompt
+  -> intervention target
+  -> affected objects
+  -> final stable state
+  -> contact/support/shadow/reflection changes
+  -> preserve scope
+  -> must-pass checks
+```
 
 ## 目标架构
 
 ```text
 User image + instruction
-  -> Planner: 生成 task profile 和初始 edit prompt
-  -> Router: 根据编辑动作、物理依赖、空间范围选择 route/toolchain
-  -> Tool Executor: direct edit / mask edit / detection / segmentation / inpainting / QA
-  -> Verifier: VLM 分项评分 + PICABench QA + deterministic guardrails
+  -> PhysicalIntentExpander: 结构化物理任务画像
+  -> Planner: 生成执行 prompt 和 verifier focus
+  -> Router: 根据 law / operation / risk 选择 route 或 toolchain
+  -> Executor: direct edit / mask edit / two-pass / best-of-N
+  -> Verifier: law-specific checklist + PICABench QA + preservation checks
        -> pass: accept
-       -> fail: 生成 repair instruction，并带历史反馈重新 route/edit
+       -> fail: structured failure -> retry / reroute / reject
 ```
 
-## 工作流图对应的当前代码实现
+当前 MVP 已经跑通 Planner、direct-edit Router、Image Edit API、Verifier、retry 和 PICABench 离线评测，但 Router 仍基本回退到 `direct_edit`，尚未真正接入 detection、segmentation、mask edit、local repaint 或 best-of-N。
 
-本节根据 `references/工作流.png` 的组件顺序，记录当前代码实际已经采用的实现方法。它描述的是当前 baseline，不等同于后续计划方案；后续优化应以本节为代码事实基础，避免把未实现的 route/tool/mask 能力误写成当前能力。
+## P0：PhysicalIntentExpander
 
-| 工作流组件 | 当前代码位置 | 当前实现方法 | 当前输入 | 当前输出/产物 | 主要局限 |
-|---|---|---|---|---|---|
-| User Image + Instruction | `scripts/run_picabench_examples.py`、`scripts/run_picabench_resumable.py` | 从 PICABench manifest 读取 `input_png`、`instruction`、`physics_category`、`physics_law`、`edit_operation`、`edit_area`、`annotated_qa_pairs`；运行前把原图标准化成 canonical input | 原始 PNG、编辑指令、PICABench 标签和 QA 元数据 | `canonical_input.png`、`coordinate_transform.json`、传入 agent 的 `eval_case` metadata | 目前主要面向 PICABench manifest；普通用户输入没有自动标签推断和人工确认流程 |
-| 图像标准化/坐标协议 | `src/physical_agent/pica_eval.py` | 使用 `prepare_canonical_input()` 把原图按 `1024x1024 contain + padding` 渲染到统一画布；用 `contain_transform()` 保存 scale/padding；评测时通过 `source_box -> canonical_box -> output_box` 映射 crop | 原始图、目标 canonical size、PICABench edit/crop box | canonical 图、坐标变换 JSON、mapped crop、去 padding 的 final image | 只支持 contain/identity 协议；不能自动修正生成模型导致的构图漂移 |
-| MLLM Analyzer / Planning | `src/physical_agent/planner.py` | `plan_edit()` 调用兼容 OpenAI chat completions 的 VLM，要求返回严格 JSON；system prompt 指定字段 `target`、`operation`、`preserve`、`physics_dependencies`、`route`、`edit_prompt`、`verifier_focus`；失败重试时把上一轮 verifier failure 拼入 prompt | 当前图像、用户指令、上一轮失败说明 | `plan.json` 中的自由结构 JSON 和 `edit_prompt` | 还没有 `LabelPolicyCompiler`、TaskProfile schema、规则校验器；PICABench 三类标签没有在 Planner 规则层稳定注入 |
-| Tool Selection / Router | `src/physical_agent/router.py` | `select_route(plan)` 读取 plan 中的 `route` 字段，只接受 `direct_edit` 或 `local_edit`；若请求 `local_edit`，由于没有 mask/local CV 工具，直接回退到 `direct_edit` | Planner 输出的 plan | `{"route": "direct_edit", "reason": ...}` | 尚无 `RouteSpec`、`ToolSpec`、capability matching、risk scoring；Reflection/Light_Propagation/Causality 没有真正分流 |
-| Tool Retrieval | 当前没有独立模块 | 工作流图中的工具检索节点尚未实现；当前系统没有工具库检索、工具注册表或动态工具选择，只在 Router 中硬编码回退原因 | 无 | 无 | 缺少可查询的 tool inventory；无法按任务检索 detector、segmenter、mask editor、inpainting、physics verifier 等工具 |
-| Tool Executor / Generation/Edit | `src/physical_agent/editor.py`、`src/physical_agent/openai_compat.py` | `execute_edit()` 校验输入 PNG 后调用 `OpenAICompatClient.edit_image()`；底层向 `/images/edits` 发 multipart 请求，默认 `size="1024x1024"`，取 `data[0].b64_json` 写为 `candidate.png` | canonical input、Planner 生成的 `edit_prompt`、image edit model | 每轮 `step_xx/candidate.png` | 只做单次 whole-image edit；没有 mask edit、局部回贴、两阶段执行、best-of-N、execution trace |
-| Verification Agent | `src/physical_agent/verifier.py` | `verify_edit()` 同时看 original/candidate 两张图，结合 instruction、plan、route、metadata 生成 task profile 和 required checks；VLM 输出 `pass`、三项分数、`check_results`、`blocking_failures`、`route_hints`；`normalize_verification_result()` 将 required/blocking failure 作为硬门槛 | 原图、候选图、指令、plan、route、metadata | `verify.json`、`required_checks`、`blocking_failures`、`repair_instruction`、`route_hints` | checklist 主要是规则生成 + VLM 判断，缺少确定性视觉工具验证；route-aware 能力受限于 Router 当前只有 `direct_edit` |
-| Pass / Fail Control | `src/physical_agent/orchestrator.py` | `run_agent()` 组织 Planner -> Router -> Editor -> Verifier 循环；若 `verification["pass"]` 为真则接受并停止；否则把 `repair_instruction` 或 `issues` 作为 `previous_failure` 进入下一轮；最大轮数由 `Settings.max_retries` 控制 | 每轮 verification 结果、settings | `run_state.json`、`iterations`、`accepted`、`final_image`、调用次数统计 | retry 只把失败文本回灌给 Planner；不会根据 route hints 切换工具链、扩大 mask 或调整候选预算 |
-| PICABench QA / Dataset Evaluation | `src/physical_agent/pica_eval.py`、运行脚本 | agent 完成后，`evaluate_picabench_case()` 对 `annotated_qa_pairs` 做 yes/no VLM 评测；`classify_question()` 用关键词把问题分成 `global_position`、`local_appearance`、`mixed`、`unknown`，并选择 full image/crop/mixed 视图；同时计算 non-edit PSNR | 去 padding 的 final image、原图、QA pairs、edit_area、metadata | `pica_eval.json`、逐题 QA 结果、accuracy、non-edit PSNR | QA 类型是启发式关键词分类；PICAEval 独立于 agent pass gate，当前主要用于离线评估和汇总 |
-| 实验汇总与可视化 | `scripts/run_picabench_examples.py`、`scripts/run_picabench_resumable.py`、`scripts/view_picabench_results.py` | 批量脚本写 `summary.json` 和 `summary_metrics.json`；resumable 脚本支持按 case 重试和 resume；Gradio viewer 支持按 physics law/category/operation 过滤并查看原图、结果图、QA 表和 crop gallery | run outputs、manifest、pica_eval.json | summary、metrics、可视化界面 | 汇总维度仍以 law 为主；尚未完整按 route、question_type、context_risk、blocking_failure 做联动分析 |
-| 配置与 API 适配 | `src/physical_agent/config.py`、`src/physical_agent/openai_compat.py`、`src/physical_agent/image_io.py` | 从 `.env` 或环境变量读取 base URL、API key 和模型名；用 urllib 实现 chat JSON、image edit multipart、重试；图像 I/O 只接受有效 PNG，并用 data URL 发送给 VLM | `.env`、环境变量、PNG 文件 | `Settings`、API JSON、base64 图像文件 | 依赖 OpenAI-compatible endpoint；没有 provider fallback；image edit size 默认固定为 `1024x1024` |
+状态：当前阶段收尾。后续只保留小修和回归测试；新的主要开发应进入 P2 Router、P3 Executor 和 P4 route-aware Verifier。
 
-当前代码的整体执行链可以概括为：
+目标：输出可验证、可路由、可追踪的 `TaskProfile`，而不是生成更长的自然语言 prompt。
+
+运行时输入应保持为：
 
 ```text
-PICABench case
-  -> canonicalize image and save coordinate transform
-  -> run_agent()
-      -> plan_edit(): VLM JSON plan
-      -> select_route(): direct_edit fallback
-      -> execute_edit(): whole-image edit API
-      -> verify_edit(): VLM route-aware checklist gate
-      -> retry with previous_failure when verifier fails
-  -> write unpadded output
-  -> evaluate_picabench_case(): mapped QA crops/full-image QA + non-edit PSNR
-  -> summary.json / summary_metrics.json / Gradio viewer
+image + superficial/user instruction + optional inferred labels + previous verifier failure
 ```
 
-因此，当前系统已经实现了工作流图中的主循环骨架、VLM planner、基础 router、图像编辑 executor、route-aware verifier、失败重试和 PICABench 离线评测；尚未实现的是独立工具检索、真实工具库、mask/local edit 工具链、基于三类物理标签的规则 planner/router、以及结构化 route hints 驱动的重试策略。
+PICABench 的 `explicit_prompt` 只用于 schema 设计参考、upper-bound 对照、失败归因诊断和弱监督字段抽取，不作为真实推理输入。
 
-## 开发待办事项
+### TaskProfile
 
-状态约定：`[ ]` 待办，`[x]` 已完成，`[-]` 暂缓或依赖前置任务。
-
-### P0：PhysicalIntentExpander（当前第一优先级）
-
-- [ ] 定义 `TaskProfile` schema：`final_state`、`affected_objects`、`physical_dependencies`、`dependent_regions`、`preserve_scope`、`reference_cues`、`uncertainties`。
-- [ ] 实现 `LabelPolicyCompiler`，把 `physics_category`、`physics_law`、`edit_operation` 编译为规则骨架。
-- [ ] 实现 `PhysicalIntentExpander`，输入 `superficial_prompt + image + policy scaffold`。
-- [ ] 使用 `explicit_prompt` 作为弱监督/教师信号，先做 prompt 对齐和结构化字段抽取，不直接把 explicit 文本视为绝对真值。
-- [ ] 实现 `PlanValidator`，检查物理依赖、最终稳定状态、保持区域和不确定字段。
-- [ ] 实现 prompt renderer，把结构化 TaskProfile 渲染为 Executor 可用的详细编辑指令。
-- [ ] 增加三组对照实验：superficial baseline、explicit upper bound、superficial + expander。
-- [ ] 在固定 50-case regression set 上记录 QA accuracy、non-edit PSNR、Verifier pass rate 和扩展失败类型。
-- [ ] 只有当 expander 的收益在固定评测协议下稳定后，才考虑监督微调或强化学习。
-
-### P1：固定评测协议与坐标协议（已完成）
-
-目标：先保证后续优化的收益可以被稳定测到，避免 route 或工具改动被尺寸、crop、QA 视图选择等评测噪声掩盖。
-
-当前应优先完成和保持的内容：
-1. 统一生成 `canonical_input.png`，并记录 `coordinate_transform.json`。
-2. 评测时使用 `source box -> canonical box -> output box` 的显式映射，而不是假设输出图与原图同尺寸。
-3. 对 PICABench QA 按问题类型分流：全局位置关系使用完整图，局部外观/物理细节使用 mapped crop，混合问题同时提供完整图和 crop。
-4. 在 `pica_eval.json` 中记录 `evaluation_view`、`source_box`、`mapped_box`、`output_size`、`context_risk`。
-5. 将 non-edit PSNR、QA accuracy、accepted/pass 等指标都绑定到同一套坐标协议上。
-
-完成状态：已完成当前开发阶段所需的评测协议实现和最小验收。阶段 0 的目标是冻结一套可运行、可复现的坐标和评测流程，不要求在本阶段解决 VLM 判断本身的随机性或所有物理失败。
-
-完成内容：
-1. 已统一生成 `canonical_input.png`，并保存 `coordinate_transform.json`。
-2. 已实现 `source box -> canonical box -> output box` 显式映射。
-3. 已实现 `global_position`、`local_appearance`、`mixed`、`unknown` 四类 QA 视图分流。
-4. 已在 `pica_eval.json` 中记录评测视图、坐标框、输出尺寸和 `context_risk`。
-5. 已统一 non-edit PSNR、QA accuracy 和 agent accepted/pass 的结果记录流程。
-6. 已完成 50-case 主运行，结果记录在 `docs/picabench_full_run_results.md`。
-
-完成过程与验证记录：
+`TaskProfile` 至少包含：
 
 ```text
-1. 检查 pica_eval.py、run_picabench_examples.py 和
-   run_picabench_resumable.py，确认 canonical、坐标映射、去 padding、
-   QA 分流和 PSNR 链路已经串通。
-2. 运行 python -m compileall -q src scripts，检查实现可导入。
-3. 运行 python scripts/run_picabench_examples.py --limit 1 --dry-run，
-   确认 PICABench case 能被正确读取。
-4. 对竖图 contain 场景执行坐标映射 smoke check，验证 padding、
-   source/canonical/output box 映射和四类 QA view 分类均通过。
+schema_version
+labels
+target_objects
+physical_operation
+current_state
+intervention
+final_state
+affected_objects
+physical_dependencies
+dependent_regions
+preserve_scope
+reference_cues
+uncertainties
+must_pass_checks
+route_hints
+diagnostics
 ```
 
-阶段 0 的后续改进（不阻塞阶段完成）：
+### 内部职责
 
-- 用少量人工标注校正关键词 QA 分类。
-- 增加更多尺寸和边界框组合的单元测试。
-- 对 Global 任务单独解释 PSNR。
-- 后续将 PICAEval 结果进一步接入 Verifier gate。
-
-### P0 的实现细节：Planner 生成结构化 TaskProfile
-
-目标：让 Planner 不只是生成自然语言 `edit_prompt`，而是生成 Router、Executor、Verifier 都能消费的结构化任务画像。
-
-建议在 Planner 前增加一个 `PhysicalIntentExpander`：
+第一阶段可以仍用一次 VLM 调用，但代码边界按以下职责组织：
 
 ```text
-superficial_prompt + image + PICABench labels
-  -> PhysicalIntentExpander
-  -> final_state / affected_objects / physical_dependencies / preserve_scope
-  -> prompt renderer
-  -> Planner / Router / Executor
+IntentNormalizer
+  -> LabelPolicyCompiler
+  -> SceneEvidenceExtractor
+  -> InterventionGraphBuilder
+  -> StableStatePredictor
+  -> VisualEvidencePlanner
+  -> PreserveScopePlanner
+  -> TaskProfileValidator
+  -> PromptRenderer
 ```
 
-`explicit_prompt` 适合作为训练或提示阶段的教师信号，但不应直接当作绝对真值。它可能包含过度具体、视觉上不可证实或标注有争议的描述。训练目标应优先约束结构化字段的正确性，再生成自然语言 prompt。
+### Causality 专项
 
-开发内容：
-1. 实现 `LabelPolicyCompiler`：把 PICABench 的 `physics_category`、`physics_law`、`edit_operation` 编译成规则骨架，包括物理依赖、候选 route、must-pass checks、默认风险等级。
-2. 实现 `PhysicalIntentExpander`：让模型读取图像、短 prompt 和规则骨架，补全 `final_state`、`affected_objects`、`dependent_regions`、`reference_cues`、`preserve_scope`，并标记不确定字段。
-3. 实现 `VisionPlanner`：将结构化物理意图渲染为 executor 可用的 `edit_prompt`，而不是直接自由发挥。
-4. 实现 `PlanValidator`：校验字段完整性，禁止缺失关键物理依赖，补全默认 preserve scope 和 verifier focus。
-5. 固定 TaskProfile schema，使后续组件不再解析自由文本。
+`Causality + remove` 是最高优先级专项，必须从“删除目标”升级为“移除支撑/约束并进入稳定态”：
 
-选择原因：PICABench 标签是确定输入，不应交给 LLM 重新猜测；但图像中的对象、接触点、反射面、阴影承接面等细节必须由视觉模型补全。因此 Planner 应采用“规则骨架 + LLM/VLM 视觉填充 + 规则校验”的混合方案。
+```text
+remove support/constraint
+  -> identify affected object
+  -> predict no-longer-supported state
+  -> choose final stable pose
+  -> add new contact points/contact shadows
+  -> remove old support traces
+```
 
-### P2：Router 与 ToolSpec/RouteSpec
+### P0 验收样例
 
-目标：把 TaskProfile 转换成明确的执行路线，而不是让所有任务都退化成 whole-image direct edit。
+| Case | 验收重点 |
+|---|---|
+| `picabench_0000_causality` | 删除 5 of spades 后，`final_state` 包含玻璃桌面倾斜、前左区域空缺、相关纸牌倒落和新接触阴影 |
+| `picabench_0294_causality` | 删除脚撑后，`final_state` 包含摩托车倒伏、左侧接触地面、旧脚撑痕迹消失和连续接触阴影 |
+| `picabench_0358_causality` | 杯子侧倒后，液体静态铺展、连接杯口且边界自然，避免错误反射/倒影关系 |
+| `picabench_0148_light_propagation` | 删除自行车时同步删除完整车影和接触阴影，并恢复路面/路缘连续性 |
+| `picabench_0816_light_propagation` | 移动郁金香时保持主体完整、位置正确，并重投影与场景一致的阴影 |
 
-开发内容：
-1. 建立 `RoutePolicy`：根据 `physics_category` 做一级分流，根据 `physics_law` 选择机制路线，根据 `edit_operation` 决定路线内部顺序。
-2. 建立 `RouteDecision` 输出：包含 `route`、`confidence`、`required_tools`、`optional_tools`、`requires_mask`、`mask_type`、`fallback_route`、`verification_focus`。
-3. 定义 `ToolSpec`：记录工具输入、输出、适用 law/operation、成本、风险和失败模式。
-4. 定义 `RouteSpec`：记录每条 route 的适用任务、工具链、必检项、fallback 和 retry hints。
-5. 优先实现规则路由：`reflection_route`、`shadow_projection_route`、`causal_settle_route`、`direct_global_edit`、`localized_inpaint`、`qa_eval_only`。
+### P0 待办
 
-选择原因：Router 的作用不是“聪明地写 prompt”，而是把物理标签和 TaskProfile 转成可审计的工具链选择。尤其是 Reflection、Light_Propagation、Causality 这类低分类型，需要通过 route 明确要求反射、阴影、支撑关系等依赖区域同步更新。
+- [~] 实现 `explicit_prompt -> TaskProfile` 字段抽取，用作弱监督候选标签。该项移动为后续数据构建/训练准备，不阻塞 P0 收尾。
+- [x] 强化 `LabelPolicyCompiler` 的短 prompt 推断：`kickstand`、`card structure`、`knock over/spill` 可以进入 causality/topple 路径。
+- [x] 实现规则版 `StableStatePredictor`，优先覆盖 `Causality + remove`，并补充 `Causality + topple` 与 `Light_Propagation + move/remove` 的基础终态约束。
+- [x] 强化 `TaskProfileValidator` 的归一化流程，在最终校验前调用 `StableStatePredictor`，避免 `final_state` 和关键 law-specific dependency 只停留为空值。
+- [x] 实现 law-specific `PromptRenderer`，覆盖 reflection、light propagation、refraction、causality、deformation、global/local state，并加入 `PromptCompressor` 输出压缩 executor prompt。
+- [x] 输出 diagnostics：记录 stable-state predictor 的 `auto_filled_fields`、`validation_warnings`、`prompt_length`、`detailed_prompt_length` 和 `prompt_compression_ratio`。后续细化 `wrong_stable_pose`、`shadow_not_removed`、`subject_broken_after_move` 放入 P4 Verifier。
+- [x] 在五个 P0 验收样例上比较 superficial baseline、explicit upper bound 和 expander，并记录人工检查结论。`0000` 额外完成 latest intent long prompt 和单次生图验证。
 
-### P3：Executor 路线化执行
+### P0 收尾结论
 
-目标：让执行层真正体现 route 差异，逐步从单一 API direct edit 过渡到局部、两阶段和候选生成策略。
+P0 的目标不是让所有图片编辑结果都达到最终质量，而是让 intent 组件产出足够明确、可验证、可路由的物理任务画像。当前已经满足：
 
-开发内容：
-1. 为每条 route 准备 route-specific prompt template，而不是复用同一个通用编辑 prompt。
-2. 对低风险任务保留 `one_pass_direct_edit`。
-3. 对 Reflection、Light_Propagation 等依赖效果任务支持 `two_stage_edit`：先完成主对象变化，再补齐反射/阴影/光照效果。
-4. 对 Causality 支持 `causal_settle_route`：先识别被移除/移动对象是否是支撑或约束，再要求受影响对象进入稳定姿态。
-5. 对高风险任务预留 `best_of_n`，但应在 verifier 稳定后再扩大候选数。
-6. 记录 `execution_trace`：实际 route、工具调用、输入输出路径、fallback、候选数量和失败原因。
+- `TaskProfile` schema 稳定，包含 labels、target objects、intervention、final state、dependencies、dependent regions、preserve scope、checks、route hints 和 diagnostics。
+- `Causality + remove` 能从局部删除升级为支撑/约束移除后的稳定态预测。
+- `0000` 的短 prompt 能生成包含玻璃倾斜、支撑 gap、倒落纸牌、新接触阴影和 old-state failure 禁止项的压缩 executor prompt，并且单次生图已经产生结构重排。
+- `0294` 的脚撑删除能表达摩托车倒伏和新接触关系。
+- `0358` 的碰倒杯子能表达杯子侧倒、咖啡铺展、杯口到液体连接和自然液体边界。
+- `0148`、`0816` 的 light propagation 路径能表达旧影删除、新影重投影和主体完整性约束。
 
-选择原因：当前失败样本中，“摩托车放倒”“卡牌取走”这类任务不是单纯局部纹理编辑失败，而是执行层没有显式模拟干预后的物理后果。Executor 必须把 route 中的物理依赖变成执行约束。
+P0 残余风险：
 
-### P4：Route-aware Verifier 与 PICAEval Gate
+- intent 仍可能依赖规则补全，不能证明 VLM 自身稳定掌握所有物理后果。
+- 压缩 prompt 的最佳预算仍需通过更多样例统计确定。
+- 图片结果中的身份保持、局部区域控制和候选选择不属于 P0，应交给 Router/Executor/Verifier。
 
-目标：让 Verifier 不再只给通用分数，而是按 route 检查必须满足的物理条件，并能阻断明显物理错误的候选。
+## P1：评测协议与坐标协议
 
-开发内容：
-1. Verifier 输入 `route`、TaskProfile、metadata 和 PICABench QA 信息。
-2. 根据 `physics_law + edit_operation + route` 生成 law-specific checklist。
-3. 把检查项分成 `must_pass` 与 `soft_score`，must-pass 失败时即使总分较高也不能 accept。
-4. 对涉及全局位置关系的问题使用完整图，对局部物理细节使用 mapped crop，对混合问题同时使用两种视图。
-5. 输出 `check_results`、`blocking_failures`、`route_hints`、`required_checks`，供 retry loop 消费。
+状态：已完成当前阶段所需的最小稳定版本。
 
-选择原因：低分样本往往不是“整体看起来不好”，而是违反了某条关键物理关系，例如反射缺失、阴影方向不一致、支撑物移除后主体仍悬空。Verifier 必须能把这些失败显式化。
+已实现能力：
 
-### P5：Retry Loop 与实验闭环
+- canonical input：原图 contain 到 `1024x1024`，保存 `coordinate_transform.json`。
+- 显式坐标映射：`source box -> canonical box -> output box`。
+- 输出去 padding：同时保留 padded candidate 和 unpadded final image。
+- QA 视图分流：`global_position` 使用完整图，`local_appearance` 使用 mapped crop，`mixed` 同时使用两者。
+- 结果记录：`pica_eval.json` 记录 evaluation view、source box、mapped box、output size 和 context risk。
 
-目标：让失败信息不只是自然语言 repair prompt，而是能回流到 Planner/Router/Executor 的结构化修复信号。
+后续增强不阻塞 P0：
 
-开发内容：
-1. 将 `blocking_failures` 转换成 `route_hints`，例如 `missing_reflection`、`shadow_not_reprojected`、`support_removed_without_settle`。
-2. Retry 时允许 Router 根据失败类型切换 route 或升级工具链。
-3. 对高风险任务在 verifier 稳定后启用 `best_of_n`。
-4. 实验汇总按 `physics_category`、`physics_law`、`edit_operation`、`route`、`question_type`、`context_risk` 分组。
-5. 固定 regression set，优先追踪 Reflection、Light_Propagation、Causality 中表现最差的组合。
+- 增加坐标映射单元测试。
+- 用少量人工标注校正 QA question type。
+- 对 Global 任务单独解释 non-edit PSNR。
+- 将 PICAEval 结果进一步接入 Verifier gate。
 
-选择原因：如果 retry 只是把错误描述拼回 prompt，agent 很难稳定改正路线级错误。失败必须结构化，才能判断下一轮是补 mask、换 route、扩大 crop、增加完整图验证，还是直接拒绝当前候选。
+## P2：Router 与 RouteSpec
 
-### P6：真实视觉工具接入与路线扩展
+目标：把 `TaskProfile` 转成可审计的 route/toolchain，而不是让所有任务都退化成 whole-image direct edit。
 
-目标：在评测协议、Planner/Router/Verifier 都稳定后，再接入 detector、segmenter、mask editor、inpainting 等更重的工具。
+待办：
 
-开发内容：
-1. 先接轻量工具：coordinate mapper、law-specific verifier、mask generator stub、dependency region expander。
-2. 再接真实视觉工具：object detector、segmenter、local mask editor、inpainting。
-3. 对每个新工具补齐 `ToolSpec`、输入输出文件约定、失败模式和 fallback。
-4. 每接入一个工具，都必须用固定 regression cases 验证它是否提升对应 route，而不是只看单例视觉效果。
+- [ ] 定义 `RouteDecision`：`route`、`confidence`、`required_tools`、`optional_tools`、`requires_mask`、`fallback_route`、`verification_focus`。
+- [ ] 定义 `RouteSpec`：适用 law/operation、工具链、失败模式、fallback、retry hints。
+- [ ] 定义 `ToolSpec`：输入、输出、成本、风险、适用标签、失败模式。
+- [ ] 实现 rule-based routes：`reflection_route`、`shadow_projection_route`、`causal_settle_route`、`direct_global_edit`、`localized_inpaint`、`qa_eval_only`。
 
-选择原因：重工具会引入新的误检、mask 漂移、成本和运行不稳定问题。只有在前面的决策、执行和验证协议固定后，工具收益才能被准确归因。
+高风险 route：
+
+| Route | 风险原因 |
+|---|---|
+| `causal_settle_route` | 需要预测稳定态和新接触关系 |
+| `shadow_projection_route` | 需要旧影删除、新影位置、方向、软硬一致 |
+| `reflection_route` | 主体、反射面、倒影必须成对更新 |
+
+## P3：Executor 路线化执行
+
+目标：让执行层体现 route 差异，逐步从单次 whole-image edit 扩展到局部、两阶段和候选选择。
+
+待办：
+
+- [ ] 为每条 route 准备 route-specific prompt template。
+- [ ] 保留低风险任务的 `one_pass_direct_edit`。
+- [ ] 为 Reflection 和 Light_Propagation 支持 two-pass：先完成主体变化，再补齐反射/阴影/光照。
+- [ ] 为 Causality 支持 `one_pass_with_strong_final_state` 或 `best_of_n=3`。
+- [ ] 记录 `execution_trace`：实际 route、工具调用、输入输出路径、fallback、候选数和失败原因。
+
+## P4：Route-aware Verifier
+
+目标：Verifier 不再只给通用分数，而是按 route 检查必须满足的物理条件。
+
+待办：
+
+- [ ] Verifier 输入 `TaskProfile`、route、metadata 和 PICABench QA。
+- [ ] 根据 `physics_law + edit_operation + route` 生成 law-specific checklist。
+- [ ] 区分 `must_pass` 和 `soft_score`，must-pass 失败时不能 accept。
+- [ ] 输出 `check_results`、`blocking_failures`、`route_hints`、`repair_instruction`。
+- [ ] 对 accepted 但 PICAEval 低分的 case 建立回归记录。
+
+## P5：Retry Loop 与实验闭环
+
+目标：让失败信息结构化回流到 Planner、Router 和 Executor，而不是只拼成自然语言 repair prompt。
+
+待办：
+
+- [ ] 将 blocking failures 转成 route hints，例如 `missing_reflection`、`shadow_not_reprojected`、`support_removed_without_settle`。
+- [ ] Retry 时允许 Router 根据失败类型切换 route 或提高候选预算。
+- [ ] 高风险任务在 verifier 稳定后启用 best-of-N。
+- [ ] 实验汇总按 `physics_category`、`physics_law`、`edit_operation`、`route`、`question_type`、`context_risk` 分组。
+
+## P6：真实视觉工具接入
+
+目标：在评测协议、TaskProfile、Router 和 Verifier 稳定后，再接入 detector、segmenter、mask editor、inpainting 等重工具。
+
+接入顺序：
+
+1. 轻量工具：coordinate mapper、law-specific verifier、mask generator stub、dependency region expander。
+2. 真实视觉工具：object detector、segmenter、local mask editor、inpainting。
+3. 每个工具补齐 `ToolSpec`、文件约定、失败模式和 fallback。
+4. 每个工具必须用固定 regression cases 验证收益，不能只看单例视觉效果。
+
+## 短期执行顺序
+
+1. 定义 `RouteDecision` 和 `RouteSpec` 的最小 schema，把 `TaskProfile.route_hints` 转成可审计路由决策。
+2. 先实现 `causal_settle_route` 的最小版本：使用压缩 executor prompt、记录 route、dependent regions、preserve scope 和 failure modes。
+3. 用 `0000`、`0294`、`0358` 做 route-level 回归：比较 direct edit、compressed PhysicalIntent 和 causal route。
+4. 为 `causal_settle_route` 增加局部控制：限制可改区域、保护非目标身份、记录候选输出和失败原因。
+5. 实现 route-aware verifier 的最小版本，把 `must_pass_checks` 转成结构化 `check_results` 和 `blocking_failures`。
+6. 将 `explicit_prompt -> TaskProfile` 字段抽取移动到后续弱监督数据构建，不阻塞当前 router/executor 开发。
+7. 在 route 和 verifier 稳定后，再接入 mask、detection、segmentation 等重工具。
+
 ## 开发原则
 
-- 每个新工具必须有 `ToolSpec`，不能只在代码里硬编码调用。
-- 每个 route 必须说明适用物理类型、输入要求、失败模式和 fallback。
-- VLM 判断必须尽量拆成可解释分项；重要失败不能只藏在 `rationale`。
 - PICABench 样例优先作为 regression cases。
-- API key 仍只从本地 `.env` 或环境变量读取，不写入源码、文档或日志。
+- `explicit_prompt` 是弱监督和 upper bound，不是真实推理输入。
+- 每个 route 必须说明适用物理类型、输入要求、失败模式和 fallback。
+- 每个新工具必须有 `ToolSpec`。
+- VLM 判断要拆成可解释分项，重要失败不能只藏在 rationale。
+- 不在任务画像和评测协议未稳定前优化重工具。
+- API key 只从本地 `.env` 或环境变量读取，不写入源码、文档或日志。
 
 ## 待确认
 
 - 是否允许安装或运行 GroundingDINO、SAM/SAM2、LaMa 等本地模型。
 - 是否优先使用闭源 API 的 mask edit 能力，还是先实现本地 mask/inpaint 接口。
-- PICABench 评测是否只做定性展示，还是需要批量表格和可量化分数。
-- 当前 `gpt-image-2` 输出尺寸默认 `1024x1024`，需要决定是请求原图比例、后处理回原尺寸，还是在 verifier 中判失败。
+- PICABench 评测是否只做定性展示，还是继续维护批量表格和可量化分数。
+- 当前图像编辑 API 默认输出 `1024x1024`，后续是否请求原图比例输出，还是继续使用 canonical + unpadding 协议。
 
-## 模块实际方案与计划方案对照
+## 参考工作
 
-本节用于把当前已经落地的实现和下一步计划开发的方案放在同一张表里，便于汇报时区分“已经完成的 MVP 能力”和“后续需要研发的 agent 能力”。该内容适合放在开发计划文档中，而不是 full run results 或 progress report 中：full run results 主要记录实验数据，progress report 主要记录阶段性结论，development plan 则负责维护模块路线图。
-
-| 模块 | 当前实际方案 | 当前局限 | 计划开发方案 |
-|---|---|---|---|
-| 数据集输入 | 使用 `physical_image_editing_agent/data/picabench_examples/manifest.json` 中的 50 条 PICABench 子集，运行时读取 `explicit_prompt`、`input_png`、`edit_area` 和 `annotated_qa_pairs` | 样本规模较小；主要用于 MVP 验证；输入原图尺寸不统一 | 保持 50-case 子集作为 regression set，同时支持扩展到更多 stratified samples；记录每次实验的 manifest、prompt level 和 coordinate transform |
-| 图像标准化 | 新增 `canonical_input.png` 预处理：将原图按 `1024x1024 contain + padding` 标准化，并保存 `coordinate_transform.json` | padding 可能改变视觉边界；旧实验结果没有 transform 元数据 | 将 canonical transform 作为所有评测和后续工具路由的统一坐标协议；后续可支持不同 canonical size，但必须显式记录 |
-| Planner | 调用 VLM 根据图像和 instruction 生成 JSON，包括 `target`、`operation`、`preserve`、`physics_dependencies`、`route`、`edit_prompt`、`verifier_focus` | `physics_dependencies` 仍是自由文本；route 基本不被真正执行；缺少可被工具消费的目标/依赖区域结构 | 升级为“规则骨架 + LLM 视觉填充 + 规则校验”的 TaskProfile：规则注入 `physics_law`、`physical_operation`、`must_pass_checks`，LLM 填充 `target_objects`、`dependent_regions`、`reference_cues`、`edit_prompt` |
-| Router | 当前 `select_route(plan)` 只接受 `direct_edit/local_edit`，但 `local_edit` 会回退到 `direct_edit` | 所有任务实际走同一条 whole-image edit 路线，无法体现不同物理 law 的差异 | 实现 rule-based routing：`reflection_route`、`shadow_projection_route`、`causal_settle_route`、`direct_global_edit`、`localized_inpaint`、`qa_eval_only`；每个 route 定义输入、工具链、失败模式和 fallback |
-| Executor | 使用闭源 image edit API 对整图进行编辑，输出 `candidate.png` | 缺少 mask、检测、分割、局部回贴；小目标和几何精确位置不稳定 | 接入局部工具链：detection/segmentation/mask edit/inpainting；对高风险任务支持两阶段编辑和 best-of-N candidate selection |
-| Verifier | 使用 VLM 检查 instruction、preservation、physics，并输出 pass、分数、issues 和 repair instruction | 通用 verifier 容易漏检 law-specific 失败；已有 case 出现 agent accepted 但 PICAEval 低分 | 建立 law-specific checklist；将 PICABench QA、尺寸/格式 guardrail、非编辑区一致性和 VLM 分项评分合并为 accept gate |
-| PICAEval QA | 已从单一 crop 评测升级为按 `question_type` 分流：全局位置用完整图，局部物理用 mapped crop，混合问题用完整图 + crop | QA 类型目前由启发式关键词分类，可能误分；mixed 问题成本更高 | 为 QA 增加稳定分类字段；统计 `context_risk`；后续可用少量人工标注或 LLM classifier 校正问题类型 |
-| 坐标映射 | 新增 `source box -> canonical box -> output box` 显式映射；`pica_eval.json` 记录 `source_box`、`mapped_box`、`output_size`、`evaluation_view` | 只能处理 contain/identity 协议；无法自动纠正生成模型内部构图漂移 | 将 transform 写入 run state；若后续 API 或工具产生 crop/resize/paste，需要把每一步 transform 组合成可追踪链路 |
-| Non-edit PSNR | 使用同一套坐标协议把 `edit_area` 映射到输出图，基于 canonical/source canvas 计算非编辑区 PSNR | 对全局状态转移任务，低 PSNR 不一定代表失败；padding 区域可能影响解释 | 按任务类型解释 PSNR：global state 单独统计；local/object edit 作为保真约束；后续引入 SSIM/LPIPS 或 mask-aware preservation |
-| Retry Loop | 当前失败后把 verifier 的 `repair_instruction` 传回 planner，再重新编辑 | 重试只是自然语言修复，route 不会根据失败类型调整；高风险任务没有更高候选预算 | 将失败项转为 route hints；对 Reflection add/move、Light_Propagation move、Causality support-removal 设置更高重试或 best-of-N |
-| 实验汇总 | `summary.json` 和 `summary_metrics.json` 记录每个 case 的 accuracy、PSNR、accepted、attempts | 旧汇总未记录 QA 视图、坐标映射、context risk；难以区分真实失败和评测噪声 | 新实验汇总加入 transform 路径、canonical input、question type 分布、context-risk accuracy，并按 law/route/operation 联合分析 |
-
-短期执行顺序：
-
-1. 实现 `PhysicalIntentExpander` 的最小版本：短 prompt + 图像 -> 结构化 TaskProfile。
-2. 用 `explicit_prompt` 做弱监督，先验证 `final_state`、`affected_objects` 和 `physical_dependencies` 的覆盖率。
-3. 在 `0816`、`0387`、`0294` 等重点 regression cases 上比较 superficial baseline、explicit upper bound 和 expander。
-4. 将 expander 输出接入现有 Planner，并记录扩展结果、失败类型和 verifier feedback。
-5. 确认 expander 稳定有效后，再开发 route-specific planner/verifier。
-6. 最后接入 mask/detection/segmentation 等工具，避免在任务画像和评测协议未稳定前优化错误目标。
-
-## PICABench 三类标签在模块中的作用
-
-PICABench 每个样本提供 `physics_category`、`physics_law`、`edit_operation` 三类标签。它们不应只作为统计字段，而应分别承担不同粒度的 agent 决策作用。
-
-| 标签 | 粒度 | 主要作用 | 适合驱动的模块 |
-|---|---|---|---|
-| `physics_category` | 粗粒度物理域 | 判断任务属于 Optics、Mechanics 还是 State，决定整体问题范式 | Planner 总体分析、Router 一级分流、报告统计 |
-| `physics_law` | 中粒度物理机制 | 判断具体依赖机制，例如 Reflection、Light_Propagation、Causality、Global、Local | route 选择、law-specific checklist、dependent region 规划 |
-| `edit_operation` | 动作类型 | 判断用户要求是 add/remove/move/replace/weather/time/wet 等哪种编辑动作 | prompt 改写、工具链选择、失败模式预测、重试策略 |
-
-三者组合后才能形成真正可执行的 agent policy。例如：
-
-```text
-physics_category = Optics
-physics_law = Reflection
-edit_operation = add
-
-=> 不是普通 add_object，而是 reflection_add_route：
-   add target object + add reflection + align waterline/mirror plane + verify scale and contact.
-```
-
-再例如：
-
-```text
-physics_category = Mechanics
-physics_law = Causality
-edit_operation = remove
-
-=> 不是普通 remove_object，而是 causal_settle_route：
-   remove support + infer affected object final pose + update contact/shadow/occlusion.
-```
-
-模块使用方式如下。
-
-| 模块 | 使用 `physics_category` | 使用 `physics_law` | 使用 `edit_operation` |
-|---|---|---|---|
-| Planner | 决定解释框架：光学依赖、力学因果或状态转移 | 展开具体依赖项，如 shadow/reflection/refraction/contact/material state | 把普通动作改写成物理动作，如 `remove_support_and_settle`、`move_and_reproject_shadow` |
-| Router | 一级分流到 Optics/Mechanics/State 路线族 | 选择具体 route，如 `reflection_route`、`shadow_projection_route`、`causal_settle_route` | 决定 route 内部工具顺序，如 add 先插入主体再补效应，remove 先删主体再修依赖 |
-| Executor | 控制编辑范围：全局状态任务可整图编辑，局部/对象任务优先局部编辑 | 决定是否需要依赖区域，如反射面、阴影承接面、支撑点 | 决定调用 direct edit、mask edit、inpaint、move/deform 或二阶段编辑 |
-| Verifier | 选择评分侧重点：光学、力学、状态一致性 | 使用 law-specific checklist；不同 law 的 pass 条件不同 | 检查动作是否完成，以及动作后果是否同步出现 |
-| PICAEval | 按 category/law 汇总指标 | 按 law 定位薄弱类型，如 Reflection 和 Light_Propagation | 按 operation 找失败组合，如 Reflection+add、Light_Propagation+move |
-| Retry | 粗粒度决定是否允许大范围重写 | 根据 law 生成 repair focus | 根据 operation 调整下一轮策略，例如 add 失败先保证目标可见，move 失败先保证位置正确 |
-
-这套标签设计与物理推理研究中的常见分解是一致的：物理任务通常不能只按视觉语义分类，而要同时表示物理机制、动作干预和可观测后果。对于本项目，`physics_law` 负责机制，`edit_operation` 负责干预，`physics_category` 负责高层问题域；三者合起来才能定义 route、plan 和 verifier。
-
-### 组件级使用细则
-
-下面进一步把三类标签落实到每个 agent 组件的输入、决策和输出中。
-
-#### Planner
-
-Planner 的目标输出通过混合方案得到：规则先给出不可漏的物理骨架，LLM/VLM 再根据图像填充具体对象和空间细节，最后由规则校验器补全和规范化。也就是说，目标输出主要由 LLM 生成具体内容，但必须由规则模板驱动和校验；PICABench 的三类标签是规则层的确定输入。
-
-```text
-LabelPolicyCompiler(category, law, operation)
-  -> policy scaffold
-VisionPlanner(image, instruction, policy scaffold)
-  -> draft task profile
-PlanValidator(draft, policy scaffold)
-  -> final task profile
-```
-
-| 标签 | Planner 中的具体用法 | 输出字段 |
-|---|---|---|
-| `physics_category` | 规则选择推理模板：Optics 关注光路和视觉依赖，Mechanics 关注支撑/接触/形变，State 关注状态范围和材料变化 | `reasoning_template`、`edit_scope` |
-| `physics_law` | 规则展开必须同步处理的物理依赖。例如 Reflection 展开 reflection surface / reflected object / waterline；Causality 展开 support / affected object / final stable pose | `dependent_effects`、`dependent_regions`、`must_pass_checks` |
-| `edit_operation` | 规则把普通编辑动作改写成带物理后果的动作。例如 `remove` + Causality 改写成 `remove_support_and_settle` | `physical_operation`、`expected_stable_outcome` |
-
-LLM/VLM 负责填充：
-
-| 字段 | LLM/VLM 任务 |
+| 工作 | 对本项目的作用 |
 |---|---|
-| `target_objects` | 从图像和指令识别具体目标 |
-| `affected_objects` | 找出受物理后果影响的对象 |
-| `dependent_regions` | 描述阴影、反射、支撑点、接触面、状态变化边界等区域 |
-| `reference_cues` | 找已有参考线索，如参考阴影、光源方向、地面平面、水线、材质边界 |
-| `edit_prompt` | 把规则骨架和图像细节合成可执行编辑指令 |
-
-规则 validator 负责检查：
-
-| 检查 | 例子 |
-|---|---|
-| 必备字段不为空 | `Reflection` 必须有 reflected region 或 reflective surface |
-| 物理动作一致 | `Causality + remove` 必须生成 `remove_support_and_settle` |
-| checklist 完整 | `Light_Propagation` 必须检查 shadow direction、visibility、softness |
-| route 合法 | 禁止 LLM 随意输出未注册 route |
-| prompt 包含关键后果 | 支撑移除不能只写 remove target，必须写 final stable outcome |
-
-Planner 目标输出示例：
-
-```json
-{
-  "operation": "remove",
-  "physical_operation": "remove_support_and_settle",
-  "physics_category": "Mechanics",
-  "physics_law": "Causality",
-  "edit_scope": "object_plus_dependent_regions",
-  "target_objects": ["motorcycle kickstand"],
-  "dependent_effects": ["motorcycle final pose", "left-side contact shadow", "road contact area"],
-  "reference_cues": ["gravity direction", "road plane", "existing low backlight"],
-  "expected_stable_outcome": "motorcycle rests on its left side after kickstand removal",
-  "must_pass_checks": [
-    "kickstand absent",
-    "motorcycle not upright",
-    "new contact area visible",
-    "continuous contact shadow present"
-  ]
-}
-```
-
-#### Router
-
-Router 的下一步优化目标是：从当前的 `direct_edit` fallback 变成“标签组合 + TaskProfile + 工具能力表”的确定性路由器。Router 可以参考 LLM 生成的 plan，但不能盲信 Planner 自报的 `route` 字段；最终 route 应由规则和工具可用性共同决定。
-
-推荐流程：
-
-```text
-TaskProfile
-  -> RoutePolicy: 根据 category/law/operation 生成候选 routes
-  -> CapabilityMatcher: 检查当前工具是否满足 route 输入要求
-  -> RiskScorer: 根据任务风险、历史失败和操作类型设置 retry/candidate budget
-  -> RouteValidator: 确认 fallback、verification_focus、required_inputs 完整
-  -> RouteDecision
-```
-
-Router 输出不应只是 route 名字，而应是完整决策对象：
-
-```json
-{
-  "route": "shadow_projection_route",
-  "route_family": "Optics",
-  "reason": "Light_Propagation tasks require target movement plus shadow reprojection.",
-  "required_inputs": ["target_object", "reference_shadow", "receiving_surface"],
-  "available_tools": ["direct_edit", "pica_eval", "vlm_verifier"],
-  "missing_tools": ["shadow_detector", "mask_editor"],
-  "toolchain": ["direct_edit", "shadow_specific_verifier"],
-  "fallback_route": "direct_edit_with_shadow_constraints",
-  "retry_budget": 2,
-  "verification_focus": ["target position", "old shadow removal", "new shadow direction", "shadow softness"]
-}
-```
-
-标签组合到 route 的初始规则：
-
-| 条件组合 | 推荐 route | 初始工具链 | 缺少工具时的 fallback |
-|---|---|---|---|
-| `Optics + Reflection + add/move` | `reflection_add_or_move_route` | two-pass edit: add/move主体 -> 补反射/水面接触 | `direct_edit_with_reflection_constraints` |
-| `Optics + Reflection + remove` | `reflection_remove_route` | 删除主体 + 删除镜像/高光/扰动 | `direct_edit_with_reflection_cleanup` |
-| `Optics + Light_Propagation + move/add/remove` | `shadow_projection_route` | 编辑主体 -> 重投影 cast/contact shadow -> shadow verifier | `direct_edit_with_shadow_constraints` |
-| `Optics + Refraction + remove/replace` | `refraction_reconstruction_route` | 移除/改变介质 -> 重建未折射背景 | `direct_edit_with_refraction_reconstruction` |
-| `Optics + Light_Source_Effects + add/replace` | `light_source_route` | 添加/替换光源 -> 局部亮度、色温、阴影、反射更新 | `direct_edit_with_light_falloff_constraints` |
-| `Mechanics + Causality + remove` | `causal_settle_route` | 删除支撑 -> 生成最终稳定态 -> 接触/阴影更新 | `direct_edit_with_stable_outcome_constraints` |
-| `Mechanics + Deformation + move/others` | `deformation_route` | 形变/姿态编辑 -> 材料和纹理连续性检查 | `direct_edit_with_material_constraints` |
-| `State + Global + weather/time/season` | `direct_global_edit` | 整图编辑 -> 全局状态 verifier | 无需局部 fallback |
-| `State + Local + wet/frozen/burn/melt` | `localized_state_route` | 局部状态编辑 -> 边界/材料 verifier | `direct_edit_with_locality_constraints` |
-
-Router 的决策顺序：
-
-1. 读取 `physics_category`，选择 route family：`Optics`、`Mechanics`、`State`。
-2. 读取 `physics_law`，选择具体物理机制 route。
-3. 读取 `edit_operation`，决定 route 内工具顺序。例如 `add` 先保证目标出现，`remove` 先清除目标及依赖效果，`move` 必须清理旧位置并生成新位置依赖。
-4. 检查 TaskProfile 的 `dependent_effects`、`dependent_regions`、`reference_cues` 是否满足 route 的 `required_inputs`。
-5. 检查工具能力表。如果缺少 mask/detector/segmenter，则选择明确的 direct-edit fallback，而不是假装走局部 route。
-6. 设置风险等级和预算。Reflection add/move、Light_Propagation move、Causality support-removal 属于高风险，应提高 retry 或 best-of-N。
-7. 输出 `RouteDecision`，供 Executor 和 Verifier 使用。
-
-工具能力表初始结构：
-
-```json
-{
-  "direct_edit": {
-    "available": true,
-    "provides": ["whole_image_edit"],
-    "risks": ["layout drift", "non_edit_region_change"]
-  },
-  "mask_editor": {
-    "available": false,
-    "provides": ["localized_edit"],
-    "required_inputs": ["mask"]
-  },
-  "detector": {
-    "available": false,
-    "provides": ["object_box"],
-    "required_inputs": ["text_query"]
-  },
-  "pica_eval": {
-    "available": true,
-    "provides": ["region_grounded_qa"]
-  }
-}
-```
-
-Router 初期实现应是规则优先，不急于使用 LLM 选择工具。LLM 可以给 route hints，但 route 的最终选择必须可复现、可解释，并记录触发规则。这样做的原因是：当前 full run 的主要失败集中在 Reflection 和 Light_Propagation，问题不是模型完全不知道物理规则，而是通用 `direct_edit` 没有把物理依赖转化为强执行约束。Router 的价值就是把标签和 TaskProfile 变成不同执行路线、不同 verifier focus 和不同重试预算。
-
-Router 的核心作用可以概括为三点：
-
-1. 把“任务是什么”转成“应该怎么执行”。Planner 负责理解图像和生成 task profile，Router 负责决定执行路线。
-2. 把 `physics_category`、`physics_law`、`edit_operation` 三类标签组合成可执行策略，而不是把所有任务都交给 `direct_edit`。
-3. 把后续 Verifier 的关注点一起确定下来。不同 route 失败模式不同，因此验收 checklist 也必须不同。
-
-三类标签在 Router 中的决策过程：
-
-```text
-physics_category: 先判断大方向
-  Optics    -> 重点处理光、影、反射、折射、光源
-  Mechanics -> 重点处理支撑、接触、重力、形变、稳定态
-  State     -> 重点处理全局/局部状态范围和材料变化
-
-physics_law: 再判断具体机制
-  Reflection        -> 需要主体和镜像/水面反射联动
-  Light_Propagation -> 需要阴影投射和遮挡关系重算
-  Causality         -> 需要干预后的物理后果
-  Global            -> 需要全图一致状态变化
-  Local             -> 需要局部状态改变且边界受控
-
-edit_operation: 最后判断干预动作
-  add    -> 先保证新对象出现，再补物理效应
-  remove -> 删除目标，同时删除或更新依赖效应
-  move   -> 清理旧位置，在新位置重建依赖效应
-  replace -> 保留结构位置，但重算材质、光照或反射
-```
-
-具体例子：
-
-```text
-Optics + Reflection + add
-```
-
-这不是普通“添加一艘船”。Router 应选择 `reflection_add_or_move_route`，原因是水面/镜面任务的成功条件包括：船本体可见、倒影在正确位置、倒影尺度与方向合理、水线接触成立、微波纹或接触暗带存在。若只走 `direct_edit`，模型可能加了船但没有反射，或反射与水线脱节。
-
-```text
-Optics + Light_Propagation + move
-```
-
-这不是普通“移动花盆”。Router 应选择 `shadow_projection_route`，原因是移动物体后旧阴影应消失，新阴影应根据主光源、承接面和参考阴影重投影。若只走 `direct_edit`，常见失败是目标移动了，但阴影仍在旧位置，或新阴影方向/软硬不符合场景。
-
-```text
-Mechanics + Causality + remove
-```
-
-这不是普通“删除支架”。Router 应选择 `causal_settle_route`，原因是删除支撑物会改变受力结构。成功结果不是支撑物消失，而是受影响物体进入最终稳定态，例如倾倒、下落、旋转或形成新的接触面。
-
-```text
-State + Global + weather
-```
-
-这类任务适合 `direct_global_edit`，因为天气/季节/昼夜变化天然影响整张图：天空、地面、植被、光照、阴影、空气能见度都应一致改变。强行 mask 反而可能导致局部真实、全局不一致。
-
-### Route 对象特点与是否需要 mask
-
-不同 route 的根本差异不是名字，而是它面对的对象类型、依赖区域和空间控制要求不同。
-
-| Route | 适用对象特点 | 典型例子 | 是否需要 mask | 原因 |
-|---|---|---|---|---|
-| `direct_global_edit` | 整个场景状态都应变化；没有单一小目标 | 白天变夜晚、晴天变雨天、夏季变冬季 | 通常不需要 | 全局状态需要整图一致变化，mask 会限制必要传播 |
-| `localized_inpaint` | 小目标、局部删除/替换，背景需要强保持 | 删除桌上的杯子、去掉墙上一盏小灯、移除地面小物体 | 需要 | 目标小且背景应连续，mask 能减少非编辑区漂移 |
-| `reflection_add_or_move_route` | 主体与反射面强绑定；常在水面、镜面、金属面上 | 湖面加船、移动水边小船、镜中新增物体 | 最好需要，至少需要区域约束 | 需要同时控制主体区域和反射区域；没有 mask 时主体可能不在标注区或倒影错位 |
-| `reflection_remove_route` | 被删对象在反射面中也有对应痕迹 | 删除镜前的人、移除桌上反射在玻璃面上的杯子 | 需要或强烈建议 | 只 mask 主体不够，还要扩展到反射、高光和接触扰动 |
-| `shadow_projection_route` | 目标和阴影承接面强绑定 | 移动花盆后重投影墙上阴影、删除物体及其地面影子 | 需要依赖区域 mask 或 expanded mask | 阴影常不在主体 mask 内，必须覆盖 cast shadow/contact shadow |
-| `light_source_route` | 新光源影响周围表面、阴影和色温 | 加台灯、点燃蜡烛、替换发光屏幕 | 局部到半全局，视任务而定 | 光源影响范围超过目标本体；mask 过小会漏掉光照 falloff |
-| `refraction_reconstruction_route` | 透明介质遮挡并扭曲背景 | 移除玻璃杯、水位变化、去掉透明瓶 | 需要 | 需要重建被折射区域和介质边界，普通目标 mask 往往不覆盖全部扭曲背景 |
-| `causal_settle_route` | 一个动作会改变支撑/接触/稳定状态 | 删除摩托车脚撑、移除桌脚、拿掉承重卡片 | 需要对象和受影响区域，通常不止一个 mask | 既要删支撑物，又要编辑受影响主体姿态和新接触阴影 |
-| `deformation_route` | 形状变化受材料属性约束 | 弯曲软管、压扁垫子、拉伸布料、改变椅子高度 | 通常需要 | 需要控制形变边界，避免刚体错误弯曲或纹理撕裂 |
-| `localized_state_route` | 局部材料状态变化，边界需要受控 | 局部打湿、结冰、融化、烧焦、破裂 | 需要 | 状态变化应限制在局部区域，同时保留周边材质和构图 |
-
-判断是否需要 mask 的实用规则：
-
-```text
-如果编辑目标小、背景需要保持、或物理依赖区域不应扩散 -> 需要 mask。
-如果任务影响整图语义和环境状态 -> 通常不需要 mask。
-如果物理依赖区域不等于目标本体，例如阴影、反射、折射、接触痕迹 -> 需要 expanded mask 或多 mask。
-```
-
-三种常见 mask：
-
-| Mask 类型 | 覆盖对象 | 用途 |
-|---|---|---|
-| `target_mask` | 被添加/删除/移动的主体 | 控制主体编辑范围 |
-| `dependency_mask` | 阴影、反射、折射区域、接触痕迹、受影响对象 | 让物理后果同步更新 |
-| `preserve_mask` | 不应被改动的背景、人物、关键结构 | 保护非编辑区域 |
-
-因此，Router 不只是决定“用不用 mask”，而是决定“需要哪几种 mask”。例如删除玻璃杯时，`target_mask` 覆盖玻璃杯本体，`dependency_mask` 覆盖桌面阴影、caustic、反射和杯后被折射的人脸/背景，`preserve_mask` 保护人物其他区域和桌面边缘。这个区分是物理一致性编辑区别于普通局部修图的关键。
-
-### Router 相关工具优化
-
-Router 的优化不能只停留在“多几个 route 名字”，还必须同步优化工具抽象。否则 route 即使选对，也无法稳定执行。下一步工具优化的目标是建立一个轻量但可扩展的 tool inventory，让 Router 能根据任务标签和 TaskProfile 判断哪些工具可用、缺哪些输入、需要 fallback 到什么路线。
-
-工具优化分为三层：
-
-```text
-ToolSpec: 描述每个工具能做什么、需要什么输入、有什么风险
-CapabilityMatcher: 判断某个 route 的 required_inputs 当前是否满足
-RouteToolchain: 为每个 route 组合工具顺序和 fallback
-```
-
-#### ToolSpec 设计
-
-每个工具都应有结构化描述，避免在代码里只用字符串硬编码。
-
-```json
-{
-  "name": "mask_editor",
-  "capabilities": ["localized_edit", "inpaint"],
-  "required_inputs": ["image", "mask", "edit_prompt"],
-  "provided_outputs": ["candidate_image"],
-  "physics_tags": ["Local", "Reflection", "Refraction", "Light_Propagation"],
-  "cost": "medium",
-  "risk": ["mask_boundary_artifact", "missed_dependency_region"],
-  "fallback": "direct_edit"
-}
-```
-
-Router 用这些字段判断：该 route 想用的工具是否可用，Planner 是否提供了足够输入，缺少输入时是否需要先调用 detector/segmenter，或者直接回退到 prompt-only direct edit。
-
-#### 优先建设的工具
-
-| 优先级 | 工具 | 当前可实现方式 | 服务的 route | 为什么优先 |
-|---:|---|---|---|---|
-| 1 | `coordinate_mapper` | 已实现 source/canonical/output box 映射 | `qa_eval_only`、所有评测 route | 先保证评测和 crop 不错位，否则后续优化目标不可靠 |
-| 2 | `law_specific_verifier` | VLM + checklist + PICABench QA | Reflection、Light_Propagation、Causality | 当前主要问题是 accepted 但 PICAEval 低分，需要先提高验收门槛 |
-| 3 | `mask_generator_stub` | 先用 PICABench `edit_area` 和 QA box 生成候选 mask，不依赖外部模型 | localized/reflection/shadow/refraction/causal routes | 能先验证多 mask 协议，再决定是否接 SAM/GroundingDINO |
-| 4 | `dependency_region_expander` | 规则扩展 box：目标周围、下方阴影区、镜像区、水线区 | shadow、reflection、refraction、causality | 物理依赖区域常不等于目标本体，必须有 expanded mask |
-| 5 | `object_detector` | 后续接 GroundingDINO 或闭源 VLM box 输出 | 需要 target localization 的 routes | 当前先不依赖外部模型，避免工具安装成本阻塞路线设计 |
-| 6 | `segmenter` | 后续接 SAM/SAM2 或 API mask | local edit、remove、reflection cleanup | 精细 mask 能减少非编辑区漂移，但需要 detector/point/box 输入 |
-| 7 | `local_inpainter_or_mask_edit` | API mask edit 或本地 inpainting | localized_inpaint、refraction reconstruction | 真正执行局部编辑的核心工具，依赖前面 mask 质量 |
-| 8 | `candidate_ranker` | best-of-N + verifier score | 高风险 route | 解决生成随机性，尤其是 Reflection add/move 和 Causality settle |
-
-#### 各 route 的工具需求
-
-| Route | 必需工具 | 可选增强工具 | 暂时 fallback |
-|---|---|---|---|
-| `direct_global_edit` | `direct_edit`、`global_state_verifier` | `candidate_ranker` | 无，直接整图编辑 |
-| `localized_inpaint` | `mask_generator`、`mask_editor`、`preservation_checker` | `segmenter`、`object_detector` | `direct_edit_with_locality_constraints` |
-| `reflection_add_or_move_route` | `direct_edit`、`reflection_verifier`、`coordinate_mapper` | `reflection_region_estimator`、`mask_editor`、`candidate_ranker` | `direct_edit_with_reflection_constraints` |
-| `reflection_remove_route` | `target_mask`、`dependency_mask`、`mask_editor`、`reflection_verifier` | `detector`、`segmenter` | `direct_edit_with_reflection_cleanup` |
-| `shadow_projection_route` | `shadow_verifier`、`dependency_region_expander` | `shadow_detector`、`mask_editor`、`reference_shadow_estimator` | `direct_edit_with_shadow_constraints` |
-| `refraction_reconstruction_route` | `dependency_mask`、`refraction_verifier` | `transparent_object_detector`、`background_reconstruction` | `direct_edit_with_refraction_reconstruction` |
-| `causal_settle_route` | `causal_decomposition_planner`、`causal_verifier` | `support_detector`、`contact_region_mask`、`candidate_ranker` | `direct_edit_with_stable_outcome_constraints` |
-| `localized_state_route` | `target_mask`、`local_state_verifier` | `segmenter`、`material_boundary_detector` | `direct_edit_with_locality_constraints` |
-
-#### 先不用重工具的原因
-
-短期不建议一开始就接 GroundingDINO、SAM2、LaMa 等完整本地工具链。原因是当前最紧迫的问题是 route 语义和评测协议：如果 verifier 仍然会接受明显失败样本，或者 crop 坐标仍然不可靠，加入更重的视觉工具也会优化错目标。
-
-更稳妥的顺序是：
-
-```text
-1. 先把 ToolSpec 和 route-toolchain 协议写清楚。
-2. 用 PICABench 标注框、edit_area 和规则扩展模拟 mask/dependency region。
-3. 用 law-specific verifier 判断 route 是否真的解决低分类型。
-4. 确认 route 有收益后，再替换成真实 detector/segmenter/inpainter。
-```
-
-#### mask 工具的优化重点
-
-对物理一致性编辑来说，mask 不是单一的“目标区域”。Router 应要求 mask 工具输出多种区域：
-
-```json
-{
-  "target_mask": "object to add/remove/move/change",
-  "dependency_mask": "shadow/reflection/refraction/contact/affected object region",
-  "preserve_mask": "regions that should remain unchanged"
-}
-```
-
-不同物理 law 的 dependency mask 规则：
-
-| Law | dependency mask 应覆盖 |
-|---|---|
-| Light_Propagation | cast shadow、contact shadow、受光/遮挡承接面 |
-| Reflection | 倒影、高光、水线/镜面接触带、被主体遮挡的背景反射 |
-| Refraction | 透明介质内部、被扭曲背景、caustic、边界高光 |
-| Causality | 支撑点、受影响主体、新接触区域、可能倒落区域 |
-| Deformation | 形变边界、纹理连续区域、相邻刚性结构 |
-| Local State | 状态变化区域、材料边界、邻近湿痕/烟痕/结冰边缘 |
-
-这也是 Router 和 Tool 的接口重点：Router 不应只问“有没有 mask”，而应要求工具返回与 physics law 对齐的 mask 类型，并把这些 mask 传给 Executor 和 Verifier。
-
-### Causality 专项：CLEVRER-style 因果分解
-
-从 full run 结果看，`Causality + remove` 中的支撑移除任务表现不稳定。例如 `picabench_0294_causality` 中，系统删除了摩托车 kickstand，但 PICAEval 判断摩托车没有真正倒伏，也没有形成左侧连续接触阴影；移除承重卡牌时，模型也容易只删除目标卡牌，而没有充分表现玻璃桌面和其他卡牌在重力下重新稳定的结果。
-
-这类失败的本质不是“没听懂要删什么”，而是没有把编辑动作解释成物理干预，也没有推理干预后的稳定状态。因此，`causal_settle_route` 应引入 CLEVRER-style causal decomposition，用于 Mechanics/Causality-heavy tasks。
-
-适用范围：
-
-| 适用 | 不优先适用 |
-|---|---|
-| 删除支撑物、移除接触点、改变承重关系、让物体倒下/滑落/倾斜、因刺激改变主体行为 | 纯反射、纯折射、普通阴影重投影、全局天气/季节变化 |
-
-分解流程：
-
-```text
-descriptive
-  -> 当前有哪些物体、支撑、接触、遮挡和稳定关系？
-
-explanatory
-  -> 当前状态为什么稳定？哪个物体提供支撑或约束？
-
-counterfactual / intervention
-  -> 用户的 edit_operation 删除/移动/添加了哪个因果因素？
-
-predictive
-  -> 干预后系统应达到什么最终稳定状态？
-
-visual realization
-  -> 最终状态在图像中应表现为哪些姿态、接触、阴影、遮挡和背景修复？
-
-verification
-  -> 检查干预对象是否消失/改变，且反事实后果是否出现。
-```
-
-对 Planner 的要求：
-
-```json
-{
-  "route": "causal_settle_route",
-  "reasoning_type": ["descriptive", "explanatory", "counterfactual", "predictive"],
-  "physical_operation": "remove_support_and_settle",
-  "current_state": {
-    "support_relations": [],
-    "contact_points": [],
-    "stable_reason": ""
-  },
-  "intervention": {
-    "operation": "remove",
-    "removed_causal_factor": ""
-  },
-  "predicted_outcome": {
-    "final_pose": "",
-    "new_contact_points": [],
-    "secondary_object_changes": [],
-    "visual_effects": []
-  },
-  "must_pass_checks": []
-}
-```
-
-摩托车 kickstand 例子：
-
-```text
-descriptive: 白色摩托车当前直立，侧脚撑脚垫接触地面。
-explanatory: 侧脚撑提供侧向支撑，使摩托车不会向左倒下。
-counterfactual: 如果移除侧脚撑，原来的支撑关系消失。
-predictive: 摩托车应在重力下倒向左侧，最终左侧车身/发动机区域接触路面。
-visual realization: 删除脚撑和旧接触痕迹，修复路面；生成倒伏姿态、轮胎角度变化、左侧连续接触阴影。
-verification: kickstand absent；motorcycle not upright；left-side ground contact visible；continuous contact shadow present。
-```
-
-卡牌支撑玻璃桌例子：
-
-```text
-descriptive: 玻璃桌角由竖直卡牌支撑，卡牌与桌面/地面形成接触。
-explanatory: 竖直卡牌承担局部载荷，维持玻璃桌面近似水平。
-counterfactual: 如果移除前左侧支撑卡牌，该角点失去支撑。
-predictive: 玻璃桌应向失去支撑的一侧下沉或倾斜，附近卡牌可能倒下并在地面形成新接触。
-visual realization: 被删卡牌消失，玻璃角下沉，至少一个受影响卡牌倒伏，阴影/反射/遮挡随新姿态更新。
-verification: removed card absent；visible support gap；glass tilted toward removed support；fallen card grounded；new shadows/reflections consistent。
-```
-
-对 Router 的要求：
-
-```text
-if physics_law == "Causality"
-   and edit_operation in {"remove", "move"}
-   and task profile mentions support/contact/load/balance:
-       route = "causal_settle_route"
-       retry_budget = high
-       verifier_focus = intervention + predicted_outcome
-```
-
-对 Verifier 的要求：
-
-`causal_settle_route` 的 pass 条件必须同时包含两部分：
-
-1. 干预对象是否完成：例如 kickstand/card 是否真的被删除。
-2. 反事实后果是否完成：例如摩托车是否倒伏、玻璃是否倾斜、是否有新的接触阴影。
-
-只完成第一部分不能 pass。这一点用于修正当前 MVP 中“支撑物被删了，但受影响主体仍保持原状态也被接受”的问题。
-
-实现优先级：
-
-1. 先在 Planner prompt 中加入 causal decomposition scaffold。
-2. 再让 Router 对 `Causality + remove/move + support/contact` 强制选择 `causal_settle_route`。
-3. 然后为该 route 增加专项 verifier checklist。
-4. 最后才考虑接入检测/分割工具，用于定位支撑点、接触区域和受影响物体。
-
-#### Executor
-
-Executor 的职责是执行 Router 给出的 `RouteDecision`，把 TaskProfile 中的目标、依赖区域和 must-pass checks 转成一次或多次图像编辑调用。它不应自行重新判断物理类型；物理策略来自 Planner/Router，Executor 负责可靠执行、保存中间产物和把失败信息交回 Retry。
-
-输入与输出：
-
-```json
-{
-  "inputs": {
-    "canonical_image": "canonical_input.png",
-    "task_profile": {},
-    "route_decision": {},
-    "coordinate_transform": {},
-    "available_tools": {}
-  },
-  "outputs": {
-    "candidate_images": [],
-    "execution_trace": [],
-    "intermediate_artifacts": [],
-    "tool_errors": [],
-    "selected_candidate": ""
-  }
-}
-```
-
-Executor 的核心优化方向：
-
-| 优化点 | 当前 MVP | 下一步方案 |
-|---|---|---|
-| 执行粒度 | 单次 whole-image edit | 支持 route-specific one-pass / two-pass / local-edit / best-of-N |
-| 工具输入 | 只使用 image + prompt | 使用 canonical image、target/dependency/preserve masks、reference cues |
-| 中间状态 | 只保存 `candidate.png` | 保存每步输入图、mask、prompt、tool response、候选图和失败原因 |
-| 失败处理 | Verifier 失败后重跑同一路线 | 根据失败类型切换 route hint、扩大 mask、提高候选数或回退 |
-| 非编辑区保护 | 依赖模型自觉保持 | 使用 preserve mask、局部编辑、PSNR/SSIM guardrail |
-
-按 route 的执行策略：
-
-| Route | Executor 执行方式 | 为什么这样执行 |
-|---|---|---|
-| `direct_global_edit` | 单次整图编辑；允许大范围风格/状态变化；重点保存结构身份 | 天气、季节、昼夜变化必须全图一致，局部编辑会破坏整体状态 |
-| `localized_inpaint` | 用 `target_mask` 做局部删除/替换，再检查背景连续性 | 小目标任务需要减少非编辑区漂移 |
-| `reflection_add_or_move_route` | 两阶段优先：先保证主体在目标区域可见，再补反射、水线、微波纹；高风险时 best-of-N | 反射任务失败常来自主体位置不准或倒影缺失，分阶段更容易定位失败 |
-| `reflection_remove_route` | 同时编辑 `target_mask` 和 `dependency_mask`；删除主体、倒影、高光和水面/镜面扰动 | 只删主体会留下镜像或高光残影 |
-| `shadow_projection_route` | 编辑主体后重建 cast shadow/contact shadow；必要时第二步专门修阴影 | 阴影常位于主体外部，单次 prompt 容易漏掉或方向错误 |
-| `light_source_route` | 添加/替换光源后，第二步调整周围受光面、色温、阴影和反射 | 光源影响范围超过灯本体，通常是半全局效应 |
-| `refraction_reconstruction_route` | 用 dependency region 重建透明介质后的背景，同时清理 caustic、边缘高光、扭曲纹理 | 折射问题的关键是被介质扭曲的背景，不是透明物本体 |
-| `causal_settle_route` | 先执行干预对象变化，再执行 predicted stable outcome；若无法局部控制则一次 prompt 强制描述最终稳定态 | 删除支撑物后必须改变受影响主体的姿态和接触关系 |
-| `deformation_route` | 对形变区域做局部编辑，保护刚性连接和纹理连续区域 | 形变需要边界受控，避免整图结构漂移 |
-| `localized_state_route` | 用局部 mask 改变材料状态，并保留周围上下文；边界不清时扩大一点 dependency mask | 湿、冻、烧、融化等局部状态变化需要范围可控 |
-
-Executor 需要支持三种执行模式：
-
-```text
-one_pass:
-  route 低风险或全局任务，直接调用 image edit API。
-
-two_pass:
-  第一步完成主体编辑，第二步补物理依赖，如 reflection/shadow/light spill。
-
-best_of_n:
-  对高风险 route 生成多个候选，用 verifier/candidate_ranker 选分数最高者。
-```
-
-route 到执行模式的默认映射：
-
-| Route | 默认模式 | 高风险时 |
-|---|---|---|
-| `direct_global_edit` | `one_pass` | `best_of_n=2` |
-| `localized_inpaint` | `one_pass_local` | 扩大 mask 后重试 |
-| `reflection_add_or_move_route` | `two_pass` | `best_of_n=3` |
-| `shadow_projection_route` | `two_pass` | 第二步专门修阴影 |
-| `causal_settle_route` | `one_pass_with_strong_final_state` | `best_of_n=3` 或 two-pass |
-| `localized_state_route` | `one_pass_local` | mask 边界调整后重试 |
-
-当前闭源 API 仍以 whole-image edit 为主，因此短期实现时可以先模拟 route-specific execution：
-
-```text
-route-specific prompt template
-  + canonical input
-  + route-specific verifier focus
-  + saved execution trace
-```
-
-等 mask/local edit 工具接入后，再把相同 route 切换到真正的局部执行。这样可以先验证 route 策略是否提升低分类型，再增加工具复杂度。
-
-Executor 必须保存执行 trace，方便科研汇报和失败复盘：
-
-```json
-{
-  "step": 0,
-  "route": "causal_settle_route",
-  "mode": "one_pass_with_strong_final_state",
-  "input_image": "canonical_input.png",
-  "prompt": "...",
-  "masks": {
-    "target_mask": null,
-    "dependency_mask": null,
-    "preserve_mask": null
-  },
-  "candidate_image": "candidate.png",
-  "known_limitations": ["no local mask tool available"]
-}
-```
-
-Executor 的短期开发顺序：
-
-1. 先把 `execute_edit` 包装为 route-aware executor，保存 `execution_trace.json`。
-2. 为 Reflection、Light_Propagation、Causality 三类低分 route 写 route-specific prompt template。
-3. 为高风险 route 加 `best_of_n` 接口，但默认 `n=1`，避免成本失控。
-4. 接入 mask 协议后，先支持 `target_mask` 和 `dependency_mask` 的本地文件输入。
-5. 最后再接真实 detector/segmenter/inpainter。
-
-#### Verifier
-
-Verifier 的优化目标是从“通用 VLM 总分判断”升级为“route-aware gate”。它应同时使用完整图、必要的 crop/局部证据、TaskProfile 的 `must_pass_checks`、Router 的 `verification_focus` 和 PICABench 的 QA 视图分流结果。
-
-输入：
-
-```json
-{
-  "original_image": "canonical_input.png",
-  "candidate_image": "candidate.png",
-  "task_profile": {},
-  "route_decision": {},
-  "mapped_qa_views": [],
-  "coordinate_transform": {}
-}
-```
-
-输出：
-
-```json
-{
-  "pass": false,
-  "instruction_score": 0,
-  "preservation_score": 0,
-  "physics_score": 0,
-  "check_results": [],
-  "blocking_failures": [],
-  "issues": [],
-  "repair_instruction": "",
-  "route_hints": []
-}
-```
-
-三类标签在 Verifier 中的作用：
-
-| 标签 | Verifier 检查方式 |
-|---|---|
-| `physics_category` | 选择大类评分口径：Optics 检查光照依赖，Mechanics 检查接触/稳定，State 检查状态范围 |
-| `physics_law` | 选择 law-specific checklist，例如 Reflection 检查主体和反射是否同时存在、尺度是否一致 |
-| `edit_operation` | 检查动作是否真的发生，例如 add 后目标可见，remove 后目标消失，move 后旧位置清理且新位置正确 |
-
-新 crop 协议在 Verifier 中的用法：
-
-| 问题类型 | 评估视图 | Verifier 用途 |
-|---|---|---|
-| `global_position` | 完整候选图 | 判断目标在画布中的真实方位、透视、前后景、左右上下关系 |
-| `local_appearance` | mapped crop | 判断阴影、反射、接触、材质、纹理、折射等局部物理证据 |
-| `mixed` | 完整图 + mapped crop | 完整图判断位置，crop 判断局部物理细节 |
-| `unknown` | mapped crop + `context_risk` | 结果单独标记风险，不作为强结论直接解释 |
-
-示例 checklist：
-
-| Law | Operation | 必要检查 |
-|---|---|---|
-| Reflection | add | 主体可见；反射可见；反射位于镜面/水面正确区域；尺度/方向合理；接触线或微波纹存在 |
-| Light_Propagation | move | 目标新位置正确；旧阴影不存在；新阴影方向与参考阴影一致；阴影软硬与场景匹配 |
-| Causality | remove | 被删支撑不存在；受影响物体不悬空；最终姿态稳定；新接触阴影存在 |
-| Local | wet | 局部区域变湿；边界不越界；材质变暗/反光；周围未被全局改写 |
-
-Verifier 的 pass 不应只依赖总分，而应要求：
-
-```text
-pass = no blocking_failures
-  and instruction_score >= threshold
-  and preservation_score >= threshold
-  and physics_score >= threshold
-  and required must_pass_checks all pass
-```
-
-对低分类型的专项要求：
-
-| Route | Verifier 必须阻断的失败 |
-|---|---|
-| `reflection_add_or_move_route` | 主体不可见；反射不可见；反射没有与主体/水线对齐；只有主体没有倒影 |
-| `shadow_projection_route` | 移动物体后没有新阴影；旧阴影残留；阴影方向与参考阴影明显冲突 |
-| `causal_settle_route` | 只删除支撑物但受影响主体仍保持原稳定状态；没有新接触点或接触阴影 |
-| `localized_state_route` | 局部状态扩散到无关区域；材料边界不合理 |
-
-因此，新 Verifier 的核心不是“给更严格的自然语言评价”，而是把 `must_pass_checks` 变成可解释的 blocking gate。只要 blocking check 失败，即使 VLM 给出较高总分，也不能 pass。
-
-#### PICAEval
-
-PICAEval 使用三类标签做两件事：评估输入选择和结果归因。
-
-| 标签 | PICAEval 用途 |
-|---|---|
-| `physics_category` | 按 Optics/Mechanics/State 汇总，观察大类能力 |
-| `physics_law` | 按具体 law 汇总，定位最低分机制，例如 Reflection、Light_Propagation |
-| `edit_operation` | 与 law 交叉统计，找出最难组合，例如 `Reflection + add`、`Light_Propagation + move` |
-
-当前已经实现的 QA 视图分流也应与标签结合：
-
-```text
-位置/构图类 QA -> full image
-局部物理属性 QA -> mapped crop
-混合 QA -> full image + mapped crop
-```
-
-后续汇总指标建议增加：
-
-```text
-accuracy_by_category
-accuracy_by_law
-accuracy_by_operation
-accuracy_by_law_operation
-context_risk_accuracy
-```
-
-#### Retry Loop
-
-Retry 不应只把自然语言 `repair_instruction` 拼回 prompt，而应根据三类标签把失败转成下一轮 route hints。
-
-| 失败类型 | 标签组合 | 下一轮策略 |
-|---|---|---|
-| 目标没出现 | `add` | 提高目标可见性约束，先执行主体插入，再补物理效应 |
-| 反射缺失 | `Reflection + add/move` | 强制进入 reflection route，补 reflected region |
-| 阴影方向错误 | `Light_Propagation` | 选择参考阴影，重写 shadow projection prompt |
-| 支撑移除后物体没倒 | `Causality + remove` | 将操作改写为 `remove_support_and_settle`，要求最终稳定态 |
-| 局部状态扩散过大 | `Local` | 缩小 edit scope，优先 mask/local route |
-
-因此，三类标签在 retry 中的作用是把失败从“自然语言建议”升级为“下一轮路由和工具选择的结构化条件”。
-
-## 标签驱动规划与路由的参考工作
-
-以下论文/项目可作为本项目利用 `physics_category`、`physics_law`、`edit_operation` 进行 Planner、Router、Verifier 设计的参考。
-
-| 参考工作 | 可借鉴点 | 对本项目的对应关系 |
-|---|---|---|
-| PICABench / PICAEval | 用物理 taxonomy 和 region-grounded QA 评估物理一致性 | 直接对应 `physics_category`、`physics_law` 和 law-specific verifier checklist |
-| PHYRE | 用目标状态、动作干预和物理模拟结果定义任务 | 对应 `edit_operation` 作为干预，`expected_stable_outcome` 作为编辑后目标状态 |
-| Forward Prediction for Physical Reasoning | 将 forward prediction model 接入 physical-reasoning agent，说明预测模块可提升复杂物理任务表现 | 支持在 Causality/Deformation route 中加入“后果预测”或稳定态推理模块 |
-| Physion | 强调 object-centric、物理有意义的场景表示，而不只是像素预测 | 支持 Planner 输出 `target_objects`、`affected_objects`、`dependent_regions` |
-| CLEVRER | 将动态场景问题拆成描述、解释、预测、反事实 | 支持把 `edit_operation` 看作干预，把 `physics_law` 看作因果机制，把 verifier 看作后果检查 |
-| IntPhys | 用违反预期原则检查 object permanence、continuity、solidity 等物理一致性 | 支持把每个 law 转成 must-pass violation checks |
-| Chameleon | LLM planner 根据任务约束组合工具模块 | 支持 Router 不由 LLM 自由决定，而由任务约束和工具 inventory 共同决定 |
-| HuggingGPT | 将复杂任务拆成 task planning、model selection、execution、response generation | 对应本项目 Planner -> Router -> Executor -> Verifier 的模块化结构 |
-| ViperGPT | 用 LLM 生成程序组合视觉模块，提升可解释性和可执行性 | 支持将 route 表达成可执行工具链，而不是纯自然语言计划 |
-| Visual ChatGPT | 用 ChatGPT 管理视觉基础模型和多步视觉编辑反馈 | 支持图像编辑 agent 中的工具描述、视觉反馈和多轮修复流程 |
-
-需要注意的是，这些工作没有一个可以直接照搬到物理一致性图像编辑中。最接近任务本身的是 PICABench；PHYRE、Physion、CLEVRER、IntPhys 提供物理任务分解和评估思想；Chameleon、HuggingGPT、ViperGPT、Visual ChatGPT 提供 planner/router/tool-use 的工程形态。对本项目最合理的融合方式是：用 PICABench 的三类标签定义物理任务语义，用物理推理 benchmark 的机制/干预/后果分解指导 TaskProfile，用 tool-use agent 的模块化思想实现 route 和 verifier。
+| PICABench / PICAEval | 定义物理一致性编辑任务、taxonomy 和 region-grounded QA |
+| PHYRE | 用动作干预、目标状态和稳定结果定义物理任务 |
+| CLEVRER | 将因果任务拆成 descriptive、explanatory、predictive、counterfactual |
+| Physion / IntPhys | 提供物理后果预测和直觉物理评测思想 |
+| ReAct / HuggingGPT / Visual ChatGPT | 提供 planner、router、tool-use agent 的工程参考 |

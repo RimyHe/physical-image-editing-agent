@@ -1,0 +1,137 @@
+[
+  {
+    "case_id": "picabench_0000_causality",
+    "physics_category": "Mechanics",
+    "physics_law": "Causality",
+    "edit_operation": "remove",
+    "label_mode": "inferred",
+    "input_prompt_level": "superficial",
+    "input_prompt": "Remove the 5 of spades card from the structure.",
+    "generated_prompt": "Edit: Remove the 5 of spades card from the structure.\nTarget: 5 of spades card\nPhysical outcome: Remove the 5 of spades card from the card structure and update the structure to its new stable configuration under gravity and remaining supports.. intervention: remove the front-left vertical 5-of-spades support card from the load-bearing card structure; affected object pose: glass tabletop rotates and tilts downward toward the front-left corner after the front-left support card is removed; support relation: front-left support card is absent; the tabletop is no longer held level at that corner and remains supported only by the remaining card stacks; load path change: load previously carried by the removed front-left card is redistributed to the remaining card stacks, so the local corner cannot stay in the old level pose; contact points: lowered front-left glass corner rests closer to the floor or remaining supports; one nearby non-5-of-spades card that lost support lies flat on the floor beneath the lowered glass corner; secondary effects: front-left bay is open with a visible gap where the support card stood; remaining adjacent cards lean or re-seat consistently with the tilted glass; new contact shadows and glass reflections match the lowered front-left corner\nUpdate coupled regions/effects: removed support-card bay; nearby shadow boundary along the structure base; adjacent card contacts; lower-left foreground area where the 5 of spades card sits; floor area directly beneath the removed card; adjacent overlap edges between the removed card and neighboring cards. intervention_target: removed support or constraint; new_contact_points: final pose must create grounded contacts and contact shadows; support_or_constraint_change: old support relation is invalid after removal; support removal; load redistribution to remaining cards; affected_object: object whose balance or load path changes\nPreserve: all unrelated cards not mechanically affected by the removal; overall camera perspective; background cards and upper structure not dependent on the removed card; tabletop/floor texture; lighting direction\nMust satisfy: New contacts, shadows, and reflections match the tilted glass and fallen-card configuration.; Do not allow old-state failure: glass tabletop remains level as if the front-left support still exists.; Do not allow old-state failure: all nearby cards remain perfectly upright in the original support configuration.; Do not allow old-state failure: front-left bay is filled in as a flat visual repair without a support gap.; At least one nearby non-5-of-spades card has fallen or shifted into a grounded final state.; Remaining adjacent cards do not all stay perfectly upright in the old support configuration.; The removed support card is absent.; Do not allow old-state failure: removed 5-of-spades card reappears elsewhere on the structure or.",
+    "explicit_prompt": "Remove the front-left vertical support card—the 5 of spades—from the card structure beneath the glass tabletop. After its removal, show the final stable outcome: the front-left bay is open with a visible gap where that card used to stand; no 5-of-spades appears anywhere in the structure or on the floor. The glass tabletop has rotated and now rests tilted downward toward the front-left corner, still supported by the remaining card stacks. One nearby card that lost support (not a 5 of spades—use a clubs card face or a card back) has fallen out and now lies flat on the floor in the front-left foreground beneath the lowered glass corner. Ensure all cards and the glass have natural contact points, correct perspective, and updated shadows/reflections consistent with the new tilted glass and collapsed corner.",
+    "generated_prompt_words": 420,
+    "explicit_prompt_words": 133,
+    "labels_used_by_component": {
+      "physics_category": "mechanics",
+      "physics_law": "causality",
+      "edit_operation": "remove"
+    },
+    "diagnostics": {
+      "validation_errors": [],
+      "validation_warnings": [
+        "warning:final_state:stable_state_predictor:causal_remove_final_state",
+        "warning:affected_objects:stable_state_predictor:affected_objects",
+        "warning:physical_dependencies:stable_state_predictor:physical_dependencies",
+        "warning:dependent_regions:stable_state_predictor:dependent_regions",
+        "warning:must_pass_checks:stable_state_predictor:must_pass_checks"
+      ],
+      "auto_filled_fields": [
+        "final_state",
+        "affected_objects",
+        "physical_dependencies",
+        "dependent_regions",
+        "must_pass_checks"
+      ],
+      "expansion_failures": [],
+      "evidence_conflicts": [],
+      "prompt_length": 420,
+      "detailed_prompt_length": 766,
+      "prompt_compression_ratio": 0.548
+    },
+    "task_profile": {
+      "physical_operation": "Remove the 5 of spades card from the card structure and update the structure to its new stable configuration under gravity and remaining supports.",
+      "final_state": {
+        "intervention": "remove the front-left vertical 5-of-spades support card from the load-bearing card structure",
+        "affected_object_pose": "glass tabletop rotates and tilts downward toward the front-left corner after the front-left support card is removed",
+        "support_relation": "front-left support card is absent; the tabletop is no longer held level at that corner and remains supported only by the remaining card stacks",
+        "load_path_change": "load previously carried by the removed front-left card is redistributed to the remaining card stacks, so the local corner cannot stay in the old level pose",
+        "contact_points": [
+          "lowered front-left glass corner rests closer to the floor or remaining supports",
+          "one nearby non-5-of-spades card that lost support lies flat on the floor beneath the lowered glass corner"
+        ],
+        "secondary_effects": [
+          "front-left bay is open with a visible gap where the support card stood",
+          "remaining adjacent cards lean or re-seat consistently with the tilted glass",
+          "new contact shadows and glass reflections match the lowered front-left corner"
+        ]
+      },
+      "target_objects": [
+        "5 of spades card"
+      ],
+      "affected_objects": [
+        "5 of spades card",
+        "adjacent lower-left support cards",
+        "nearby interlocked cards in the structure",
+        "floor contact/shadow region below the removed card",
+        "glass tabletop",
+        "remaining card structure",
+        "nearby unsupported card",
+        "floor beneath the lowered corner"
+      ],
+      "physical_dependencies": [
+        "support removal",
+        "contact loss",
+        "load redistribution to remaining cards",
+        "occlusion change where the removed card used to overlap others",
+        "cast-shadow update on the floor",
+        "possible small pose adjustments in adjacent cards to remain stable",
+        "intervention_target: removed support or constraint",
+        "affected_object: object whose balance or load path changes",
+        "support_or_constraint_change: old support relation is invalid after removal",
+        "predicted_stable_pose: affected object must settle into a new stable pose",
+        "new_contact_points: final pose must create grounded contacts and contact shadows"
+      ],
+      "dependent_regions": [
+        "lower-left foreground area where the 5 of spades card sits",
+        "floor area directly beneath the removed card",
+        "adjacent overlap edges between the removed card and neighboring cards",
+        "nearby shadow boundary along the structure base",
+        "removed support-card bay",
+        "front-left glass corner",
+        "floor below the lowered corner",
+        "adjacent card contacts"
+      ],
+      "preserve_scope": [
+        "all unrelated cards not mechanically affected by the removal",
+        "overall camera perspective",
+        "tabletop/floor texture",
+        "lighting direction",
+        "background cards and upper structure not dependent on the removed card"
+      ],
+      "reference_cues": [
+        "the 5 of spades card is visible in the lower-left foreground",
+        "the structure is built from upright and leaning playing cards with multiple contact edges",
+        "gravity acts downward toward the floor",
+        "soft ambient light from above/left creates faint floor shadows",
+        "the removed card currently overlaps and visually supports nearby cards by adjacency"
+      ],
+      "uncertainties": [
+        "Exact downstream collapse extent after removing the 5 of spades card cannot be determined from the image alone.",
+        "Whether nearby cards fully remain standing or shift slightly is not certain without a structural simulation."
+      ],
+      "must_pass_checks": [
+        "The 5 of spades card is no longer visible.",
+        "The remaining structure appears physically plausible and stable after removal.",
+        "No card is left suspended in the old support pose without a visible support relation.",
+        "Any updated contacts between remaining cards and the floor are consistent with the new arrangement.",
+        "Shadow and occlusion near the removed area are consistent with the absence of the card.",
+        "The removed support card is absent.",
+        "The glass tabletop visibly tilts downward toward the front-left corner.",
+        "At least one nearby non-5-of-spades card has fallen or shifted into a grounded final state.",
+        "Remaining adjacent cards do not all stay perfectly upright in the old support configuration.",
+        "New contacts, shadows, and reflections match the tilted glass and fallen-card configuration.",
+        "Do not allow old-state failure: glass tabletop remains level as if the front-left support still exists.",
+        "Do not allow old-state failure: all nearby cards remain perfectly upright in the original support configuration.",
+        "Do not allow old-state failure: removed 5-of-spades card reappears elsewhere on the structure or floor.",
+        "Do not allow old-state failure: front-left bay is filled in as a flat visual repair without a support gap."
+      ],
+      "route_hints": [
+        "causal_settle_route",
+        "direct_edit",
+        "update_support_chain",
+        "repair_contact_edges",
+        "recompute_cast_shadows"
+      ]
+    }
+  }
+]
